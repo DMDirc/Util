@@ -341,9 +341,9 @@ public class ConfigFile extends TextFile {
      * @return A backslash-armoured version of the string
      */
     protected static String escape(final String input) {
-        return input.replaceAll("\\\\", "\\\\\\\\").replaceAll("\n", "\\\\n")
-                .replaceAll("\r", "\\\\r").replaceAll("=", "\\\\=")
-                .replaceAll(":", "\\\\:").replaceAll("#", "\\\\#");
+        return input.replace("\\", "\\\\").replace("\n", "\\n")
+                .replace("\r", "\\r").replace("=", "\\=")
+                .replace(":", "\\:").replace("#", "\\#");
     }
     
     /**
