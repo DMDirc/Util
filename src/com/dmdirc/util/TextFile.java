@@ -92,6 +92,10 @@ public class TextFile {
      * @since 0.6.3m1
      */
     public TextFile(final File file, final Charset charset) {
+        if (file == null) {
+            throw new NullPointerException("file");
+        }
+
         this.file = file;
         this.charset = charset;
     }
@@ -105,6 +109,10 @@ public class TextFile {
      * @since 0.6.3m1
      */
     public TextFile(final InputStream is, final Charset charset) {
+        if (is == null) {
+            throw new NullPointerException("is");
+        }
+
         this.is = is;
         this.charset = charset;
     }
