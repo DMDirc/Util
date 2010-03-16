@@ -80,6 +80,25 @@ public class RollingListTest {
         rl.seekToStart();
         assertEquals(0, rl.getPosition());
     }
+
+    @Test
+    public void testSetPosition() {
+        final RollingList<String> rl = new RollingList<String>(3);
+
+        rl.add("Foo");
+        rl.add("Bar");
+        rl.add("Baz");
+
+        assertEquals(0, rl.getPosition());
+
+        rl.setPosition(1);
+        assertEquals(1, rl.getPosition());
+        assertEquals("Baz", rl.getNext());
+
+        rl.setPosition(0);
+        assertEquals(0, rl.getPosition());
+        assertEquals("Bar", rl.getNext());
+    }
     
     @Test
     public void testPrevNext() {

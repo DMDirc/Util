@@ -24,7 +24,6 @@
 package com.dmdirc.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,30 +38,22 @@ public class ConfigFileTest {
     
     @Before
     public void setUp() throws Exception {
-        cf = new ConfigFile(getClass().getClassLoader().
-                    getResourceAsStream("com/dmdirc/util/test2.txt"));
+        cf = new ConfigFile(getClass().getResourceAsStream("test2.txt"));
     }    
 
     @Test
-    public void testRead() {
-        boolean err = false;
-        
-        try {
-            cf.read(); 
-        } catch (FileNotFoundException ex) {
-            err = true;
-        } catch (IOException ex) {
-            err = true;
-        } catch (InvalidConfigFileException ex) {
-            err = true;
-        }
-        
-        assertFalse(err);
+    public void testRead() throws IOException, InvalidConfigFileException {
+        cf.read();
+    }
+
+    @Test(expected=UnsupportedOperationException.class)
+    public void testWrite() throws IOException {
+        cf.write();
     }
     
     @Test
-    public void testDomains() {
-        testRead();
+    public void testDomains() throws IOException, InvalidConfigFileException {
+        cf.read();
         assertTrue(cf.hasDomain("keysections"));
         assertTrue(cf.hasDomain("section alpha"));
         assertTrue(cf.hasDomain("section one point one"));
@@ -71,16 +62,16 @@ public class ConfigFileTest {
     }
     
     @Test
-    public void testKeyDomains() {
-        testRead();
+    public void testKeyDomains() throws IOException, InvalidConfigFileException {
+        cf.read();
         assertTrue(cf.isKeyDomain("section one"));
         assertFalse(cf.isKeyDomain("section one point one"));
         assertFalse(cf.isKeyDomain("section two"));
     }
     
     @Test
-    public void testFlatDomains() {
-        testRead();
+    public void testFlatDomains() throws IOException, InvalidConfigFileException {
+        cf.read();
         assertTrue(cf.isFlatDomain("keysections"));
         assertTrue(cf.isFlatDomain("section alpha"));
         assertTrue(cf.isFlatDomain("section one point one"));
@@ -89,16 +80,16 @@ public class ConfigFileTest {
     }
     
     @Test
-    public void testFlatDomainContents() {
-        testRead();
+    public void testFlatDomainContents() throws IOException, InvalidConfigFileException {
+        cf.read();
         assertEquals(2, cf.getFlatDomain("section alpha").size());
         assertEquals("line 1", cf.getFlatDomain("section alpha").get(0));
         assertEquals("line 2", cf.getFlatDomain("section alpha").get(1));
     }
     
     @Test
-    public void testKeyDomainContents() {
-        testRead();
+    public void testKeyDomainContents() throws IOException, InvalidConfigFileException {
+        cf.read();
         assertEquals(3, cf.getKeyDomain("section one").size());
         assertEquals("one", cf.getKeyDomain("section one").get("1"));
         assertEquals("two", cf.getKeyDomain("section one").get("2"));
@@ -243,6 +234,12 @@ public class ConfigFileTest {
         assertTrue(file.isKeyDomain("section one"));
         assertEquals(3, file.getKeyDomain("section one").size());
         assertTrue(file.isFlatDomain("section one point one"));
+    }
+
+    @Test(expected=InvalidConfigFileException.class)
+    public void testInvalidLine() throws IOException, InvalidConfigFileException {
+        final ConfigFile file = new ConfigFile(getClass().getResourceAsStream("test1.txt"));
+        file.read();
     }
 
 }
