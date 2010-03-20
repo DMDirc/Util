@@ -22,7 +22,10 @@
 
 package com.dmdirc.util;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * Represents a list of event listeners, similar to EventListenerList, but
@@ -33,8 +36,8 @@ import java.util.List;
 public class ListenerList {
     
     /** The map of class->listener or string->listener that we're using. */
-    private final MapList<Object, Object> listeners
-            = new MapList<Object, Object>();
+    private final Map<Object, Collection<Object>> listeners
+            = new HashMap<Object, Collection<Object>>();
     
     /**
      * Creates a new instance of ListenerList.
@@ -50,7 +53,11 @@ public class ListenerList {
      * @param listener The listener to be added
      */
     public <T> void add(final Class<T> listenerType, final T listener) {
-        listeners.add(listenerType, listener);
+        if (!listeners.containsKey(listenerType)) {
+            listeners.put(listenerType, new ConcurrentSkipListSet<Object>());
+        }
+
+        listeners.get(listenerType).add(listener);
     }
     
     /**
@@ -60,7 +67,11 @@ public class ListenerList {
      * @param listener The listener to be added
      */
     public void add(final String listenerType, final Object listener) {
-        listeners.add(listenerType, listener);
+        if (!listeners.containsKey(listenerType)) {
+            listeners.put(listenerType, new ConcurrentSkipListSet<Object>());
+        }
+
+        listeners.get(listenerType).add(listener);
     }
     
     /**
@@ -71,7 +82,7 @@ public class ListenerList {
      * @param listener The listener to be removed
      */
     public <T> void remove(final Class<T> listenerType, final T listener) {
-        listeners.remove(listenerType, listener);
+        listeners.get(listenerType).remove(listener);
     }
     
     /**
@@ -83,7 +94,7 @@ public class ListenerList {
      * @param listener The listener to be removed
      */
     public void remove(final String listenerType, final Object listener) {
-        listeners.remove(listenerType, listener);
+        listeners.get(listenerType).remove(listener);
     }
     
     /**
@@ -93,11 +104,11 @@ public class ListenerList {
      * @return A list of listeners for the specified type
      */
     @SuppressWarnings("unchecked")
-    public <T> List<T> get(final Class<T> listenerType) {
+    public <T> Collection<T> get(final Class<T> listenerType) {
         if (listeners.containsKey(listenerType)) {
-            return (List<T>) listeners.get(listenerType);
+            return (Collection<T>) listeners.get(listenerType);
         } else {
-            return new WeakList<T>();
+            return new ConcurrentSkipListSet<T>();
         }
     }
     
@@ -107,11 +118,11 @@ public class ListenerList {
      * @param listenerType The type of listener to be retrieved
      * @return A list of listeners for the specified type
      */
-    public List<Object> get(final String listenerType) {
+    public Collection<Object> get(final String listenerType) {
         if (listeners.containsKey(listenerType)) {
             return listeners.get(listenerType);
         } else {
-            return new WeakList<Object>();
+            return new ConcurrentSkipListSet<Object>();
         }
     }
 
