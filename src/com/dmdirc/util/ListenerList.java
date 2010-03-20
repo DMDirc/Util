@@ -23,6 +23,7 @@
 package com.dmdirc.util;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -34,6 +35,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @author chris
  */
 public class ListenerList {
+
+    /** The comparator to use. */
+    protected static EqualComparator COMPARATOR = new EqualComparator();
     
     /** The map of class->listener or string->listener that we're using. */
     private final Map<Object, Collection<Object>> listeners
@@ -54,7 +58,7 @@ public class ListenerList {
      */
     public <T> void add(final Class<T> listenerType, final T listener) {
         if (!listeners.containsKey(listenerType)) {
-            listeners.put(listenerType, new ConcurrentSkipListSet<Object>());
+            listeners.put(listenerType, new ConcurrentSkipListSet<Object>(COMPARATOR));
         }
 
         listeners.get(listenerType).add(listener);
@@ -68,7 +72,7 @@ public class ListenerList {
      */
     public void add(final String listenerType, final Object listener) {
         if (!listeners.containsKey(listenerType)) {
-            listeners.put(listenerType, new ConcurrentSkipListSet<Object>());
+            listeners.put(listenerType, new ConcurrentSkipListSet<Object>(COMPARATOR));
         }
 
         listeners.get(listenerType).add(listener);
@@ -108,7 +112,7 @@ public class ListenerList {
         if (listeners.containsKey(listenerType)) {
             return (Collection<T>) listeners.get(listenerType);
         } else {
-            return new ConcurrentSkipListSet<T>();
+            return new ConcurrentSkipListSet<T>(COMPARATOR);
         }
     }
     
@@ -122,8 +126,23 @@ public class ListenerList {
         if (listeners.containsKey(listenerType)) {
             return listeners.get(listenerType);
         } else {
-            return new ConcurrentSkipListSet<Object>();
+            return new ConcurrentSkipListSet<Object>(COMPARATOR);
         }
+    }
+
+    /**
+     * A comparator that says any two objects are equal.
+     *
+     * @since 0.6.4
+     */
+    protected static class EqualComparator implements Comparator<Object> {
+
+        /** {@inheritDoc} */
+        @Override
+        public int compare(final Object o1, final Object o2) {
+            return 0;
+        }
+
     }
 
 }
