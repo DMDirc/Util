@@ -23,7 +23,6 @@
 package com.dmdirc.util;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -128,21 +127,6 @@ public class ListenerList {
         } else {
             return new ConcurrentSkipListSet<Object>(COMPARATOR);
         }
-    }
-
-    /**
-     * A comparator that says any two objects are equal.
-     *
-     * @since 0.6.4
-     */
-    protected static class EqualComparator implements Comparator<Object> {
-
-        /** {@inheritDoc} */
-        @Override
-        public int compare(final Object o1, final Object o2) {
-            return 0;
-        }
-
     }
 
 }
