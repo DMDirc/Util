@@ -25,7 +25,7 @@ package com.dmdirc.util;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Represents a list of event listeners, similar to EventListenerList, but
@@ -34,9 +34,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @author chris
  */
 public class ListenerList {
-
-    /** The comparator to use. */
-    protected static EqualComparator COMPARATOR = new EqualComparator();
     
     /** The map of class->listener or string->listener that we're using. */
     private final Map<Object, Collection<Object>> listeners
@@ -57,7 +54,7 @@ public class ListenerList {
      */
     public <T> void add(final Class<T> listenerType, final T listener) {
         if (!listeners.containsKey(listenerType)) {
-            listeners.put(listenerType, new ConcurrentSkipListSet<Object>(COMPARATOR));
+            listeners.put(listenerType, new CopyOnWriteArrayList<Object>());
         }
 
         listeners.get(listenerType).add(listener);
@@ -71,7 +68,7 @@ public class ListenerList {
      */
     public void add(final String listenerType, final Object listener) {
         if (!listeners.containsKey(listenerType)) {
-            listeners.put(listenerType, new ConcurrentSkipListSet<Object>(COMPARATOR));
+            listeners.put(listenerType, new CopyOnWriteArrayList<Object>());
         }
 
         listeners.get(listenerType).add(listener);
@@ -111,7 +108,7 @@ public class ListenerList {
         if (listeners.containsKey(listenerType)) {
             return (Collection<T>) listeners.get(listenerType);
         } else {
-            return new ConcurrentSkipListSet<T>(COMPARATOR);
+            return new CopyOnWriteArrayList<T>();
         }
     }
     
@@ -125,7 +122,7 @@ public class ListenerList {
         if (listeners.containsKey(listenerType)) {
             return listeners.get(listenerType);
         } else {
-            return new ConcurrentSkipListSet<Object>(COMPARATOR);
+            return new CopyOnWriteArrayList<Object>();
         }
     }
 
