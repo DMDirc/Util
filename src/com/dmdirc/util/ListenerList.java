@@ -49,6 +49,7 @@ public class ListenerList {
     /**
      * Adds a new listener of the specified type to this listener list.
      * 
+     * @param <T> The type of listener to be added
      * @param listenerType The type of listener to be added
      * @param listener The listener to be added
      */
@@ -77,12 +78,13 @@ public class ListenerList {
     /**
      * Removes the specified listener from the list of listeners for the
      * specified type.
-     * 
+     *
+     * @param <T> The type of listener to be removed
      * @param listenerType The type that the listener should be removed from
      * @param listener The listener to be removed
      */
     public <T> void remove(final Class<T> listenerType, final T listener) {
-        listeners.get(listenerType).remove(listener);
+        get(listenerType).remove(listener);
     }
     
     /**
@@ -94,12 +96,13 @@ public class ListenerList {
      * @param listener The listener to be removed
      */
     public void remove(final String listenerType, final Object listener) {
-        listeners.get(listenerType).remove(listener);
+        get(listenerType).remove(listener);
     }
     
     /**
      * Retrieves the list of listeners for the specified type.
-     * 
+     *
+     * @param <T> The type of listener to be retrieved
      * @param listenerType The type of listener that's being retrieved
      * @return A list of listeners for the specified type
      */
