@@ -132,7 +132,7 @@ public class WeakList<T> implements List<T> {
 
     /** {@inheritDoc} */
     @Override
-    public <T> T[] toArray(final T[] a) {
+    public <S> S[] toArray(final S[] a) {
         return dereferenceList(list).toArray(a);
     }
 
@@ -213,7 +213,7 @@ public class WeakList<T> implements List<T> {
     }
 
     /** {@inheritDoc} */
-    @Override @SuppressWarnings(value = "unchecked")
+    @Override
     public int indexOf(final Object o) {
         cleanUp();
 
@@ -221,7 +221,7 @@ public class WeakList<T> implements List<T> {
     }
 
     /** {@inheritDoc} */
-    @Override @SuppressWarnings(value = "unchecked")
+    @Override
     public int lastIndexOf(final Object o) {
         cleanUp();
 
