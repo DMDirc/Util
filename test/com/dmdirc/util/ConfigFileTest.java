@@ -33,13 +33,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ConfigFileTest {
-    
+
     private ConfigFile cf;
-    
+
     @Before
     public void setUp() throws Exception {
         cf = new ConfigFile(getClass().getResourceAsStream("test2.txt"));
-    }    
+    }
 
     @Test
     public void testRead() throws IOException, InvalidConfigFileException {
@@ -50,7 +50,7 @@ public class ConfigFileTest {
     public void testWrite() throws IOException {
         cf.write();
     }
-    
+
     @Test
     public void testDomains() throws IOException, InvalidConfigFileException {
         cf.read();
@@ -60,7 +60,7 @@ public class ConfigFileTest {
         assertTrue(cf.hasDomain("section one"));
         assertFalse(cf.hasDomain("random domain"));
     }
-    
+
     @Test
     public void testKeyDomains() throws IOException, InvalidConfigFileException {
         cf.read();
@@ -68,7 +68,7 @@ public class ConfigFileTest {
         assertFalse(cf.isKeyDomain("section one point one"));
         assertFalse(cf.isKeyDomain("section two"));
     }
-    
+
     @Test
     public void testFlatDomains() throws IOException, InvalidConfigFileException {
         cf.read();
@@ -76,9 +76,9 @@ public class ConfigFileTest {
         assertTrue(cf.isFlatDomain("section alpha"));
         assertTrue(cf.isFlatDomain("section one point one"));
         assertFalse(cf.isFlatDomain("section one"));
-        assertFalse(cf.hasDomain("random domain"));        
+        assertFalse(cf.hasDomain("random domain"));
     }
-    
+
     @Test
     public void testFlatDomainContents() throws IOException, InvalidConfigFileException {
         cf.read();
@@ -86,7 +86,7 @@ public class ConfigFileTest {
         assertEquals("line 1", cf.getFlatDomain("section alpha").get(0));
         assertEquals("line 2", cf.getFlatDomain("section alpha").get(1));
     }
-    
+
     @Test
     public void testKeyDomainContents() throws IOException, InvalidConfigFileException {
         cf.read();
@@ -95,7 +95,7 @@ public class ConfigFileTest {
         assertEquals("two", cf.getKeyDomain("section one").get("2"));
         assertEquals("three", cf.getKeyDomain("section one").get("3"));
     }
-    
+
     @Test
     public void testColons() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
@@ -106,17 +106,17 @@ public class ConfigFileTest {
         data.put("test3", "hello:");
         config.addDomain("test", data);
         config.write();
-        
+
         config = new ConfigFile(file);
         config.read();
-        
+
         assertTrue(config.isKeyDomain("test"));
         data = config.getKeyDomain("test");
         assertEquals("hello", data.get("test1"));
         assertEquals("hello", data.get("test:2"));
         assertEquals("hello:", data.get("test3"));
     }
-    
+
     @Test
     public void testEquals() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
@@ -127,17 +127,17 @@ public class ConfigFileTest {
         data.put("test3", "hello=");
         config.addDomain("test", data);
         config.write();
-        
+
         config = new ConfigFile(file);
         config.read();
-        
+
         assertTrue(config.isKeyDomain("test"));
         data = config.getKeyDomain("test");
         assertEquals("hello", data.get("test1"));
         assertEquals("hello", data.get("test=2"));
         assertEquals("hello=", data.get("test3"));
     }
-    
+
     @Test
     public void testNewlines() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
@@ -149,10 +149,10 @@ public class ConfigFileTest {
         data.put("test4", "hello\r\ngoodbye");
         config.addDomain("test", data);
         config.write();
-        
+
         config = new ConfigFile(file);
         config.read();
-        
+
         assertTrue(config.isKeyDomain("test"));
         data = config.getKeyDomain("test");
         assertEquals("hello", data.get("test1"));
@@ -160,7 +160,7 @@ public class ConfigFileTest {
         assertEquals("hello\n", data.get("test3"));
         assertEquals("hello\r\ngoodbye", data.get("test4"));
     }
-    
+
     @Test
     public void testBackslash() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
@@ -171,17 +171,17 @@ public class ConfigFileTest {
         data.put("test3\\", "hello");
         config.addDomain("test", data);
         config.write();
-        
+
         config = new ConfigFile(file);
         config.read();
-        
+
         assertTrue(config.isKeyDomain("test"));
         data = config.getKeyDomain("test");
         assertEquals("hello\\", data.get("test1"));
         assertEquals("\\nhello", data.get("test2"));
         assertEquals("hello", data.get("test3\\"));
     }
-    
+
     @Test
     public void testHash() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
@@ -192,30 +192,30 @@ public class ConfigFileTest {
         data.put("test3", "#hello");
         config.addDomain("test", data);
         config.write();
-        
+
         config = new ConfigFile(file);
         config.read();
-        
+
         assertTrue(config.isKeyDomain("test"));
         data = config.getKeyDomain("test");
         assertEquals("hello", data.get("test1#"));
         assertEquals("hello", data.get("#test2"));
         assertEquals("#hello", data.get("test3"));
-    }    
-    
+    }
+
     @Test
     public void testEscape() {
         final String input = "blah blah\\foo\r\nbar=:";
         final String output = "blah blah\\\\foo\\r\\nbar\\=\\:";
         assertEquals(output, ConfigFile.escape(input));
     }
-    
+
     @Test
     public void testUnescape() {
         final String input = "blah blah\\foo\r\nbar=:";
         assertEquals(input, ConfigFile.unescape(ConfigFile.escape(input)));
     }
-    
+
     @Test
     public void testDelete() throws IOException {
         final File file = File.createTempFile("DMDirc_unittest", null);
@@ -225,12 +225,12 @@ public class ConfigFileTest {
         config.delete();
         assertFalse(file.exists());
     }
-    
+
     @Test
     public void testDuplicateKeys() throws IOException, InvalidConfigFileException {
         final ConfigFile file = new ConfigFile(getClass().getResourceAsStream("test2.txt"));
         file.read();
-        
+
         assertTrue(file.isKeyDomain("section one"));
         assertEquals(3, file.getKeyDomain("section one").size());
         assertTrue(file.isFlatDomain("section one point one"));
