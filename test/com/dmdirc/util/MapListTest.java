@@ -39,7 +39,7 @@ public class MapListTest {
         test.removeFromAll("b");
         assertTrue(test.isEmpty());
     }
-    
+
     @Test
     public void testAddCollection() {
         final MapList<String, String> test = new MapList<String, String>();
@@ -47,12 +47,12 @@ public class MapListTest {
         testList.add("d");
         testList.add("e");
         test.add("key", testList);
-        
+
         assertTrue(test.containsKey("key"));
         assertTrue(test.containsValue("key", "d"));
         assertTrue(test.containsValue("key", "e"));
     }
-    
+
     @Test
     public void testClear() {
         final MapList<String, String> test = new MapList<String, String>();
@@ -61,7 +61,7 @@ public class MapListTest {
         test.clear();
         assertTrue(test.isEmpty());
     }
-    
+
     @Test
     public void testClearKey() {
         final MapList<String, String> test = new MapList<String, String>();
@@ -71,24 +71,24 @@ public class MapListTest {
         assertTrue(test.values("a").isEmpty());
         assertFalse(test.isEmpty());
     }
-    
+
     @Test
     public void testRemove() {
         final MapList<String, String> test = new MapList<String, String>();
         test.add("a", "b");
         test.add("d", "e");
         test.remove("z", "b");
-        
+
         assertEquals(2, test.keySet().size());
         assertEquals(1, test.values("a").size());
         assertEquals(1, test.values("d").size());
-        
+
         test.remove("a", "b");
         assertEquals(2, test.keySet().size());
         assertEquals(0, test.values("a").size());
-        assertEquals(1, test.values("d").size());        
-    }    
-    
+        assertEquals(1, test.values("d").size());
+    }
+
     @Test
     public void testKeySet() {
         final MapList<String, String> test = new MapList<String, String>();
@@ -97,7 +97,7 @@ public class MapListTest {
         assertEquals(2, test.keySet().size());
         assertTrue(test.keySet().contains("a"));
         assertTrue(test.keySet().contains("d"));
-    }    
+    }
 
     @Test
     public void testContainsKey() {
@@ -121,26 +121,26 @@ public class MapListTest {
         assertEquals("b", test.get("a").get(0));
         assertEquals("b", test.get("a", 0));
     }
-    
+
     @Test
     public void testInherit() {
         final MapList<String, String> test1 = new MapList<String, String>();
         test1.add("a", "b");
-        
+
         final MapList<String, String> test2 = new MapList<String, String>(test1);
         assertEquals(1, test2.get("a").size());
         assertEquals("b", test2.get("a").get(0));
-        assertEquals("b", test2.get("a", 0));        
+        assertEquals("b", test2.get("a", 0));
     }
-    
+
     @Test
     public void testGetMap() {
         final MapList<String, String> test1 = new MapList<String, String>();
         test1.add("a", "b");
         assertNotSame(test1.getMap(), test1.getMap());
-        
+
         final MapList<String, String> test2 = new MapList<String, String>(test1);
         assertEquals(test1.getMap(), test2.getMap());
-    }    
+    }
 
 }
