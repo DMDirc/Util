@@ -31,7 +31,12 @@ import java.io.IOException;
  * @since 0.6.3m2
  * @author chris
  */
-public abstract class StreamUtil {
+public final class StreamUtil {
+    
+    /** Shouldn't be called. */
+    private StreamUtil() {
+        super();
+    }
 
     /**
      * Closes the stream if it is non-null, and ignores any IOExceptions

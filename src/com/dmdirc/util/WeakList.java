@@ -42,13 +42,6 @@ public class WeakList<T> implements List<T> {
     private final List<WeakReference<T>> list = new ArrayList<WeakReference<T>>();
 
     /**
-     * Creates a new instance of WeakList.
-     */
-    public WeakList() {
-        super();
-    }
-
-    /**
      * Removes any entries from the list that have been GC'd.
      */
     private void cleanUp() {

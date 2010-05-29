@@ -46,8 +46,8 @@ public class EquatableWeakReference<T> extends WeakReference<T> {
     /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Reference) {
-            return get().equals(((Reference) obj).get());
+        if (obj instanceof Reference<?>) {
+            return get().equals(((Reference<?>) obj).get());
         } else {
             return get().equals(obj);
         }

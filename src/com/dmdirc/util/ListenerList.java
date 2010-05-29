@@ -38,14 +38,7 @@ public class ListenerList {
     /** The map of class->listener or string->listener that we're using. */
     private final Map<Object, Collection<Object>> listeners
             = new HashMap<Object, Collection<Object>>();
-    
-    /**
-     * Creates a new instance of ListenerList.
-     */
-    public ListenerList() {
-        // Do nothing
-    }
-    
+       
     /**
      * Adds a new listener of the specified type to this listener list.
      * 

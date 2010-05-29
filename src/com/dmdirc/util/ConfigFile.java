@@ -94,11 +94,10 @@ public class ConfigFile extends TextFile {
     /**
      * Reads the data from the file.
      * 
-     * @throws FileNotFoundException if the file is not found
-     * @throws IOException if an i/o exception occured when reading
+     * @throws IOException if an i/o exception occurred when reading
      * @throws InvalidConfigFileException if the config file isn't valid
      */
-    public void read() throws FileNotFoundException, IOException, InvalidConfigFileException {
+    public void read() throws IOException, InvalidConfigFileException {
         String domain = null;
         boolean keydomain = false;
         int offset;
