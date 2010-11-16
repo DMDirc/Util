@@ -19,26 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.dmdirc.util.validators;
 
 /**
- * A validator that permits everything.
+ * Validates that the value is not a disabled option (i.e., it is not prefixed
+ * with "false:".
  *
- * @param <V> The type of data that this validator validates
+ * @since 0.6.5
  * @author chris
  */
-public class PermissiveValidator<V> implements Validator<V> {
-    
-    /**
-     * Creates a new instance of PermissiveValidator.
-     */
-    public PermissiveValidator() {
-        super();
-    }
+public class DisabledOptionValidator implements Validator<String> {
 
     /** {@inheritDoc} */
     @Override
-    public ValidationResponse validate(final V object) {
+    public ValidationResponse validate(final String object) {
+        if (object != null && object.startsWith("false:")) {
+            return new ValidationResponse("Setting is disabled");
+        }
+
         return new ValidationResponse();
     }
 
