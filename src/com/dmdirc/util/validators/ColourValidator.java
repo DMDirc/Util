@@ -19,27 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.dmdirc.util.validators;
 
 /**
- * A validator that permits everything.
+ * Validates that the value is a valid IRC colour (hex or mIRC).
  *
- * @param <V> The type of data that this validator validates
+ * @since 0.6.5
  * @author chris
  */
-public class PermissiveValidator<V> implements Validator<V> {
-    
-    /**
-     * Creates a new instance of PermissiveValidator.
-     */
-    public PermissiveValidator() {
-        super();
-    }
+public class ColourValidator extends RegexStringValidator implements Validator<String> {
 
-    /** {@inheritDoc} */
-    @Override
-    public ValidationResponse validate(final V object) {
-        return new ValidationResponse();
+    /**
+     * Creates a new colour validator.
+     */
+    public ColourValidator() {
+        super("^[0-9]|1[0-5]|[A-F0-9]{6}$", "Must be a valid colour");
     }
 
 }
