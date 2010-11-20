@@ -54,16 +54,16 @@ public class OptionalValidator implements Validator<String> {
         final int colonIndex = object.indexOf(':');
 
         if (colonIndex == -1) {
-            return new ValidationResponse("Must contain boolean int seperator.");
+            return validator.validate(object);
         }
 
         final String booleanv = object.substring(0, colonIndex);
 
-        if (!"true".equals(booleanv) && !"false".equals(booleanv)) {
-            return new ValidationResponse("Must be true or false.");
+        if ("true".equals(booleanv) || "false".equals(booleanv)) {
+            return validator.validate(object.substring(colonIndex + 1));
         }
 
-        return validator.validate(object.substring(colonIndex + 1));
+        return validator.validate(object);
     }
 
 }

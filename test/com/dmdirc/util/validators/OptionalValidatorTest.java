@@ -32,17 +32,16 @@ public class OptionalValidatorTest {
 
     @Test
     public void testNoSeparator() {
-        final ValidationResponse res = new OptionalValidator(null).validate("foo");
-        assertTrue(res.isFailure());
-        assertTrue(res.getFailureReason().contains("boolean"));
+        final ValidationResponse res = new OptionalValidator(new StringLengthValidator(0, 3))
+                .validate("foo");
+        assertFalse(res.isFailure());
     }
 
     @Test
     public void testIllegalPrefix() {
-        final ValidationResponse res = new OptionalValidator(null).validate("foo:bar");
-        assertTrue(res.isFailure());
-        assertTrue(res.getFailureReason().contains("true"));
-        assertTrue(res.getFailureReason().contains("false"));
+        final ValidationResponse res = new OptionalValidator(new StringLengthValidator(6, 7))
+                .validate("foo:bar");
+        assertFalse(res.isFailure());
     }
 
     @Test
