@@ -34,7 +34,7 @@ public class ColourValidator extends RegexStringValidator implements Validator<S
      * Creates a new colour validator.
      */
     public ColourValidator() {
-        super("^[0-9]|1[0-5]|[A-F0-9]{6}$", "Must be a valid colour");
+        super("^[0-9]|1[0-5]|(?i)[A-F0-9]{6}$", "Must be a valid colour");
     }
 
 }
