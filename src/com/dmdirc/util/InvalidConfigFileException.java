@@ -40,7 +40,7 @@ public class InvalidConfigFileException extends Exception {
      * 
      * @param string A description of the exception that occured.
      */
-    public InvalidConfigFileException(String string) {
+    public InvalidConfigFileException(final String string) {
         super(string);
     }
 

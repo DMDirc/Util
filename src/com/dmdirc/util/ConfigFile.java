@@ -23,7 +23,6 @@
 package com.dmdirc.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -44,7 +43,8 @@ public class ConfigFile extends TextFile {
     private final List<String> domains = new ArrayList<String>();
 
     /** The values associated with each flat domain. */
-    private final MapList<String, String> flatdomains = new MapList<String, String>();
+    private final MapList<String, String> flatdomains
+            = new MapList<String, String>();
 
     /** The key/value sets associated with each key domain. */
     private final Map<String, Map<String, String>> keydomains
@@ -162,7 +162,8 @@ public class ConfigFile extends TextFile {
         final List<String> lines = new ArrayList<String>();
 
         lines.add("# This is a DMDirc configuration file.");
-        lines.add("# Written on: " + new GregorianCalendar().getTime().toString());
+        lines.add("# Written on: " + new GregorianCalendar().getTime()
+                .toString());
 
         writeMeta(lines);
 
@@ -180,7 +181,8 @@ public class ConfigFile extends TextFile {
                     lines.add("  " + escape(entry));
                 }
             } else {
-                for (Map.Entry<String, String> entry : keydomains.get(domain).entrySet()) {
+                for (Map.Entry<String, String> entry : keydomains.get(domain)
+                        .entrySet()) {
                     lines.add("  " + escape(entry.getKey()) + "="
                             + escape(entry.getValue()));
                 }
@@ -197,8 +199,10 @@ public class ConfigFile extends TextFile {
      */
     private void writeMeta(final List<String> lines) {
         lines.add("");
-        lines.add("# This section indicates which sections below take key/value");
-        lines.add("# pairs, rather than a simple list. It should be placed above");
+        lines.add("# This section indicates which sections below take "
+                + "key/value");
+        lines.add("# pairs, rather than a simple list. It should be "
+                + "placed above");
         lines.add("# any sections that take key/values.");
         lines.add("keysections:");
 
@@ -252,7 +256,8 @@ public class ConfigFile extends TextFile {
      * @return True if the domain is known, false otherwise
      */
     public boolean hasDomain(final String domain) {
-        return keydomains.containsKey(domain) || flatdomains.containsKey(domain);
+        return keydomains.containsKey(domain)
+                || flatdomains.containsKey(domain);
     }
 
     /**

@@ -39,7 +39,8 @@ import java.util.ListIterator;
 public class WeakList<T> implements List<T> {
 
     /** The items in this list. */
-    private final List<WeakReference<T>> list = new ArrayList<WeakReference<T>>();
+    private final List<WeakReference<T>> list
+            = new ArrayList<WeakReference<T>>();
 
     /**
      * Removes any entries from the list that have been GC'd.
@@ -79,8 +80,10 @@ public class WeakList<T> implements List<T> {
      * a weak reference.
      */
     @SuppressWarnings(value = "unchecked")
-    private Collection<WeakReference<T>> referenceCollection(final Collection<?> c) {
-        final Collection<WeakReference<T>> res = new ArrayList<WeakReference<T>>();
+    private Collection<WeakReference<T>> referenceCollection(
+            final Collection<?> c) {
+        final Collection<WeakReference<T>> res
+                = new ArrayList<WeakReference<T>>();
 
         for (Object item : c) {
             res.add(new EquatableWeakReference(item));

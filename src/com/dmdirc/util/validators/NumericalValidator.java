@@ -41,7 +41,7 @@ public class NumericalValidator implements Validator<String> {
      * @param min The minimum value for the number, or -1 for unlimited.
      * @param max The maximum value for the number, or -1 for unlimited.
      */
-    public NumericalValidator(int min, int max) {
+    public NumericalValidator(final int min, final int max) {
         this.max = max == -1 ? Integer.MAX_VALUE : max;
         this.min = min == -1 ? Integer.MIN_VALUE : min;
         if (this.min > this.max) {

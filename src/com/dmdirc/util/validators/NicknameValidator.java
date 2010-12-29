@@ -28,7 +28,8 @@ package com.dmdirc.util.validators;
 public class NicknameValidator implements Validator<String> {
 
     /** Nickname regex. */
-    private static final String NICKNAME_REGEX = "[A-Za-z0-9\\[\\]{|}\\-\\^\\\\\\`\\_]+";
+    private static final String NICKNAME_REGEX
+            = "[A-Za-z0-9\\[\\]{|}\\-\\^\\\\\\`\\_]+";
     /** Failure reason. */
     private static final String FAILURE_REASON = "Nickname must only contain "
             + "letters, numbers and []{}|-^\\.`_";
