@@ -83,7 +83,8 @@ public final class Downloader {
         BufferedReader in = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(
+                    urlConn.getInputStream()));
 
             String line;
 
@@ -110,7 +111,8 @@ public final class Downloader {
      * @throws java.net.MalformedURLException If the URL is malformed
      * @throws java.io.IOException If there's an I/O error while downloading
      */
-    public static List<String> getPage(final String url, final Map<String, String> postData)
+    public static List<String> getPage(final String url,
+            final Map<String, String> postData)
             throws MalformedURLException, IOException {
         final StringBuilder data = new StringBuilder();
 
@@ -174,7 +176,8 @@ public final class Downloader {
                     output.write(buffer, 0, count);
 
                     if (listener != null && length != -1) {
-                        listener.downloadProgress(100 * (float) current / length);
+                        listener.downloadProgress(100 * (float) current
+                                / length);
                     }
                 }
             } while (count > 0);
@@ -193,7 +196,8 @@ public final class Downloader {
      * @throws java.net.MalformedURLException If the specified URL is malformed
      * @throws java.io.IOException If an I/O exception occurs while connecting
      */
-    private static URLConnection getConnection(final String url, final String postData)
+    private static URLConnection getConnection(final String url,
+            final String postData)
             throws MalformedURLException, IOException {
         final URL myUrl = new URL(url);
         final URLConnection urlConn = myUrl.openConnection();
@@ -204,7 +208,8 @@ public final class Downloader {
         urlConn.setConnectTimeout(10000);
 
         if (postData.length() > 0) {
-            urlConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            urlConn.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
 
             DataOutputStream out = null;
 

@@ -39,13 +39,13 @@ public class EquatableWeakReference<T> extends WeakReference<T> {
      * 
      * @param referent The object that this weak reference should reference.
      */
-    public EquatableWeakReference(T referent) {
+    public EquatableWeakReference(final T referent) {
         super(referent);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof Reference<?>) {
             return get().equals(((Reference<?>) obj).get());
         } else {

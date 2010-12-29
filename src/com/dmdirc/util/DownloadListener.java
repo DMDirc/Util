@@ -38,7 +38,8 @@ public interface DownloadListener {
     void downloadProgress(float percent);
     
     /**
-     * Called to notify the listener if this download has an indeterminate length.
+     * Called to notify the listener if this download has an indeterminate
+     * length.
      * 
      * @param indeterminate true or false
      * 

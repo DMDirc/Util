@@ -50,9 +50,11 @@ public class StringLengthValidator implements Validator<String> {
     @Override
     public ValidationResponse validate(final String object) {
         if (object.length() < min && min != -1) {
-            return new ValidationResponse("Must be at least " + min + " characters long");
+            return new ValidationResponse("Must be at least " + min
+                    + " characters long");
         } else if (object.length() > max && max != -1) {
-            return new ValidationResponse("Must be at most " + max + " characters long");
+            return new ValidationResponse("Must be at most " + max
+                    + " characters long");
         } else {
             return new ValidationResponse();
         }

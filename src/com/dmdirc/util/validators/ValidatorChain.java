@@ -23,6 +23,7 @@
 package com.dmdirc.util.validators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,9 +44,7 @@ public class ValidatorChain<A> implements Validator<A> {
      * @param validators The validators to be used in this chain.
      */
     public ValidatorChain(final Validator<A> ... validators) {
-        for (Validator<A> validator : validators) {
-            validatorList.add(validator);
-        }
+        validatorList.addAll(Arrays.asList(validators));
     }
 
     /** {@inheritDoc} */

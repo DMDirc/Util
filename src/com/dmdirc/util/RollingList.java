@@ -36,15 +36,12 @@ public class RollingList<T> {
    
     /** The items in this rolling list. */
     private final List<T> items = new ArrayList<T>();
-    
     /** The maximum capacity of this list. */
     private final int capacity;
-    
+    /** Whether or not to add a fake empty item to the end of this list. */
+    private final boolean addEmpty;
     /** This list's position pointer. */
     private int position = 0;
-    
-    /** Whether or not to add a fake empty item to the end of this list. */
-    private boolean addEmpty;
     /** The "empty" item to be added. */
     private T empty;
     
@@ -75,9 +72,10 @@ public class RollingList<T> {
      * Removes the specified element from this list.
      * 
      * @param o The object to be removed from the list.
-     * @return True if the list contained the specified element, false otherwise.
+     * @return True if the list contained the specified element,
+     * false otherwise.
      */
-    public boolean remove(final Object o) {
+    public boolean remove(final T o) {
         return items.remove(o);
     }
 
@@ -106,7 +104,7 @@ public class RollingList<T> {
      * @param o The object to be checked
      * @return True if this list contains the item, false otherwise.
      */
-    public boolean contains(final Object o) {
+    public boolean contains(final T o) {
         return items.contains(o);
     }
 
@@ -125,7 +123,7 @@ public class RollingList<T> {
      * @param e The element to be added to the list.
      * @return True
      */
-    public boolean add(T e) {
+    public boolean add(final T e) {
         while (items.size() > capacity - 1) {
             items.remove(0);
             position--;
@@ -148,17 +146,19 @@ public class RollingList<T> {
      * 
      * @param position The new position
      */
-    public void setPosition(int position) {
+    public void setPosition(final int position) {
         this.position = position;
     }    
     
     /**
-     * Determines if there is an element after the positional pointer of the list.
+     * Determines if there is an element after the positional pointer of
+     * the list.
      * 
      * @return True if there is an element, false otherwise.
      */
     public boolean hasNext() {
-        return (items.size() > position + 1) || ((items.size() > position) && addEmpty);
+        return (items.size() > position + 1) || ((items.size() > position)
+                && addEmpty);
     }
     
     /**
@@ -176,7 +176,8 @@ public class RollingList<T> {
     }
     
     /**
-     * Determines if there is an element befpre the positional pointer of the list.
+     * Determines if there is an element befpre the positional pointer of
+     * the list.
      * 
      * @return True if there is an element, false otherwise.
      */    
