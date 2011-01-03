@@ -19,17 +19,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.dmdirc.util.validators;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-public class PermissiveValidatorTest {
+/**
+ * Validates a server name, prepending an irc protocol if no protocol is
+ * specified.
+ */
+public class ServerNameValidator implements Validator<String> {
 
-    @Test
-    public void testValidate() {
-        assertFalse(new PermissiveValidator<String>().validate("abc").isFailure());
-        assertFalse(new PermissiveValidator<String>().validate(null).isFailure());
+    /** {@inheritDoc} */
+    @Override
+    public ValidationResponse validate(final String object) {
+        try {
+            URI uri = new URI(object);
+            if (uri.getHost() == null || uri.getHost().isEmpty()) {
+                uri = new URI("irc://" + object);
+            }
+            if (uri.getHost() == null || uri.getHost().isEmpty()) {
+                return new ValidationResponse("Address requires a hostname.");
+            } else {
+                return new ValidationResponse();
+            }
+        } catch (URISyntaxException ex) {
+            return new ValidationResponse(ex.getReason());
+        }
     }
-
 }
