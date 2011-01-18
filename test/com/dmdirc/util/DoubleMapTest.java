@@ -33,9 +33,9 @@ public class DoubleMapTest {
         dm.put("a", "b");
         
         assertEquals(1, dm.keySet().size());
-        assertEquals(1, dm.valueSet().size());
+        assertEquals(1, dm.values().size());
         assertTrue(dm.keySet().contains("a"));
-        assertTrue(dm.valueSet().contains("b"));
+        assertTrue(dm.values().contains("b"));
     }
     
     @Test(expected=NullPointerException.class)
