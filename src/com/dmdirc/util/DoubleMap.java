@@ -33,6 +33,7 @@ import java.util.Set;
 /**
  * An object that maps keys to values, and values back to keys. Currently
  * does no checking for duplicates. Does not allow null values.
+ * <p>Note that this implementation is NOT thread safe.
  *
  * @param <A> The first type of data to be mapped
  * @param <B> The second type of data to be mapped
@@ -103,18 +104,21 @@ public class DoubleMap<A,B> implements Map<A,B> {
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked")
     public boolean containsKey(final Object key) {
         return keys.contains((A) key);
     }
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked")
     public boolean containsValue(final Object value) {
         return values.contains((B) value);
     }
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked")
     public B get(final Object key) {
         return getValue((A) key);
     }
@@ -156,7 +160,7 @@ public class DoubleMap<A,B> implements Map<A,B> {
     public Set<Entry<A, B>> entrySet() {
         final HashSet<Entry<A, B>> set = new HashSet<Entry<A, B>>();
         for (A key : keys) {
-            set.add(new SimpleEntry(key, getValue(key)));
+            set.add(new SimpleEntry<A, B>(key, getValue(key)));
         }
         return set;
     }
