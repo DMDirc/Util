@@ -30,18 +30,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Represents a list of event listeners, similar to EventListenerList, but
  * not swing specific.
- * 
+ *
  * @author chris
  */
 public class ListenerList {
-    
+
     /** The map of class->listener or string->listener that we're using. */
     private final Map<Object, Collection<Object>> listeners
             = new HashMap<Object, Collection<Object>>();
-       
+
     /**
      * Adds a new listener of the specified type to this listener list.
-     * 
+     *
      * @param <T> The type of listener to be added
      * @param listenerType The type of listener to be added
      * @param listener The listener to be added
@@ -53,10 +53,10 @@ public class ListenerList {
 
         listeners.get(listenerType).add(listener);
     }
-    
+
     /**
      * Adds a new listener of the specified type to this listener list.
-     * 
+     *
      * @param listenerType The name of the type of listener that's being added
      * @param listener The listener to be added
      */
@@ -67,7 +67,7 @@ public class ListenerList {
 
         listeners.get(listenerType).add(listener);
     }
-    
+
     /**
      * Removes the specified listener from the list of listeners for the
      * specified type.
@@ -79,11 +79,11 @@ public class ListenerList {
     public <T> void remove(final Class<T> listenerType, final T listener) {
         get(listenerType).remove(listener);
     }
-    
+
     /**
      * Removes the specified listener from the list of listeners for the
      * specified type.
-     * 
+     *
      * @param listenerType The name of the type that the listener should be
      * removed from
      * @param listener The listener to be removed
@@ -91,7 +91,7 @@ public class ListenerList {
     public void remove(final String listenerType, final Object listener) {
         get(listenerType).remove(listener);
     }
-    
+
     /**
      * Retrieves the list of listeners for the specified type.
      *
@@ -107,10 +107,10 @@ public class ListenerList {
             return new CopyOnWriteArrayList<T>();
         }
     }
-    
+
     /**
      * Retrieves the list of listeners for the specified type.
-     * 
+     *
      * @param listenerType The type of listener to be retrieved
      * @return A list of listeners for the specified type
      */

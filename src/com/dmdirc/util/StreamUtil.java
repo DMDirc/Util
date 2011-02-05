@@ -32,7 +32,7 @@ import java.io.IOException;
  * @author chris
  */
 public final class StreamUtil {
-    
+
     /** Shouldn't be called. */
     private StreamUtil() {
         super();

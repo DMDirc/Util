@@ -29,17 +29,17 @@ import java.util.List;
  * accessing the data. Implements a Map-like interface for easier transition.
  * This implementation uses WeakLists (i.e., lists of weak references) - all
  * references to values are wrapped in WeakReferences.
- * 
+ *
  * @param <S> the type of keys maintained by this map
  * @param <T> the type of mapped values
  * @author chris
  */
 public class WeakMapList<S,T> extends MapList<S,T> {
-    
+
     /**
      * Retrieves the list of values associated with the specified key, creating
      * the key if neccessary.
-     * 
+     *
      * @param key The key to retrieve
      * @return A list of the specified key's values
      */
@@ -48,7 +48,7 @@ public class WeakMapList<S,T> extends MapList<S,T> {
         if (!map.containsKey(key)) {
             map.put(key, new WeakList<T>());
         }
-        
+
         return map.get(key);
     }
 }

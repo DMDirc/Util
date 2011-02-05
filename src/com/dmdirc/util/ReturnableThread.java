@@ -24,7 +24,7 @@ package com.dmdirc.util;
 
 /**
  * Normal thread with the potential to return a value.
- * 
+ *
  * @param T Type to be returned
  */
 public abstract class ReturnableThread<T> extends Thread {
@@ -38,7 +38,7 @@ public abstract class ReturnableThread<T> extends Thread {
 
     /**
      * Sets the returnable object.
-     * 
+     *
      * @param value new returnable object
      */
     public void setObject(final T value) {
@@ -47,7 +47,7 @@ public abstract class ReturnableThread<T> extends Thread {
 
     /**
      * Returns the object set by this thread.
-     * 
+     *
      * @return Returnable object
      */
     public T getObject() {
