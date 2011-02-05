@@ -32,7 +32,7 @@ import java.util.ListIterator;
 /**
  * Implements a list of weak references. The weak references (and subsequent
  * garbage collection) are handled transparently.
- * 
+ *
  * @param <T> The type of object that this list will contain.
  * @author chris
  */
@@ -55,7 +55,7 @@ public class WeakList<T> implements List<T> {
 
     /**
      * Dereferences the specified list of WeakReferences to get a plain List.
-     * 
+     *
      * @param list The list to be dereferenced
      * @return A list containing the items referenced by the specified list
      */
@@ -74,7 +74,7 @@ public class WeakList<T> implements List<T> {
     /**
      * Creates a new collection of weak references to elements in the specified
      * collection.
-     * 
+     *
      * @param c The collection whose elements should be referenced
      * @return A copy of the specified collection, with each item wrapped in
      * a weak reference.

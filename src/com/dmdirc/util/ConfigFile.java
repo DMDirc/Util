@@ -49,13 +49,13 @@ public class ConfigFile extends TextFile {
     /** The key/value sets associated with each key domain. */
     private final Map<String, Map<String, String>> keydomains
             = new HashMap<String, Map<String, String>>();
-    
+
     /** Whether or not we should automatically create domains. */
     private boolean automake;
 
     /**
      * Creates a new read-only Config File from the specified input stream.
-     * 
+     *
      * @param is The input stream to read
      */
     public ConfigFile(final InputStream is) {
@@ -64,7 +64,7 @@ public class ConfigFile extends TextFile {
 
     /**
      * Creates a new Config File from the specified file.
-     * 
+     *
      * @param file The file to read/write
      */
     public ConfigFile(final File file) {
@@ -73,7 +73,7 @@ public class ConfigFile extends TextFile {
 
     /**
      * Creates a new Config File from the specified file.
-     * 
+     *
      * @param filename The name of the file to read/write
      */
     public ConfigFile(final String filename) {
@@ -84,7 +84,7 @@ public class ConfigFile extends TextFile {
      * Sets the "automake" value of this config file. If automake is set to
      * true, any calls to getKeyDomain will automatically create the domain
      * if it did not previously exist.
-     * 
+     *
      * @param automake The new value of the automake setting of this file
      */
     public void setAutomake(final boolean automake) {
@@ -93,7 +93,7 @@ public class ConfigFile extends TextFile {
 
     /**
      * Reads the data from the file.
-     * 
+     *
      * @throws IOException if an i/o exception occurred when reading
      * @throws InvalidConfigFileException if the config file isn't valid
      */
@@ -101,17 +101,17 @@ public class ConfigFile extends TextFile {
         String domain = null;
         boolean keydomain = false;
         int offset;
-        
+
         keydomains.clear();
         flatdomains.clear();
         domains.clear();
-        
+
         readLines();
 
         for (String line : getLines()) {
             String tline = line;
-            
-            while (!tline.isEmpty() && (tline.charAt(0) == '\t' || 
+
+            while (!tline.isEmpty() && (tline.charAt(0) == '\t' ||
                     tline.charAt(0) == ' ')) {
                 tline = tline.substring(1);
             }
@@ -127,7 +127,7 @@ public class ConfigFile extends TextFile {
 
                 keydomain = keydomains.containsKey(domain)
                         || flatdomains.containsValue("keysections", domain);
-                
+
                 if (keydomain && !keydomains.containsKey(domain)) {
                     keydomains.put(domain, new HashMap<String, String>());
                 } else if (!keydomain && !flatdomains.containsKey(domain)) {
@@ -150,7 +150,7 @@ public class ConfigFile extends TextFile {
 
     /**
      * Writes the contents of this ConfigFile to disk.
-     * 
+     *
      * @throws IOException if the write operation fails
      */
     public void write() throws IOException {
@@ -158,7 +158,7 @@ public class ConfigFile extends TextFile {
             throw new UnsupportedOperationException("Cannot write to a file "
                     + "that isn't writable");
         }
-        
+
         final List<String> lines = new ArrayList<String>();
 
         lines.add("# This is a DMDirc configuration file.");
@@ -191,10 +191,10 @@ public class ConfigFile extends TextFile {
 
         writeLines(lines);
     }
-    
+
     /**
      * Appends the meta-data (keysections) to the specified list of lines.
-     * 
+     *
      * @param lines The set of lines to be appended to
      */
     private void writeMeta(final List<String> lines) {
@@ -214,19 +214,19 @@ public class ConfigFile extends TextFile {
             }
         }
     }
-    
+
     /**
      * Retrieves all the key domains for this config file.
-     * 
+     *
      * @return This config file's key domains
      */
     public Map<String, Map<String, String>> getKeyDomains() {
         return keydomains;
     }
-    
+
     /**
      * Retrieves the key/values of the specified key domain.
-     * 
+     *
      * @param domain The domain to be retrieved
      * @return A map of keys to values in the specified domain
      */
@@ -235,23 +235,23 @@ public class ConfigFile extends TextFile {
             domains.add(domain);
             keydomains.put(domain, new HashMap<String, String>());
         }
-        
+
         return keydomains.get(domain);
     }
-    
+
     /**
      * Retrieves the content of the specified flat domain.
-     * 
+     *
      * @param domain The domain to be retrieved
      * @return A list of lines in the specified domain
      */
     public List<String> getFlatDomain(final String domain) {
         return flatdomains.get(domain);
     }
-    
+
     /**
      * Determines if this config file has the specified domain.
-     * 
+     *
      * @param domain The domain to check for
      * @return True if the domain is known, false otherwise
      */
@@ -263,7 +263,7 @@ public class ConfigFile extends TextFile {
     /**
      * Determines if this config file has the specified domain, and the domain
      * is a key domain.
-     * 
+     *
      * @param domain The domain to check for
      * @return True if the domain is known and keyed, false otherwise
      */
@@ -274,17 +274,17 @@ public class ConfigFile extends TextFile {
     /**
      * Determines if this config file has the specified domain, and the domain
      * is a flat domain.
-     * 
+     *
      * @param domain The domain to check for
      * @return True if the domain is known and flat, false otherwise
      */
     public boolean isFlatDomain(final String domain) {
         return flatdomains.containsKey(domain);
     }
-    
+
     /**
      * Adds a new flat domain to this config file.
-     * 
+     *
      * @param name The name of the domain to be added
      * @param data The content of the domain
      */
@@ -295,18 +295,18 @@ public class ConfigFile extends TextFile {
 
     /**
      * Adds a new key domain to this config file.
-     * 
+     *
      * @param name The name of the domain to be added
      * @param data The content of the domain
-     */    
+     */
     public void addDomain(final String name, final Map<String, String> data) {
         domains.add(name);
         keydomains.put(name, data);
     }
-    
+
     /**
      * Unescapes any escaped characters in the specified input string.
-     * 
+     *
      * @param input The string to unescape
      * @return The string with all escape chars (\) resolved
      */
@@ -325,7 +325,7 @@ public class ConfigFile extends TextFile {
                 } else {
                     temp.append(ch);
                 }
-                
+
                 escaped = false;
             } else if (ch == '\\') {
                 escaped = true;
@@ -333,14 +333,14 @@ public class ConfigFile extends TextFile {
                 temp.append(ch);
             }
         }
-        
+
         return temp.toString();
     }
-    
+
     /**
      * Escapes the specified input string by prefixing all occurances of
      * \, \n, \r, =, # and : with backslashes.
-     * 
+     *
      * @param input The string to be escaped
      * @return A backslash-armoured version of the string
      */
@@ -349,16 +349,16 @@ public class ConfigFile extends TextFile {
                 .replace("\r", "\\r").replace("=", "\\=")
                 .replace(":", "\\:").replace("#", "\\#");
     }
-    
+
     /**
      * Finds the first non-escaped instance of '=' in the specified string.
-     * 
+     *
      * @param input The string to be searched
      * @return The offset of the first non-escaped instance of '=', or -1.
      */
     protected static int findEquals(final String input) {
         boolean escaped = false;
-        
+
         for (int i = 0; i < input.length(); i++) {
             if (escaped) {
                 escaped = false;
@@ -368,7 +368,7 @@ public class ConfigFile extends TextFile {
                 return i;
             }
         }
-        
+
         return -1;
     }
 }

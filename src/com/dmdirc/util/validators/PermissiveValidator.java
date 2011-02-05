@@ -28,7 +28,7 @@ package com.dmdirc.util.validators;
  * @author chris
  */
 public class PermissiveValidator<V> implements Validator<V> {
-    
+
     /**
      * Creates a new instance of PermissiveValidator.
      */

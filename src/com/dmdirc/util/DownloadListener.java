@@ -25,24 +25,24 @@ package com.dmdirc.util;
 /**
  * Defines the method that objects interested in receiving download progress
  * updates should implement.
- * 
+ *
  * @author chris
  */
 public interface DownloadListener {
 
     /**
      * Called when the progress of the download has changed.
-     * 
+     *
      * @param percent The percentage of the file that has been downloaded
      */
     void downloadProgress(float percent);
-    
+
     /**
      * Called to notify the listener if this download has an indeterminate
      * length.
-     * 
+     *
      * @param indeterminate true or false
-     * 
+     *
      * @since 0.6
      */
     void setIndeterminate(final boolean indeterminate);

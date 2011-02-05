@@ -36,27 +36,27 @@ import java.util.List;
 
 /**
  * Allows reading and writing to a plain text file via a list of lines.
- * 
+ *
  * @author chris
  */
 public class TextFile {
-    
+
     /** The file we're dealing with. */
     private File file;
-    
+
     /** The input stream we're dealing with. */
     private InputStream is;
-    
+
     /** The lines we've read from the file. */
     private List<String> lines;
 
     /** The charset to use to read the file. */
     private final Charset charset;
-    
+
     /**
      * Creates a new instance of TextFile for the specified file, and uses the
      * default charset.
-     * 
+     *
      * @param filename The file to be read/written
      */
     public TextFile(final String filename) {
@@ -66,17 +66,17 @@ public class TextFile {
     /**
      * Creates a new instance of TextFile for the specified File, and uses the
      * default charset.
-     * 
+     *
      * @param file The file to read
      */
     public TextFile(final File file) {
         this(file, Charset.defaultCharset());
     }
-    
+
     /**
      * Creates a new instance of TextFile for an input stream, and uses the
      * default charset.
-     * 
+     *
      * @param is The input stream to read from
      */
     public TextFile(final InputStream is) {
@@ -108,11 +108,11 @@ public class TextFile {
         this.is = is;
         this.charset = charset;
     }
-    
+
     /**
      * Retrieves the contents of the file as a list of lines. If getLines() or
      * readLines() has previously been called, a cached version is returned.
-     * 
+     *
      * @return A list of lines in the file
      * @throws IOException if an I/O exception occurs
      */
@@ -120,13 +120,13 @@ public class TextFile {
         if (lines == null) {
             readLines();
         }
-        
+
         return lines;
     }
-    
+
     /**
      * Reads the contents of the file into this TextFile's line cache.
-     * 
+     *
      * @throws IOException If an I/O exception occurs
      */
     public void readLines() throws IOException {
@@ -151,19 +151,19 @@ public class TextFile {
             StreamUtil.close(inputStream);
         }
     }
-    
+
     /**
      * Determines if this file is writable or not.
-     * 
+     *
      * @return True if the file is writable, false otherwise
      */
     public boolean isWritable() {
         return file != null;
     }
-    
+
     /**
      * Writes the specified list of lines to the file.
-     * 
+     *
      * @param lines The lines to be written
      * @throws IOException if an I/O exception occurs
      */
@@ -172,12 +172,12 @@ public class TextFile {
             throw new UnsupportedOperationException("Cannot write to TextFile "
                     + "opened with an InputStream");
         }
-        
+
         BufferedWriter writer = null;
 
         try {
             writer = new BufferedWriter(new FileWriter(file));
-        
+
             for (String line : lines) {
                 writer.write(line);
                 writer.newLine();
@@ -189,13 +189,13 @@ public class TextFile {
 
     /**
      * Retrieves the File for this TextFile, if there is one.
-     * 
+     *
      * @return This TextFile's file, or null
      */
     public File getFile() {
         return file;
     }
-    
+
     /**
      * Deletes the file associated with this textfile, if there is one.
      */
@@ -204,7 +204,7 @@ public class TextFile {
             throw new UnsupportedOperationException("Cannot delete TextFile "
                     + "opened with an InputStream");
         }
-        
+
         file.delete();
     }
 
