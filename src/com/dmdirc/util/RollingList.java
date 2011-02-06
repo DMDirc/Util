@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.dmdirc.util;
 
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ import java.util.List;
  * removes the oldest elements from the list to maintain this capacity.
  *
  * @param <T> The type if items that this list contains
- * @author chris
  */
 public class RollingList<T> {
 
@@ -216,5 +214,4 @@ public class RollingList<T> {
     public List<T> getList() {
         return new ArrayList<T>(items);
     }
-
 }

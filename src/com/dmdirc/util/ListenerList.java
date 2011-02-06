@@ -30,8 +30,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Represents a list of event listeners, similar to EventListenerList, but
  * not swing specific.
- *
- * @author chris
  */
 public class ListenerList {
 

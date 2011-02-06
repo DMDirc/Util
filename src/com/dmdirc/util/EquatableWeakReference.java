@@ -30,7 +30,6 @@ import java.lang.ref.WeakReference;
  * method.
  *
  * @param <T> The type of object that this reference contains
- * @author chris
  */
 public class EquatableWeakReference<T> extends WeakReference<T> {
 
