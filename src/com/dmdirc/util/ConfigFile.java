@@ -109,8 +109,8 @@ public class ConfigFile extends TextFile {
         for (String line : getLines()) {
             String tline = line;
 
-            while (!tline.isEmpty() && (tline.charAt(0) == '\t' ||
-                    tline.charAt(0) == ' ')) {
+            while (!tline.isEmpty() && (tline.charAt(0) == '\t'
+                    || tline.charAt(0) == ' ')) {
                 tline = tline.substring(1);
             }
 
@@ -140,8 +140,8 @@ public class ConfigFile extends TextFile {
             } else if (domain != null && !keydomain) {
                 flatdomains.add(domain, unescape(tline));
             } else {
-                throw new InvalidConfigFileException("Unknown or unexpected" +
-                        " line encountered: " + tline);
+                throw new InvalidConfigFileException("Unknown or unexpected"
+                        + " line encountered: " + tline);
             }
         }
     }

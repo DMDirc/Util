@@ -53,11 +53,9 @@ public final class Downloader {
      *
      * @param url The URL to retrieve
      * @return A list of lines received from the server
-     * @throws java.net.MalformedURLException If the URL is malformed
      * @throws java.io.IOException If there's an I/O error while downloading
      */
-    public static List<String> getPage(final String url)
-            throws MalformedURLException, IOException {
+    public static List<String> getPage(final String url) throws IOException {
 
         return getPage(url, "");
     }
@@ -68,11 +66,10 @@ public final class Downloader {
      * @param url The URL to retrieve
      * @param postData The raw POST data to send
      * @return A list of lines received from the server
-     * @throws java.net.MalformedURLException If the URL is malformed
      * @throws java.io.IOException If there's an I/O error while downloading
      */
     public static List<String> getPage(final String url, final String postData)
-            throws MalformedURLException, IOException {
+            throws IOException {
 
         final List<String> res = new ArrayList<String>();
 
@@ -106,12 +103,10 @@ public final class Downloader {
      * @param url The URL to retrieve
      * @param postData A map of post data that should be sent
      * @return A list of lines received from the server
-     * @throws java.net.MalformedURLException If the URL is malformed
      * @throws java.io.IOException If there's an I/O error while downloading
      */
     public static List<String> getPage(final String url,
-            final Map<String, String> postData)
-            throws MalformedURLException, IOException {
+            final Map<String, String> postData) throws IOException {
         final StringBuilder data = new StringBuilder();
 
         for (Map.Entry<String, String> entry : postData.entrySet()) {

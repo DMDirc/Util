@@ -39,7 +39,7 @@ public class RollingList<T> {
     /** Whether or not to add a fake empty item to the end of this list. */
     private final boolean addEmpty;
     /** This list's position pointer. */
-    private int position = 0;
+    private int position;
     /** The "empty" item to be added. */
     private T empty;
 

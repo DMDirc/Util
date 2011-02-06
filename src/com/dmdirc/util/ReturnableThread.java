@@ -25,7 +25,7 @@ package com.dmdirc.util;
 /**
  * Normal thread with the potential to return a value.
  *
- * @param T Type to be returned
+ * @param <T> Type to be returned
  */
 public abstract class ReturnableThread<T> extends Thread {
 

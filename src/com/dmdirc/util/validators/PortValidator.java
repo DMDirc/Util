@@ -23,8 +23,6 @@ package com.dmdirc.util.validators;
 
 /**
  * Validates a port number.
- *
- * @author chris
  */
 public class PortValidator extends NumericalValidator {
 
@@ -34,6 +32,9 @@ public class PortValidator extends NumericalValidator {
     /** The maximum port number. */
     private static final int MAX_PORT = 65535;
 
+    /**
+     * Creates a new port validator.
+     */
     public PortValidator() {
         super(MIN_PORT, MAX_PORT);
     }
