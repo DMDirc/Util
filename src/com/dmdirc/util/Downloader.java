@@ -40,8 +40,6 @@ import java.util.Map;
 
 /**
  * Allows easy downloading of files from HTTP sites.
- *
- * @author Chris
  */
 public final class Downloader {
 
