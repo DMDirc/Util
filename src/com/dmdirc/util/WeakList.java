@@ -34,7 +34,6 @@ import java.util.ListIterator;
  * garbage collection) are handled transparently.
  *
  * @param <T> The type of object that this list will contain.
- * @author chris
  */
 public class WeakList<T> implements List<T> {
 

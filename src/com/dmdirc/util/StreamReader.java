@@ -34,13 +34,11 @@ import java.util.List;
 public class StreamReader extends Thread {
 
     /** This is the Input Stream we are reading. */
-    private InputStream stream;
-
+    private final InputStream stream;
     /** List to store output in. */
     private List<String> list = null;
-
     /** StringBuffer to store output in. */
-    private StringBuffer buffer = null;
+    private StringBuffer buffer = null; //NOPMD
 
     /**
      * Create a new Stream Reader that discards output.
@@ -93,7 +91,8 @@ public class StreamReader extends Thread {
      */
     @Override
     public void run() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        final BufferedReader reader = new BufferedReader(
+                new InputStreamReader(stream));
         try {
             String line;
             while ((line = reader.readLine()) != null) {
