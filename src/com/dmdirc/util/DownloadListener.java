@@ -25,8 +25,6 @@ package com.dmdirc.util;
 /**
  * Defines the method that objects interested in receiving download progress
  * updates should implement.
- *
- * @author chris
  */
 public interface DownloadListener {
 
