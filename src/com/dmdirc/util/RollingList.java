@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.dmdirc.util;
 
 import java.util.ArrayList;
@@ -28,9 +27,8 @@ import java.util.List;
 /**
  * Implements a "rolling list". A rolling list has a maximum capacity, and
  * removes the oldest elements from the list to maintain this capacity.
- *
- * @param <T> The type if items that this list contains
- * @author chris
+ * 
+ * @param <T> The type if items that this list contains 
  */
 public class RollingList<T> {
 
@@ -216,5 +214,4 @@ public class RollingList<T> {
     public List<T> getList() {
         return new ArrayList<T>(items);
     }
-
 }

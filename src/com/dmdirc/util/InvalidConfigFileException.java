@@ -24,7 +24,6 @@ package com.dmdirc.util;
 
 /**
  * Thrown to indicate that a config file is invalid.
- * @author chris
  */
 public class InvalidConfigFileException extends Exception {
 

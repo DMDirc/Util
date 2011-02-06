@@ -29,7 +29,6 @@ import java.io.IOException;
  * Utilities for dealing with streams.
  *
  * @since 0.6.3m2
- * @author chris
  */
 public final class StreamUtil {
 
