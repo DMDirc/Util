@@ -27,9 +27,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Utilities for manipulating strings
+ * Utilities methods associated with commands.
  */
-public class CommandUtils {
+public final class CommandUtils {
+
+    /** Private contructor to stop instantiation of class. */
+    private CommandUtils() {
+        //Shouldn't be used.
+    }
+    
     /**
      * Parses the specified command into an array of arguments. Arguments are
      * separated by spaces. Multi-word arguments may be specified by starting

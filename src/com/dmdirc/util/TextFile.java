@@ -36,20 +36,15 @@ import java.util.List;
 
 /**
  * Allows reading and writing to a plain text file via a list of lines.
- *
- * @author chris
  */
 public class TextFile {
 
     /** The file we're dealing with. */
     private File file;
-
     /** The input stream we're dealing with. */
     private InputStream is;
-
     /** The lines we've read from the file. */
     private List<String> lines;
-
     /** The charset to use to read the file. */
     private final Charset charset;
 

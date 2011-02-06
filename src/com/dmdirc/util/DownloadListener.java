@@ -25,8 +25,11 @@ package com.dmdirc.util;
 /**
  * Defines the method that objects interested in receiving download progress
  * updates should implement.
+<<<<<<< HEAD
  *
  * @author chris
+=======
+>>>>>>> Add DateUtils and a formatDuration method. Minor tidying.
  */
 public interface DownloadListener {
 

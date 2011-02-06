@@ -34,8 +34,6 @@ import java.util.Map;
 
 /**
  * Reads and writes a standard DMDirc config file.
- *
- * @author chris
  */
 public class ConfigFile extends TextFile {
 
