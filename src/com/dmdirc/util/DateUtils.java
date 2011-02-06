@@ -74,8 +74,8 @@ public final class DateUtils {
 
         int seconds = duration;
 
-        seconds -= doDuration(buff, seconds, 60*60*24, "day");
-        seconds -= doDuration(buff, seconds, 60*60, "hour");
+        seconds -= doDuration(buff, seconds, 60 * 60 * 24, "day");
+        seconds -= doDuration(buff, seconds, 60 * 60, "hour");
         seconds -= doDuration(buff, seconds, 60, "minute");
         seconds -= doDuration(buff, seconds, 1, "second");
 

@@ -38,7 +38,7 @@ import java.util.Set;
  * @param <A> The first type of data to be mapped
  * @param <B> The second type of data to be mapped
  */
-public class DoubleMap<A,B> implements Map<A,B> {
+public class DoubleMap<A,B> implements Map<A, B> {
 
     /** The keys in this map. */
     protected final List<A> keys = new ArrayList<A>();
@@ -158,7 +158,7 @@ public class DoubleMap<A,B> implements Map<A,B> {
     /** {@inheritDoc} */
     @Override
     public Set<Entry<A, B>> entrySet() {
-        final HashSet<Entry<A, B>> set = new HashSet<Entry<A, B>>();
+        final Set<Entry<A, B>> set = new HashSet<Entry<A, B>>();
         for (A key : keys) {
             set.add(new SimpleEntry<A, B>(key, getValue(key)));
         }

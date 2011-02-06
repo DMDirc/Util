@@ -33,7 +33,7 @@ import java.util.List;
  * @param <S> the type of keys maintained by this map
  * @param <T> the type of mapped values
  */
-public class WeakMapList<S,T> extends MapList<S,T> {
+public class WeakMapList<S,T> extends MapList<S, T> {
 
     /**
      * Retrieves the list of values associated with the specified key, creating

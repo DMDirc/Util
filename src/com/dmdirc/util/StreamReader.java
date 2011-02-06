@@ -36,9 +36,9 @@ public class StreamReader extends Thread {
     /** This is the Input Stream we are reading. */
     private final InputStream stream;
     /** List to store output in. */
-    private List<String> list = null;
+    private List<String> list;
     /** StringBuffer to store output in. */
-    private StringBuffer buffer = null; //NOPMD
+    private StringBuffer buffer; // NOPMD
 
     /**
      * Create a new Stream Reader that discards output.
@@ -87,7 +87,7 @@ public class StreamReader extends Thread {
     }
 
     /**
-     * Wait for input on stream, and output/throw away/save to list
+     * Wait for input on stream, and output/throw away/save to list.
      */
     @Override
     public void run() {
