@@ -29,13 +29,6 @@ package com.dmdirc.util.validators;
  */
 public class PermissiveValidator<V> implements Validator<V> {
 
-    /**
-     * Creates a new instance of PermissiveValidator.
-     */
-    public PermissiveValidator() {
-        super();
-    }
-
     /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final V object) {
