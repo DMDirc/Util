@@ -86,7 +86,7 @@ public class SimpleInjector {
         } while (target != null);
 
         // Add all interfaces
-        for (Class<?> iface : parent.getClass().getInterfaces()) {
+        for (Class<?> iface : object.getClass().getInterfaces()) {
             addParameter(iface, object);
         }
     }
