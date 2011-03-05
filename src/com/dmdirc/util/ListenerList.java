@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011 Chris Smith, Shane Mc Cormack, Gregory Holmes
+ * Copyright (c) 2006-2011 DMDirc Developers
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,6 +45,9 @@ public class ListenerList {
      * @param listener The listener to be added
      */
     public <T> void add(final Class<T> listenerType, final T listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("Listener cannot be null");
+        }
         if (!listeners.containsKey(listenerType)) {
             listeners.put(listenerType, new CopyOnWriteArrayList<Object>());
         }
@@ -59,6 +62,9 @@ public class ListenerList {
      * @param listener The listener to be added
      */
     public void add(final String listenerType, final Object listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("Listener cannot be null");
+        }
         if (!listeners.containsKey(listenerType)) {
             listeners.put(listenerType, new CopyOnWriteArrayList<Object>());
         }
