@@ -22,6 +22,10 @@
 
 package com.dmdirc.util;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -124,6 +128,60 @@ public class ListenerList {
         } else {
             return new CopyOnWriteArrayList<Object>();
         }
+    }
+
+    /**
+     * Returns a callable proxy of the specified type. Methods called on the
+     * returned proxy will be proxied to all of the registered listeners.
+     *
+     * @param <T> The type of listener to be called
+     * @param listenerType The type of listener to be called
+     * @return A proxy instance that can be used to call methods
+     */
+    public <T> T getCallable(final Class<T> listenerType) {
+        return (T) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class[] { listenerType }, new CallHandler<T>(listenerType));
+    }
+
+    /**
+     * Utility class to handle calls to a "callable" interface as returned by
+     * {@link #getCallable(java.lang.Class)}.
+     *
+     * @param <T> The type of listener being called
+     */
+    private class CallHandler<T> implements InvocationHandler {
+
+        /** The type of listener this handler is handling. */
+        private final Class<T> listenerType;
+
+        /**
+         * Creates a new call handler for the specified type of listener.
+         *
+         * @param listenerType The type of listener to handle
+         */
+        public CallHandler(final Class<T> listenerType) {
+            this.listenerType = listenerType;
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Object invoke(final Object proxy, final Method method,
+            final Object[] args) throws Throwable {
+            for (T target : get(listenerType)) {
+                try {
+                    method.invoke(target, args);
+                } catch (IllegalAccessException ex) {
+                    // Ignore, not possible
+                } catch (IllegalArgumentException ex) {
+                    // Ignore, not possible
+                } catch (InvocationTargetException ex) {
+                    throw ex.getCause();
+                }
+            }
+
+            return null;
+        }
+
     }
 
 }
