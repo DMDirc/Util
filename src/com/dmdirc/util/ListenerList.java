@@ -138,8 +138,9 @@ public class ListenerList {
      * @param listenerType The type of listener to be called
      * @return A proxy instance that can be used to call methods
      */
+    @SuppressWarnings("unchecked")
     public <T> T getCallable(final Class<T> listenerType) {
-        return (T) Proxy.newProxyInstance(getClass().getClassLoader(),
+        return (T) Proxy.newProxyInstance(listenerType.getClassLoader(),
                 new Class[] { listenerType }, new CallHandler<T>(listenerType));
     }
 
