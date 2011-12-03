@@ -45,7 +45,6 @@ import java.util.Set;
  *
  * @param <S> the type of keys maintained by this map
  * @param <T> the type of mapped values
- * @author chris
  */
 public class MapList<S, T> {
 
