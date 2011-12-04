@@ -191,8 +191,10 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
 
         list.clear();
 
-        listeners.getCallable(ListObserver.class).onItemsRemoved(this, 0,
-                length - 1);
+        if (length > 0) {
+            listeners.getCallable(ListObserver.class).onItemsRemoved(this, 0,
+                    length - 1);
+        }
     }
 
     /** {@inheritDoc} */
