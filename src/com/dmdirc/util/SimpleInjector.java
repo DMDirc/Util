@@ -29,31 +29,28 @@ import java.util.Map;
 
 /**
  * Facilitates simple injection of parameters into a constructor.
+ * <p>
+ * Injectors may be given a set of parent injectors, from which they will
+ * inherit parameters. No checking is performed to prevent circular references
+ * within parents.
  */
 public class SimpleInjector {
 
-    /** The parent injector, if any. */
-    private final SimpleInjector parent;
+    /** The parent injectors, if any. */
+    private final SimpleInjector[] parents;
 
     /** A mapping of known classes to the objects that should be injected. */
     private final Map<Class<?>, Object> parameters
             = new HashMap<Class<?>, Object>();
 
     /**
-     * Creates a new injector with no parent.
-     */
-    public SimpleInjector() {
-        this(null);
-    }
-
-    /**
      * Creates a new injector which will inherit injection parameters from
      * the specified parent. Parent graphs must be acyclic.
      *
-     * @param parent The injector to inherit parameters from.
+     * @param parents The injectors to inherit parameters from.
      */
-    public SimpleInjector(final SimpleInjector parent) {
-        this.parent = parent;
+    public SimpleInjector(final SimpleInjector ... parents) {
+        this.parents = parents;
     }
 
     /**
@@ -93,8 +90,8 @@ public class SimpleInjector {
 
     /**
      * Retrieves a mapping of known injectable types to their corresponding
-     * values. If this injector was created with a parent, this mapping will
-     * also include mappings defined in the parent.
+     * values. This mapping will also include mappings defined in all of this
+     * injector's parents.
      *
      * @return A map of injectable parameters
      */
@@ -102,7 +99,7 @@ public class SimpleInjector {
         final Map<Class<?>, Object> localParams
                 = new HashMap<Class<?>, Object>(parameters.size());
 
-        if (parent != null) {
+        for (SimpleInjector parent : parents) {
             localParams.putAll(parent.getParameters());
         }
 
