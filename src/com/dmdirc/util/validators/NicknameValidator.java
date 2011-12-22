@@ -37,10 +37,10 @@ public class NicknameValidator implements Validator<String> {
     /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
-        if (object.matches(NICKNAME_REGEX)) {
-            return new ValidationResponse();
-        } else {
+        if (object == null || !object.matches(NICKNAME_REGEX)) {
             return new ValidationResponse(FAILURE_REASON);
+        } else {
+            return new ValidationResponse();
         }
     }
 }

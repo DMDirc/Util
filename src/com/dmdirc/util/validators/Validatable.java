@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011 DMDirc Developers
+ * Copyright (c) 2006-2010 Chris Smith, Shane Mc Cormack, Gregory Holmes
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,15 @@
 package com.dmdirc.util.validators;
 
 /**
- * Validates idents.
+ * Marks a component as validatable.
  */
-public class IdentValidator implements Validator<String> {
+public interface Validatable {
 
-    /** Ident regex. */
-    private static final String IDENT_REGEX = "[A-Za-z0-9\\[\\]{|}\\-\\^\\\\]*";
-    /** Failure reason. */
-    private static final String FAILURE_REASON = "Ident must only contain "
-            + "letters, numbers and []{}|-^\\.";
+    /**
+     * Sets the validation response for a component.
+     *
+     * @param validation Validation response to show
+     */
+    void setValidation(ValidationResponse validation);
 
-    /** {@inheritDoc} */
-    @Override
-    public ValidationResponse validate(final String object) {
-        if (object == null || !object.matches(IDENT_REGEX)) {
-            return new ValidationResponse(FAILURE_REASON);
-        }
-        return new ValidationResponse();
-    }
 }

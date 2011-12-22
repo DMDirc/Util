@@ -35,10 +35,9 @@ public class FileNameValidator implements Validator<String> {
     /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
-        if (object.matches(FILENAME_REGEX)) {
-            return new ValidationResponse();
-        } else {
+        if (object == null || !object.matches(FILENAME_REGEX)) {
             return new ValidationResponse(FAILURE_REASON);
         }
+        return new ValidationResponse();
     }
 }
