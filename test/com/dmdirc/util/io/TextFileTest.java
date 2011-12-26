@@ -20,8 +20,9 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.io;
 
+import com.dmdirc.util.io.TextFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
