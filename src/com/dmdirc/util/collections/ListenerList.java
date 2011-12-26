@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

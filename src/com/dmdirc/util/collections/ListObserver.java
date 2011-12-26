@@ -20,27 +20,38 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
 
 /**
- * Thrown to indicate that a config file is invalid.
+ * Interface for objects interested in being updated about changes to an
+ * {@link ObservableList}.
  */
-public class InvalidConfigFileException extends Exception {
+public interface ListObserver {
 
     /**
-     * A version number for this class. It should be changed whenever the class
-     * structure is changed (or anything else that would prevent serialized
-     * objects being unserialized with the new class).
-     */
-    private static final long serialVersionUID = 1;
-
-    /**
-     * Creates a new InvalidConfigFileException.
+     * Called when one or more items is added to an observed list.
      *
-     * @param string A description of the exception that occured.
+     * @param source The source of the event
+     * @param startIndex The index of the first item that was added
+     * @param endIndex The index of the last item that was added
      */
-    public InvalidConfigFileException(final String string) {
-        super(string);
-    }
+    void onItemsAdded(Object source, int startIndex, int endIndex);
 
+    /**
+     * Called when one or more items is removed from an observed list.
+     *
+     * @param source The source of the event
+     * @param startIndex The index of the first item that was removed
+     * @param endIndex The index of the last item that was removed
+     */
+    void onItemsRemoved(Object source, int startIndex, int endIndex);
+
+    /**
+     * Called when one or more items is changed within an observed list.
+     *
+     * @param source The source of the event
+     * @param startIndex The index of the first item that was changed
+     * @param endIndex The index of the last item that was changed
+     */
+    void onItemsChanged(Object source, int startIndex, int endIndex);
 }

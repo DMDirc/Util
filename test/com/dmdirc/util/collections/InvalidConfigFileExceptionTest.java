@@ -19,47 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.dmdirc.util.collections;
 
-package com.dmdirc.util;
-
+import com.dmdirc.util.io.InvalidConfigFileException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class DoubleMapTest {
+public class InvalidConfigFileExceptionTest {
 
     @Test
-    public void testPut() {
-        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
-        dm.put("a", "b");
+    public void testMessage() {
+        final InvalidConfigFileException iae = new InvalidConfigFileException("message");
         
-        assertEquals(1, dm.keySet().size());
-        assertEquals(1, dm.values().size());
-        assertTrue(dm.keySet().contains("a"));
-        assertTrue(dm.values().contains("b"));
+        assertEquals("message", iae.getMessage());
     }
-    
-    @Test(expected=NullPointerException.class)
-    public void testPutNull1() {
-        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
-        dm.put(null, "b");
-    }
-    
-    @Test(expected=NullPointerException.class)
-    public void testPutNull2() {
-        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
-        dm.put("a", null);
-    }    
-    
-    @Test
-    public void testGet() {
-        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
-        dm.put("a", "b");
-        dm.put("b", "c");
-        dm.put("c", "a");
-        
-        assertEquals("b", dm.getValue("a"));
-        assertEquals("b", dm.getKey("c"));
-        assertEquals("c", dm.getKey("a"));
-    }    
 
 }

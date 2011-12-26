@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -106,7 +106,7 @@ public class StreamReader extends Thread {
         } catch (IOException ex) {
             // OH WELL
         } finally {
-            StreamUtil.close(stream);
+            StreamUtils.close(stream);
         }
     }
 }

@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.io;
 
 import java.io.File;
 import java.io.IOException;

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.io;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -141,9 +141,9 @@ public class TextFile {
                 lines.add(line);
             }
         } finally {
-            StreamUtil.close(reader);
-            StreamUtil.close(inputReader);
-            StreamUtil.close(inputStream);
+            StreamUtils.close(reader);
+            StreamUtils.close(inputReader);
+            StreamUtils.close(inputStream);
         }
     }
 
@@ -178,7 +178,7 @@ public class TextFile {
                 writer.newLine();
             }
         } finally {
-            StreamUtil.close(writer);
+            StreamUtils.close(writer);
         }
     }
 

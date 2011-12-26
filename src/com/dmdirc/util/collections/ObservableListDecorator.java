@@ -20,228 +20,245 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Implements a list of weak references. The weak references (and subsequent
- * garbage collection) are handled transparently.
+ * Decorates a {@link List} to add observable functionality.
  *
- * @param <T> The type of object that this list will contain.
+ * @param <T> The type of object the list contains
  */
-public class WeakList<T> implements List<T> {
+public class ObservableListDecorator<T> implements ObservableList<T> {
 
-    /** The items in this list. */
-    private final List<WeakReference<T>> list
-            = new ArrayList<WeakReference<T>>();
+    /** The list being decorated. */
+    private final List<T> list;
+
+    /** The listeners for this list. */
+    private final ListenerList listeners = new ListenerList();
 
     /**
-     * Removes any entries from the list that have been GC'd.
+     * Creates a new {@link ObservableListDecorator} which will decorate the
+     * given list.
+     *
+     * @param list The list to be decorated
      */
-    private void cleanUp() {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).get() == null) {
-                list.remove(i--);
-            }
-        }
+    public ObservableListDecorator(final List<T> list) {
+        this.list = list;
     }
 
-    /**
-     * Dereferences the specified list of WeakReferences to get a plain List.
-     *
-     * @param list The list to be dereferenced
-     * @return A list containing the items referenced by the specified list
-     */
-    private List<T> dereferenceList(final List<WeakReference<T>> list) {
-        final List<T> res = new ArrayList<T>();
-
-        for (WeakReference<T> item : list) {
-            if (item.get() != null) {
-                res.add(item.get());
-            }
-        }
-
-        return res;
+    /** {@inheritDoc} */
+    @Override
+    public void addListListener(final ListObserver listener) {
+        listeners.add(ListObserver.class, listener);
     }
 
-    /**
-     * Creates a new collection of weak references to elements in the specified
-     * collection.
-     *
-     * @param c The collection whose elements should be referenced
-     * @return A copy of the specified collection, with each item wrapped in
-     * a weak reference.
-     */
-    @SuppressWarnings(value = "unchecked")
-    private Collection<WeakReference<T>> referenceCollection(
-            final Collection<?> c) {
-        final Collection<WeakReference<T>> res
-                = new ArrayList<WeakReference<T>>();
-
-        for (Object item : c) {
-            res.add(new EquatableWeakReference(item));
-        }
-
-        return res;
+    /** {@inheritDoc} */
+    @Override
+    public void removeListListener(final ListObserver listener) {
+        listeners.remove(ListObserver.class, listener);
     }
 
     /** {@inheritDoc} */
     @Override
     public int size() {
-        cleanUp();
-
         return list.size();
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isEmpty() {
-        cleanUp();
-
         return list.isEmpty();
     }
 
     /** {@inheritDoc} */
-    @Override @SuppressWarnings("unchecked")
+    @Override
     public boolean contains(final Object o) {
-        return list.contains(new EquatableWeakReference(o));
+        return list.contains(o);
     }
 
     /** {@inheritDoc} */
     @Override
     public Iterator<T> iterator() {
-        return dereferenceList(list).iterator();
+        return list.iterator();
     }
 
     /** {@inheritDoc} */
     @Override
     public Object[] toArray() {
-        return dereferenceList(list).toArray();
+        return list.toArray();
     }
 
     /** {@inheritDoc} */
     @Override
-    public <S> S[] toArray(final S[] a) {
-        return dereferenceList(list).toArray(a);
+    public <T> T[] toArray(final T[] a) {
+        return list.toArray(a);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean add(final T e) {
-        return list.add(new EquatableWeakReference<T>(e));
+        list.add(e);
+
+        listeners.getCallable(ListObserver.class).onItemsAdded(this,
+                list.size() - 1, list.size() - 1);
+
+        return true;
     }
 
     /** {@inheritDoc} */
-    @Override @SuppressWarnings(value = "unchecked")
+    @Override
     public boolean remove(final Object o) {
-        return list.remove(new EquatableWeakReference(o));
+        final int index = list.indexOf(o);
+
+        if (list.remove(o)) {
+            listeners.getCallable(ListObserver.class).onItemsRemoved(this,
+                    index, index);
+
+            return true;
+        }
+
+        return false;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean containsAll(final Collection<?> c) {
-        return dereferenceList(list).containsAll(c);
+        return list.containsAll(c);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean addAll(final Collection<? extends T> c) {
-        return list.addAll(referenceCollection(c));
+        if (list.addAll(c)) {
+            listeners.getCallable(ListObserver.class).onItemsAdded(this,
+                    list.size() - c.size(), list.size() - 1);
+            return true;
+        }
+
+        return false;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean addAll(final int index, final Collection<? extends T> c) {
-        return list.addAll(index, referenceCollection(c));
+        if (list.addAll(index, c)) {
+            listeners.getCallable(ListObserver.class).onItemsAdded(this,
+                    index, index + c.size());
+            return true;
+        }
+
+        return false;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean removeAll(final Collection<?> c) {
-        return list.removeAll(referenceCollection(c));
+        final int length = list.size();
+
+        if (list.removeAll(c)) {
+            listeners.getCallable(ListObserver.class).onItemsChanged(this, 0,
+                    length - 1);
+
+            return true;
+        }
+
+        return false;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean retainAll(final Collection<?> c) {
-        return list.retainAll(referenceCollection(c));
+        final int length = list.size();
+
+        if (list.retainAll(c)) {
+            listeners.getCallable(ListObserver.class).onItemsChanged(this, 0,
+                    length - 1);
+
+            return true;
+        }
+
+        return false;
     }
 
     /** {@inheritDoc} */
     @Override
     public void clear() {
+        final int length = list.size();
+
         list.clear();
+
+        if (length > 0) {
+            listeners.getCallable(ListObserver.class).onItemsRemoved(this, 0,
+                    length - 1);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public T get(final int index) {
-        cleanUp();
-
-        return list.get(index).get();
+        return list.get(index);
     }
 
     /** {@inheritDoc} */
     @Override
     public T set(final int index, final T element) {
-        list.set(index, new EquatableWeakReference<T>(element));
+        final T res = list.set(index, element);
 
-        return element;
+        listeners.getCallable(ListObserver.class).onItemsChanged(this, index, index);
+
+        return res;
     }
 
     /** {@inheritDoc} */
     @Override
     public void add(final int index, final T element) {
-        list.add(index, new EquatableWeakReference<T>(element));
+        list.add(index, element);
+
+        listeners.getCallable(ListObserver.class).onItemsAdded(this, index, index);
     }
 
     /** {@inheritDoc} */
     @Override
     public T remove(final int index) {
-        return list.remove(index).get();
+        final T res = list.remove(index);
+
+        listeners.getCallable(ListObserver.class).onItemsRemoved(this, index, index);
+
+        return res;
     }
 
     /** {@inheritDoc} */
     @Override
     public int indexOf(final Object o) {
-        cleanUp();
-
         return list.indexOf(o);
     }
 
     /** {@inheritDoc} */
     @Override
     public int lastIndexOf(final Object o) {
-        cleanUp();
-
         return list.lastIndexOf(o);
     }
 
     /** {@inheritDoc} */
     @Override
     public ListIterator<T> listIterator() {
-        cleanUp();
-
-        return dereferenceList(list).listIterator();
+        return list.listIterator();
     }
 
     /** {@inheritDoc} */
     @Override
     public ListIterator<T> listIterator(final int index) {
-        cleanUp();
-
-        return dereferenceList(list).listIterator(index);
+        return list.listIterator(index);
     }
 
     /** {@inheritDoc} */
     @Override
     public List<T> subList(final int fromIndex, final int toIndex) {
-        return dereferenceList(list.subList(fromIndex, toIndex));
+        return list.subList(fromIndex, toIndex);
     }
+
 }

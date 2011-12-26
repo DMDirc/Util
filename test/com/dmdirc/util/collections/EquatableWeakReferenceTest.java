@@ -19,18 +19,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
 
+import com.dmdirc.util.collections.EquatableWeakReference;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class InvalidConfigFileExceptionTest {
+public class EquatableWeakReferenceTest {
 
     @Test
-    public void testMessage() {
-        final InvalidConfigFileException iae = new InvalidConfigFileException("message");
+    public void testEquals() {
+        final Object myObject = "moo";
+        final Reference<Object> myRef = new WeakReference<Object>(myObject);
+        final EquatableWeakReference<Object> ewf = new EquatableWeakReference<Object>(myObject);
+
+        assertTrue(ewf.equals(myObject));
+        assertTrue(ewf.equals(myRef));
+        assertFalse(ewf.equals("bar"));
+        assertFalse(ewf.equals(new WeakReference<Object>("bar")));
+    }
+
+    @Test
+    public void testHashCode() {
+        final Object myObject = "moo";
+        final EquatableWeakReference<Object> ewf = new EquatableWeakReference<Object>(myObject);
         
-        assertEquals("message", iae.getMessage());
+        assertEquals(myObject.hashCode(), ewf.hashCode());
     }
 
 }
