@@ -20,28 +20,37 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.io;
+
+import java.io.Closeable;
+import java.io.IOException;
 
 /**
- * Defines the method that objects interested in receiving download progress
- * updates should implement.
+ * Utilities for dealing with streams.
+ *
+ * @since 0.6.3m2
  */
-public interface DownloadListener {
+public final class StreamUtils {
+
+    /** Shouldn't be called. */
+    private StreamUtils() {
+        super();
+    }
 
     /**
-     * Called when the progress of the download has changed.
+     * Closes the stream if it is non-null, and ignores any IOExceptions
+     * raised by doing so.
      *
-     * @param percent The percentage of the file that has been downloaded
+     * @param stream The stream to be closed
      */
-    void downloadProgress(float percent);
+    public static void close(final Closeable stream) {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException ex) {
+                // Do nothing. We don't care.
+            }
+        }
+    }
 
-    /**
-     * Called to notify the listener if this download has an indeterminate
-     * length.
-     *
-     * @param indeterminate true or false
-     *
-     * @since 0.6
-     */
-    void setIndeterminate(final boolean indeterminate);
 }

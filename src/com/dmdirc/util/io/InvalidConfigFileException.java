@@ -20,42 +20,27 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
-
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
+package com.dmdirc.util.io;
 
 /**
- * An extension of WeakReference that implements a sane equals and hashcode
- * method.
- *
- * @param <T> The type of object that this reference contains
+ * Thrown to indicate that a config file is invalid.
  */
-public class EquatableWeakReference<T> extends WeakReference<T> {
+public class InvalidConfigFileException extends Exception {
 
     /**
-     * Creates a new instance of EquatableWeakReference.
-     *
-     * @param referent The object that this weak reference should reference.
+     * A version number for this class. It should be changed whenever the class
+     * structure is changed (or anything else that would prevent serialized
+     * objects being unserialized with the new class).
      */
-    public EquatableWeakReference(final T referent) {
-        super(referent);
-    }
+    private static final long serialVersionUID = 1;
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof Reference<?>) {
-            return get().equals(((Reference<?>) obj).get());
-        } else {
-            return get().equals(obj);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public int hashCode() {
-        return get().hashCode();
+    /**
+     * Creates a new InvalidConfigFileException.
+     *
+     * @param string A description of the exception that occured.
+     */
+    public InvalidConfigFileException(final String string) {
+        super(string);
     }
 
 }

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class TextFileTest {
     public void testGetLines() throws IOException {
         final TextFile file =
                 new TextFile(getClass().getClassLoader().
-                getResource("com/dmdirc/util/test1.txt").openStream());
+                getResourceAsStream("test1.txt"));
         final List<String> lines = file.getLines();
 
         assertEquals(7, lines.size());
@@ -49,7 +49,7 @@ public class TextFileTest {
     public void testGetLines2() throws IOException {
         final TextFile file =
                 new TextFile(getClass().getClassLoader().
-                getResource("com/dmdirc/util/test1.txt").openStream());
+                getResourceAsStream("test1.txt"));
         final List<String> lines = file.getLines();
 
         assertEquals(7, lines.size());
@@ -77,7 +77,7 @@ public class TextFileTest {
     public void testIllegalWrite() throws IOException {
         final TextFile file =
                 new TextFile(getClass().getClassLoader().
-                getResource("com/dmdirc/util/test1.txt").openStream());
+                getResourceAsStream("test1.txt"));
         file.writeLines(Arrays.asList(new String[]{
             "hello", "this is a test", "meep"
         }));
@@ -87,7 +87,7 @@ public class TextFileTest {
     public void testIllegalDelete() throws IOException {
         final TextFile file =
                 new TextFile(getClass().getClassLoader().
-                getResource("com/dmdirc/util/test1.txt").openStream());
+                getResource("test1.txt").openStream());
         file.delete();
     }
     
