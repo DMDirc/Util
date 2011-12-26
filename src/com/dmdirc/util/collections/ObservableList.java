@@ -20,38 +20,30 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
+
+import java.util.List;
 
 /**
- * Interface for objects interested in being updated about changes to an
- * {@link ObservableList}.
+ * A specialisation of the {@link List} interface that fires events when
+ * the contents of the list are changed.
+ *
+ * @param <T> The type of object that the list will hold
  */
-public interface ListObserver {
+public interface ObservableList<T> extends List<T> {
 
     /**
-     * Called when one or more items is added to an observed list.
+     * Adds a new listener to this list.
      *
-     * @param source The source of the event
-     * @param startIndex The index of the first item that was added
-     * @param endIndex The index of the last item that was added
+     * @param listener The listener to be added
      */
-    void onItemsAdded(Object source, int startIndex, int endIndex);
+    void addListListener(final ListObserver listener);
 
     /**
-     * Called when one or more items is removed from an observed list.
+     * Removes an existing listener from this list.
      *
-     * @param source The source of the event
-     * @param startIndex The index of the first item that was removed
-     * @param endIndex The index of the last item that was removed
+     * @param listener The listener to be removed
      */
-    void onItemsRemoved(Object source, int startIndex, int endIndex);
+    void removeListListener(final ListObserver listener);
 
-    /**
-     * Called when one or more items is changed within an observed list.
-     *
-     * @param source The source of the event
-     * @param startIndex The index of the first item that was changed
-     * @param endIndex The index of the last item that was changed
-     */
-    void onItemsChanged(Object source, int startIndex, int endIndex);
 }

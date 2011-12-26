@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.io;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -91,7 +91,7 @@ public final class Downloader {
                 }
             } while (line != null);
         } finally {
-            StreamUtil.close(in);
+            StreamUtils.close(in);
         }
 
         return res;
@@ -175,8 +175,8 @@ public final class Downloader {
                 }
             } while (count > 0);
         } finally {
-            StreamUtil.close(input);
-            StreamUtil.close(output);
+            StreamUtils.close(input);
+            StreamUtils.close(output);
         }
     }
 
@@ -211,7 +211,7 @@ public final class Downloader {
                 out.writeBytes(postData);
                 out.flush();
             } finally {
-                StreamUtil.close(out);
+                StreamUtils.close(out);
             }
         }
 

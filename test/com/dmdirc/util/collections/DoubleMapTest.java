@@ -20,31 +20,47 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
 
+import com.dmdirc.util.collections.DoubleMap;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class WeakListTest {
+public class DoubleMapTest {
 
     @Test
-    public void testBasics() {
-        final WeakList<String> test = new WeakList<String>();
-        assertTrue(test.isEmpty());
+    public void testPut() {
+        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
+        dm.put("a", "b");
         
-        test.add("abcdef");
-        test.add("123");
-        
-        assertEquals(2, test.size());
-        assertTrue(test.get(0).equals("abcdef"));
-        assertTrue(test.contains("123"));
-        assertFalse(test.isEmpty());
-        
-        test.remove("abcdef");
-        assertFalse(test.contains("abcdef"));
-        
-        test.remove("123");
-        assertTrue(test.isEmpty());
+        assertEquals(1, dm.keySet().size());
+        assertEquals(1, dm.values().size());
+        assertTrue(dm.keySet().contains("a"));
+        assertTrue(dm.values().contains("b"));
     }
+    
+    @Test(expected=NullPointerException.class)
+    public void testPutNull1() {
+        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
+        dm.put(null, "b");
+    }
+    
+    @Test(expected=NullPointerException.class)
+    public void testPutNull2() {
+        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
+        dm.put("a", null);
+    }    
+    
+    @Test
+    public void testGet() {
+        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
+        dm.put("a", "b");
+        dm.put("b", "c");
+        dm.put("c", "a");
+        
+        assertEquals("b", dm.getValue("a"));
+        assertEquals("b", dm.getKey("c"));
+        assertEquals("c", dm.getKey("a"));
+    }    
 
 }

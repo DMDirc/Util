@@ -19,33 +19,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.dmdirc.util;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
-import org.junit.Test;
-import static org.junit.Assert.*;
+package com.dmdirc.util.collections;
 
-public class EquatableWeakReferenceTest {
+import java.util.List;
 
-    @Test
-    public void testEquals() {
-        final Object myObject = "moo";
-        final Reference<Object> myRef = new WeakReference<Object>(myObject);
-        final EquatableWeakReference<Object> ewf = new EquatableWeakReference<Object>(myObject);
+/**
+ * Wraps a Map&lt;S, List&lt;T&gt;&gt; with various convenience methods for
+ * accessing the data. Implements a Map-like interface for easier transition.
+ * This implementation uses WeakLists (i.e., lists of weak references) - all
+ * references to values are wrapped in WeakReferences.
+ *
+ * @param <S> the type of keys maintained by this map
+ * @param <T> the type of mapped values
+ */
+public class WeakMapList<S,T> extends MapList<S, T> {
 
-        assertTrue(ewf.equals(myObject));
-        assertTrue(ewf.equals(myRef));
-        assertFalse(ewf.equals("bar"));
-        assertFalse(ewf.equals(new WeakReference<Object>("bar")));
+    /**
+     * Retrieves the list of values associated with the specified key, creating
+     * the key if neccessary.
+     *
+     * @param key The key to retrieve
+     * @return A list of the specified key's values
+     */
+    @Override
+    public List<T> safeGet(final S key) {
+        if (!map.containsKey(key)) {
+            map.put(key, new WeakList<T>());
+        }
+
+        return map.get(key);
     }
-
-    @Test
-    public void testHashCode() {
-        final Object myObject = "moo";
-        final EquatableWeakReference<Object> ewf = new EquatableWeakReference<Object>(myObject);
-        
-        assertEquals(myObject.hashCode(), ewf.hashCode());
-    }
-
 }
