@@ -20,30 +20,32 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
 
-import java.util.List;
+import com.dmdirc.util.collections.WeakList;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-/**
- * A specialisation of the {@link List} interface that fires events when
- * the contents of the list are changed.
- *
- * @param <T> The type of object that the list will hold
- */
-public interface ObservableList<T> extends List<T> {
+public class WeakListTest {
 
-    /**
-     * Adds a new listener to this list.
-     *
-     * @param listener The listener to be added
-     */
-    void addListListener(final ListObserver listener);
-
-    /**
-     * Removes an existing listener from this list.
-     *
-     * @param listener The listener to be removed
-     */
-    void removeListListener(final ListObserver listener);
+    @Test
+    public void testBasics() {
+        final WeakList<String> test = new WeakList<String>();
+        assertTrue(test.isEmpty());
+        
+        test.add("abcdef");
+        test.add("123");
+        
+        assertEquals(2, test.size());
+        assertTrue(test.get(0).equals("abcdef"));
+        assertTrue(test.contains("123"));
+        assertFalse(test.isEmpty());
+        
+        test.remove("abcdef");
+        assertFalse(test.contains("abcdef"));
+        
+        test.remove("123");
+        assertTrue(test.isEmpty());
+    }
 
 }

@@ -20,34 +20,42 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
 
-import java.util.List;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 
 /**
- * Wraps a Map&lt;S, List&lt;T&gt;&gt; with various convenience methods for
- * accessing the data. Implements a Map-like interface for easier transition.
- * This implementation uses WeakLists (i.e., lists of weak references) - all
- * references to values are wrapped in WeakReferences.
+ * An extension of WeakReference that implements a sane equals and hashcode
+ * method.
  *
- * @param <S> the type of keys maintained by this map
- * @param <T> the type of mapped values
+ * @param <T> The type of object that this reference contains
  */
-public class WeakMapList<S,T> extends MapList<S, T> {
+public class EquatableWeakReference<T> extends WeakReference<T> {
 
     /**
-     * Retrieves the list of values associated with the specified key, creating
-     * the key if neccessary.
+     * Creates a new instance of EquatableWeakReference.
      *
-     * @param key The key to retrieve
-     * @return A list of the specified key's values
+     * @param referent The object that this weak reference should reference.
      */
-    @Override
-    public List<T> safeGet(final S key) {
-        if (!map.containsKey(key)) {
-            map.put(key, new WeakList<T>());
-        }
-
-        return map.get(key);
+    public EquatableWeakReference(final T referent) {
+        super(referent);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj instanceof Reference<?>) {
+            return get().equals(((Reference<?>) obj).get());
+        } else {
+            return get().equals(obj);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        return get().hashCode();
+    }
+
 }

@@ -20,8 +20,9 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util;
+package com.dmdirc.util.collections;
 
+import com.dmdirc.util.collections.MapList;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
