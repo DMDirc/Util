@@ -36,7 +36,7 @@ public class IdentValidator implements Validator<String> {
     /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
-        if (object == null || !object.matches(IDENT_REGEX)) {
+        if (!object.isEmpty() || !object.matches(IDENT_REGEX)) {
             return new ValidationResponse(FAILURE_REASON);
         }
         return new ValidationResponse();
