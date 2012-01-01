@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2006-2012 DMDirc Developers
  *
@@ -30,6 +29,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class ConfigFileTest {
