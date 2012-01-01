@@ -16,6 +16,8 @@
         <fileset dir="${util.lib}" includes="*.jar"/>
     </path>
 
+    <taskdef name="git-describe" classname="org.mdonoughe.JGitDescribeTask" classpathref="util.classpath.test"/>
+
     <target name="-init-compile">
        <mkdir dir="${util.build.main}"/>
     </target>
@@ -33,25 +35,12 @@
     </target>
 
     <target name="-retrieve-versions">
-       <exec executable="git" outputproperty="util.lastcommit.main">
-          <arg value="rev-list"/>
-          <arg value="--max-count=1"/>
-          <arg value="HEAD"/>
-          <arg value="--"/>
-          <arg value="${util.src}/"/>
-       </exec>
-
-       <exec executable="git" outputproperty="util.version.main">
-          <arg value="describe"/>
-          <arg value="--tags"/>
-          <arg value="--always"/>
-          <arg value="${util.lastcommit.main}"/>
-       </exec> 
+       <git-describe dir=".git" property="util.version.main" subdir="${util.src}" />
     </target>
 
     <target name="compile" depends="-init-compile">
        <javac srcdir="${util.src}" destdir="${util.build.main}"
-              includeantruntime="false"/> 
+              includeantruntime="false"/>
     </target>
 
     <target name="compile-tests" depends="compile,-init-compile-tests">
@@ -71,7 +60,7 @@
           <classpath>
              <path refid="util.classpath.test"/>
              <pathelement location="${util.build.test}"/>
-          </classpath> 
+          </classpath>
           <batchtest todir="${util.reports}">
              <fileset dir="${util.build.test}" includes="**/*Test.class"/>
              <formatter type="xml"/>
