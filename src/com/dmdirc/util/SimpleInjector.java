@@ -79,13 +79,14 @@ public class SimpleInjector {
         Class<?> target = object.getClass();
         do {
             addParameter(target, object);
+
+            // Add all interfaces
+            for (Class<?> iface : target.getInterfaces()) {
+                addParameter(iface, object);
+            }
+
             target = target.getSuperclass();
         } while (target != null);
-
-        // Add all interfaces
-        for (Class<?> iface : object.getClass().getInterfaces()) {
-            addParameter(iface, object);
-        }
     }
 
     /**
