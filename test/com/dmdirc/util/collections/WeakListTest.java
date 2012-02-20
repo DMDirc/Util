@@ -22,30 +22,262 @@
 
 package com.dmdirc.util.collections;
 
-import com.dmdirc.util.collections.WeakList;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class WeakListTest {
 
     @Test
-    public void testBasics() {
-        final WeakList<String> test = new WeakList<String>();
-        assertTrue(test.isEmpty());
-        
-        test.add("abcdef");
-        test.add("123");
-        
-        assertEquals(2, test.size());
-        assertTrue(test.get(0).equals("abcdef"));
-        assertTrue(test.contains("123"));
-        assertFalse(test.isEmpty());
-        
-        test.remove("abcdef");
-        assertFalse(test.contains("abcdef"));
-        
-        test.remove("123");
-        assertTrue(test.isEmpty());
+    public void testIsEmpty() {
+        final WeakList<String> instance = new WeakList<String>();
+        assertTrue(instance.isEmpty());
+        instance.add("test1");
+        assertFalse(instance.isEmpty());
+    }
+
+    @Test
+    public void testAdd() {
+        final WeakList<String> instance = new WeakList<String>();
+        assertTrue(instance.add("test1"));
+        assertFalse(instance.isEmpty());
+    }
+
+    @Test
+    public void testAdd_Int() {
+        final WeakList<String> instance = new WeakList<String>();
+        assertTrue(instance.add("test1"));
+        instance.add(0, "test2");
+        assertEquals("test2", instance.get(0));
+    }
+
+    @Test
+    public void testRemove() {
+        final WeakList<String> instance = new WeakList<String>();
+        instance.add("test1");
+        assertFalse(instance.isEmpty());
+        assertTrue(instance.remove("test1"));
+        assertFalse(instance.remove("test1"));
+    }
+
+    @Test
+    public void testRemove_Int() {
+        final WeakList<String> instance = new WeakList<String>();
+        assertTrue(instance.isEmpty());
+        instance.add("test1");
+        instance.add("test2");
+        assertEquals(2, instance.size());
+        instance.remove(1);
+        assertTrue(instance.contains(("test1")));
+        assertFalse(instance.contains(("test2")));
+    }
+
+    @Test
+    public void testGet() {
+        final WeakList<String> instance = new WeakList<String>();
+        instance.add("test1");
+        instance.add("test2");
+        assertEquals("test1", instance.get(0));
+        assertEquals("test2", instance.get(1));
+    }
+
+    @Test
+    public void testContains() {
+        final WeakList<String> instance = new WeakList<String>();
+        assertFalse(instance.contains("test1"));
+        instance.add("test1");
+        assertTrue(instance.contains("test1"));
+    }
+
+    /**
+     * Test of toArray method, of class WeakList.
+     */
+    @Test
+    public void testToArray_0args() {
+        final WeakList<String> instance = new WeakList<String>();
+        assertEquals(0, instance.toArray().length);
+        instance.add("test1");
+        instance.add("test2");
+        final Object[] result = instance.toArray();
+        assertEquals(2, result.length);
+        assertEquals("test1", result[0]);
+        assertEquals("test2", result[1]);
+    }
+
+    /**
+     * Test of toArray method, of class WeakList.
+     */
+    @Test
+    public void testToArray_GenericType() {
+        final WeakList<String> instance = new WeakList<String>();
+        assertEquals(0, instance.toArray(new String[0]).length);
+        instance.add("test1");
+        instance.add("test2");
+        final Object[] result = instance.toArray(new String[2]);
+        assertEquals(2, result.length);
+        assertEquals("test1", result[0]);
+        assertEquals("test2", result[1]);
+    }
+
+    /**
+     * Test of containsAll method, of class WeakList.
+     */
+    @Test
+    public void testContainsAllAddAll() {
+        final List<String> list = new ArrayList<String>();
+        list.add("test1");
+        list.add("test2");
+        final WeakList<String> instance = new WeakList<String>();
+        assertFalse(instance.containsAll(list));
+        instance.addAll(list);
+        assertTrue(instance.contains("test1"));
+        assertTrue(instance.contains("test2"));
+        assertTrue(instance.containsAll(list));
+    }
+
+    @Test
+    public void testAddAll_int_Collection() {
+        final List<String> list = new ArrayList<String>();
+        list.add("test1");
+        list.add("test2");
+        final WeakList<String> instance = new WeakList<String>();
+        instance.add("test3");
+        System.out.println(instance);
+        assertEquals("test3", instance.get(0));
+        assertFalse(instance.containsAll(list));
+        instance.addAll(0, list);
+        assertEquals("test1", instance.get(0));
+        assertEquals("test2", instance.get(1));
+    }
+
+    @Test
+    public void testIndexOf() {
+        final String one = "test1";
+        final String two = "test2";
+        final WeakList<String> instance = new WeakList<String>();
+        instance.add(one);
+        instance.add(two);
+        assertEquals(2, instance.size());
+        assertEquals(0, instance.indexOf(one));
+        assertEquals(1, instance.indexOf(two));
+    }
+
+    @Test
+    public void testLastIndexOf() {
+        final String one = "test1";
+        final String two = "test2";
+        final WeakList<String> instance = new WeakList<String>();
+        instance.add(one);
+        instance.add(two);
+        instance.add(one);
+        assertEquals(3, instance.size());
+        assertEquals(2, instance.lastIndexOf(one));
+    }
+
+    @Test
+    public void testRemoveAll() {
+        final List<String> list = new ArrayList<String>();
+        list.add("test1");
+        list.add("test2");
+        final WeakList<String> instance = new WeakList<String>();
+        instance.addAll(list);
+        assertFalse(instance.isEmpty());
+        instance.removeAll(list);
+        assertTrue(instance.isEmpty());
+    }
+
+    @Test
+    public void testRetainAll() {
+        final List<String> list = new ArrayList<String>();
+        list.add("test1");
+        list.add("test2");
+        final WeakList<String> instance = new WeakList<String>();
+        instance.addAll(list);
+        instance.add("test3");
+        instance.add("test4");
+        assertFalse(list.size() == instance.size());
+        instance.retainAll(list);
+        assertTrue(list.size() == instance.size());
+    }
+
+    @Test
+    public void testClear() {
+        final List<String> list = new ArrayList<String>();
+        list.add("test1");
+        list.add("test2");
+        final WeakList<String> instance = new WeakList<String>();
+        instance.addAll(list);
+        assertFalse(instance.isEmpty());
+        instance.clear();
+        assertTrue(instance.isEmpty());
+    }
+
+    @Test
+    public void testSet() {
+        final WeakList<String> instance = new WeakList<String>();
+        instance.add("test1");
+        assertEquals("test1", instance.get(0));
+        instance.set(0, "test2");
+        assertEquals("test2", instance.get(0));
+    }
+
+    @Test
+    public void testIterator() {
+        final WeakList<String> instance = new WeakList<String>();
+        Iterator result = instance.iterator();
+        assertFalse(result.hasNext());
+        instance.add("test1");
+        instance.add("test2");
+        result = instance.iterator();
+        assertEquals("test1", result.next());
+        assertEquals("test2", result.next());
+        assertFalse(result.hasNext());
+    }
+
+    @Test
+    public void testListIterator_0args() {
+        final WeakList<String> instance = new WeakList<String>();
+        ListIterator result = instance.listIterator();
+        assertFalse(result.hasNext());
+        instance.add("test1");
+        instance.add("test2");
+        result = instance.listIterator();
+        assertEquals("test1", result.next());
+        assertEquals("test2", result.next());
+        assertFalse(result.hasNext());
+    }
+
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void testListIterator_int() {
+        final WeakList<String> instance = new WeakList<String>();
+        ListIterator result = instance.listIterator(1);
+        assertFalse(result.hasNext());
+        instance.add("test1");
+        instance.add("test2");
+        instance.add("text3");
+        result = instance.listIterator(1);
+        assertEquals("test1", result.previous());
+        assertEquals("test2", result.next());
+        assertEquals("test3", result.next());
+        assertFalse(result.hasNext());
+    }
+
+    @Test
+    public void testSubList() {
+        final WeakList<String> instance = new WeakList<String>();
+        instance.add("test1");
+        instance.add("test2");
+        instance.add("test3");
+        instance.add("test4");
+        List result = instance.subList(1, 3);
+        assertEquals(2, result.size());
+        assertTrue(result.contains("test2"));
+        assertTrue(result.contains("test3"));
     }
 
 }

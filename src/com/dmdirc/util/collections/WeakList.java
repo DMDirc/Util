@@ -212,7 +212,7 @@ public class WeakList<T> implements List<T> {
     public int indexOf(final Object o) {
         cleanUp();
 
-        return list.indexOf(o);
+        return dereferenceList(list).indexOf(o);
     }
 
     /** {@inheritDoc} */
@@ -220,7 +220,7 @@ public class WeakList<T> implements List<T> {
     public int lastIndexOf(final Object o) {
         cleanUp();
 
-        return list.lastIndexOf(o);
+        return dereferenceList(list).lastIndexOf(o);
     }
 
     /** {@inheritDoc} */
