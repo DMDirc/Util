@@ -16,40 +16,33 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 package com.dmdirc.util.validators;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import org.junit.Test;
 
-/**
- * Validates a server name, prepending an irc protocol if no protocol is
- * specified.
- */
-public class ServerNameValidator implements Validator<String> {
+import static org.junit.Assert.*;
 
-    /** {@inheritDoc} */
-    @Override
-    public ValidationResponse validate(final String object) {
-        try {
-            if (object == null || object.isEmpty()) {
-                return new ValidationResponse("Server name is required.");
-            }
-            if (!object.matches(".*://")) {
-                new URI("irc://" + object);
-            } else {
-                new URI(object);
-            }
-            return new ValidationResponse();
-        } catch (URISyntaxException ex) {
-            if ("Expected authority".equals(ex.getReason())) {
-                return new ValidationResponse("Address requires a hostname.");
-            } else {
-                return new ValidationResponse(ex.getReason());
-            }
-        }
+public class DisabledOptionValidatorTest {
+
+    @Test
+    public void testValidateNull() {
+        DisabledOptionValidator instance = new DisabledOptionValidator();
+        assertFalse(instance.validate(null).isFailure());
+    }
+
+    @Test
+    public void testValidateFalse() {
+        DisabledOptionValidator instance = new DisabledOptionValidator();
+        assertTrue(instance.validate("false:moo").isFailure());
+    }
+
+    @Test
+    public void testValidateTrue() {
+        DisabledOptionValidator instance = new DisabledOptionValidator();
+        assertFalse(instance.validate("true:moo").isFailure());
     }
 }
