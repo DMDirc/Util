@@ -22,13 +22,18 @@
 
 package com.dmdirc.util.validators;
 
-import com.dmdirc.util.validators.OptionalValidator;
-import com.dmdirc.util.validators.ValidationResponse;
-import com.dmdirc.util.validators.StringLengthValidator;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class OptionalValidatorTest {
+
+    @Test
+    public void testGetValidator() {
+        final Validator<String> validator = new PermissiveValidator<String>();
+        final OptionalValidator instance = new OptionalValidator(validator);
+        assertEquals(validator, instance.getValidator());
+    }
 
     @Test
     public void testNoSeparator() {
