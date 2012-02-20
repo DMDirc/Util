@@ -35,17 +35,23 @@ public class ServerNameValidator implements Validator<String> {
     @Override
     public ValidationResponse validate(final String object) {
         try {
-            URI uri = new URI(object);
-            if (uri.getHost() == null || uri.getHost().isEmpty()) {
-                uri = new URI("irc://" + object);
+            if (object == null || object.isEmpty()) {
+                return new ValidationResponse("Server name is required.");
             }
-            if (uri.getHost() == null || uri.getHost().isEmpty()) {
+            URI uri;
+            if (!object.matches(".*://")) {
+                uri = new URI("irc://" + object);
+            } else {
+                uri = new URI(object);
+            }
+            return new ValidationResponse();
+        } catch (URISyntaxException ex) {
+            if ("Expected authority".equals(ex.getReason())) {
                 return new ValidationResponse("Address requires a hostname.");
             } else {
-                return new ValidationResponse();
+                System.out.println(ex.getReason());
+                return new ValidationResponse(ex.getReason());
             }
-        } catch (URISyntaxException ex) {
-            return new ValidationResponse(ex.getReason());
         }
     }
 }

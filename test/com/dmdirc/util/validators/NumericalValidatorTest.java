@@ -21,12 +21,16 @@
  */
 package com.dmdirc.util.validators;
 
-import com.dmdirc.util.validators.ValidationResponse;
-import com.dmdirc.util.validators.NumericalValidator;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class NumericalValidatorTest {
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testConstructor() {
+        new NumericalValidator(2, 1);
+    }
 
     @Test
     public void testGetMax() {
@@ -43,34 +47,34 @@ public class NumericalValidatorTest {
     @Test
     public void testNAN() {
         final ValidationResponse vr = new NumericalValidator(3, 5).validate("foo");
-        
+
         assertTrue(vr.isFailure());
         assertTrue(vr.getFailureReason().indexOf("number") > -1);
     }
-    
+
     @Test
     public void testMin() {
         final NumericalValidator nv1 = new NumericalValidator(-1, -1);
         final NumericalValidator nv2 = new NumericalValidator(-5, -1);
-        
+
         assertFalse(nv1.validate("-5").isFailure());
         assertFalse(nv2.validate("-5").isFailure());
         assertFalse(nv2.validate("-4").isFailure());
         assertFalse(nv2.validate("10").isFailure());
         assertTrue(nv2.validate("-6").isFailure());
     }
-    
+
     @Test
     public void testMax() {
         final NumericalValidator nv1 = new NumericalValidator(-1, -1);
         final NumericalValidator nv2 = new NumericalValidator(-1, 10);
-        
+
         assertFalse(nv1.validate("-5").isFailure());
         assertFalse(nv1.validate("50").isFailure());
         assertFalse(nv2.validate("-5").isFailure());
         assertFalse(nv2.validate("-4").isFailure());
         assertFalse(nv2.validate("10").isFailure());
         assertTrue(nv2.validate("11").isFailure());
-    }    
+    }
 
 }
