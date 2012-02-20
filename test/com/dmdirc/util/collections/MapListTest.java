@@ -22,10 +22,11 @@
 
 package com.dmdirc.util.collections;
 
-import com.dmdirc.util.collections.MapList;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class MapListTest {
@@ -88,6 +89,15 @@ public class MapListTest {
         assertEquals(2, test.keySet().size());
         assertEquals(0, test.values("a").size());
         assertEquals(1, test.values("d").size());
+    }
+
+    @Test
+    public void testRemoveKey() {
+        final MapList<String, String> instance = new MapList<String, String>();
+        instance.add("a", "b");
+        assertTrue(instance.containsKey("a"));
+        instance.remove("a");
+        assertFalse(instance.containsKey("a"));
     }
 
     @Test
