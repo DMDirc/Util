@@ -24,9 +24,11 @@ package com.dmdirc.util;
 import java.util.Arrays;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class CommandUtilsTest {
+
     @Test
     public void testParseArguments() {
         final String[][][] tests = new String[][][]{
@@ -36,7 +38,7 @@ public class CommandUtilsTest {
             {{"abcdef \"abcdef\" \"abcdef\""}, {"abcdef", "abcdef", "abcdef"}},
             {{"abcdef \"\""}, {"abcdef", ""}},
             {{"abcdef \" foo?\""}, {"abcdef", " foo?"}},
-        };
+            {{"abcdef \" foo? bar\""}, {"abcdef", " foo? bar"}},};
 
         for (String[][] test : tests) {
             final String[] res = CommandUtils.parseArguments(test[0][0]);
