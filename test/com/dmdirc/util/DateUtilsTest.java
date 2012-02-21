@@ -28,30 +28,49 @@ import static org.junit.Assert.*;
 public class DateUtilsTest {
 
     @Test
-    public void testFormatDurationSeconds() {
+    public void testFormatDurationSecond() {
         assertEquals("1 second", DateUtils.formatDuration(1));
+    }
+
+    @Test
+    public void testFormatDurationSeconds() {
         assertEquals("2 seconds", DateUtils.formatDuration(2));
     }
 
     @Test
-    public void testFormatDurationMinutes() {
+    public void testFormatDurationMinute() {
         assertEquals("1 minute", DateUtils.formatDuration(60));
         assertEquals("1 minute, 1 second", DateUtils.formatDuration(61));
-        assertEquals("1 minute, 2 seconds", DateUtils.formatDuration(62));
-        assertEquals("2 minutes, 2 seconds", DateUtils.formatDuration(122));
+    }
+
+    @Test
+    public void testFormatDurationMinutes() {
+        assertEquals("2 minutes", DateUtils.formatDuration(120));
+        assertEquals("2 minutes, 1 second", DateUtils.formatDuration(121));
+    }
+
+    @Test
+    public void testFormatDurationHour() {
+        assertEquals("1 hour", DateUtils.formatDuration(3600));
+        assertEquals("1 hour, 1 second", DateUtils.formatDuration(3601));
     }
 
     @Test
     public void testFormatDurationHours() {
-        assertEquals("1 hour", DateUtils.formatDuration(3600));
-        assertEquals("1 hour, 1 second", DateUtils.formatDuration(3601));
-        assertEquals("2 hours, 1 minute, 5 seconds", DateUtils.formatDuration(7265));
+        assertEquals("2 hours", DateUtils.formatDuration(7200));
+        assertEquals("2 hours, 1 minute, 1 second", DateUtils.formatDuration(7261));
+    }
+
+    @Test
+    public void testFormatDurationDay() {
+        assertEquals("1 day", DateUtils.formatDuration(86400));
+        assertEquals("1 day, 1 hour, 1 minute, 1 second", DateUtils.formatDuration(90061));
     }
 
     @Test
     public void testFormatDurationDays() {
-        assertEquals("1 day", DateUtils.formatDuration(86400));
-        assertEquals("1 day, 10 minutes, 1 second", DateUtils.formatDuration(87001));
+        assertEquals("2 days", DateUtils.formatDuration(172800));
+        assertEquals("2 days, 1 hour, 1 minute, 1 second", DateUtils.formatDuration(176461));
     }
 
     @Test
