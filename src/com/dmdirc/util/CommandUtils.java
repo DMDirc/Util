@@ -54,9 +54,7 @@ public final class CommandUtils {
                 builder.delete(0, builder.length());
                 inquote = false;
             } else if (inquote) {
-                if (builder.length() > 0) {
                     builder.append(' ');
-                }
 
                 builder.append(word);
             } else if (word.startsWith("\"") && !word.endsWith("\"")) {
