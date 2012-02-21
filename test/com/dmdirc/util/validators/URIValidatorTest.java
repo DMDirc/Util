@@ -30,8 +30,9 @@ public class URIValidatorTest {
 
     @Test
     public void testValidateNoHostname() {
-        URIValidator instance = new URIValidator();
-        assertTrue(instance.validate("http://").isFailure());
+        ServerNameValidator instance = new ServerNameValidator();
+        assertEquals("Address requires a hostname.",
+                instance.validate("irc://").getFailureReason());
     }
 
     @Test

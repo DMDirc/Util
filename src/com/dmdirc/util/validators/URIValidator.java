@@ -33,17 +33,15 @@ public class URIValidator implements Validator<String> {
     /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
-        ValidationResponse result;
         try {
-            final URI uri = new URI(object);
-            if (uri.getHost() == null || uri.getHost().isEmpty()) {
-                result = new ValidationResponse("Address requires a hostname.");
-            } else {
-                result = new ValidationResponse();
-            }
+            new URI(object);
         } catch (URISyntaxException ex) {
-            result = new ValidationResponse(ex.getReason());
+            if ("Expected authority".equals(ex.getReason())) {
+                return new ValidationResponse("Address requires a hostname.");
+            } else {
+                return new ValidationResponse(ex.getReason());
+            }
         }
-        return result;
+        return new ValidationResponse();
     }
 }
