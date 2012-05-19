@@ -1,0 +1,22 @@
+<ivysettings>
+    <settings defaultResolver="default"/>
+    <resolvers>
+        <ibiblio name="default" m2compatible="true"/>
+
+        <ibiblio name="jgit" root="http://download.eclipse.org/jgit/maven" m2compatible="true"/>
+
+        <url name="jgit-describe">
+            <ivy pattern="file:///${basedir}/etc/ivy/[module]/ivy.xml"/>
+            <artifact pattern="http://shanemcc.github.com/jgit-describe/releases/jgit-describe-[revision].jar"/>
+        </url>
+
+        <packager name="packager" buildRoot="${user.home}/.ivy2/packager/build" resourceCache="${user.home}/.ivy2/packager/cache" preserveBuildDirectories="true">
+            <ivy pattern="file:///${basedir}/etc/ivy/[module]/ivy.xml"/>
+            <artifact pattern="file:///${basedir}/etc/ivy/[module]/packager.xml"/>
+        </packager>
+    </resolvers>
+    <modules>
+        <module organisation="com.github.shanemcc" name="jgit-describe" resolver="jgit-describe"/>
+        <module organisation="org.eclipse.jgit" name="*" resolver="jgit"/>
+    </modules>
+</ivysettings>
