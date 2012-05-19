@@ -1,91 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="DMDirc Util" default="default" basedir=".">
-    <description>Builds, packages and tests DMDirc utility classes.</description>
+<project name="DMDirc-Utils" default="default" basedir=".">
+    <description>Builds, tests, and runs the project.</description>
 
-    <property name="util.src" location="src"/>
-    <property name="util.test" location="test"/>
-    <property name="util.build" location="build"/>
-    <property name="util.build.main" location="${util.build}/classes"/>
-    <property name="util.build.test" location="${util.build}/test"/>
-    <property name="util.reports" location="reports"/>
-    <property name="util.lib" location="lib"/>
-    <property name="util.dist" location="dist"/>
+    <import file="nbproject/build-impl.xml"/>
+    <import file="build-ivy.xml"/>
+    <import file="build-versioning.xml"/>
 
-    <path id="util.classpath.test">
-        <pathelement path="${util.build.main}"/>
-        <fileset dir="${util.lib}" includes="*.jar"/>
-    </path>
-
-    <taskdef name="git-describe" classname="org.mdonoughe.JGitDescribeTask" classpathref="util.classpath.test"/>
-
-    <target name="-init-compile">
-       <mkdir dir="${util.build.main}"/>
+    <target name="-pre-init" depends="-init-dependencies"/>
+    <target name="-post-compile" depends="-add-version"/>
+    <target name="-post-jar">
+        <delete file="${manifest.file}"/>
+    </target>
+    <target name="-post-test-run">
+        <delete file="${manifest.file}"/>
     </target>
 
-    <target name="-init-compile-tests">
-       <mkdir dir="${util.build.test}"/>
-    </target>
-
-    <target name="-init-jar">
-       <mkdir dir="${util.dist}"/>
-    </target>
-
-    <target name="-init-test">
-       <mkdir dir="${util.reports}"/>
-    </target>
-
-    <target name="-retrieve-versions">
-       <git-describe dir=".git" property="util.version.main" subdir="${util.src}" />
-    </target>
-
-    <target name="compile" depends="-init-compile">
-       <javac srcdir="${util.src}" destdir="${util.build.main}"
-              includeantruntime="false"/>
-    </target>
-
-    <target name="compile-tests" depends="compile,-init-compile-tests">
-       <javac srcdir="${util.test}" destdir="${util.build.test}"
-              includeantruntime="false" classpathref="util.classpath.test">
-       </javac>
-
-       <copy todir="${util.build.test}">
-          <fileset dir="${util.test}">
-             <exclude name="**/*.java"/>
-          </fileset>
-       </copy>
-    </target>
-
-    <target name="test" depends="compile-tests,-init-test">
-       <junit printsummary="true">
-          <classpath>
-             <path refid="util.classpath.test"/>
-             <pathelement location="${util.build.test}"/>
-          </classpath>
-          <batchtest todir="${util.reports}">
-             <fileset dir="${util.build.test}" includes="**/*Test.class"/>
-             <formatter type="xml"/>
-          </batchtest>
-       </junit>
-
-       <junitreport todir="${util.reports}">
-          <fileset dir="${util.reports}" includes="TEST-*.xml"/>
-       </junitreport>
-    </target>
-
-    <target name="jar" depends="compile,-init-jar,-retrieve-versions">
-       <jar destfile="${util.dist}/util.jar" basedir="${util.build.main}">
-          <manifest>
-             <section name="com.dmdirc.util">
-                <attribute name="Implementation-Title" value="Utility classes"/>
-                <attribute name="Implementation-Version" value="${util.version.main}"/>
-             </section>
-          </manifest>
-       </jar>
-    </target>
-
-    <target name="clean">
-       <delete dir="${util.build}"/>
-       <delete dir="${util.dist}"/>
-       <delete dir="${util.reports}"/>
-    </target>
 </project>
