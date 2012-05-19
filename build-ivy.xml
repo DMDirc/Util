@@ -34,6 +34,7 @@
             </path>
             <map from="${basedir}${file.separator}" to=""/>
         </pathconvert>
+        <touch file="nbproject/private/private.properties"/>
         <propertyfile file="nbproject/private/private.properties">
             <entry operation="=" key="lib.classpath" value="${lib.classpath.computed}"/>
         </propertyfile>
