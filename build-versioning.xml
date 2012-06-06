@@ -2,7 +2,7 @@
 <project name="DMDirc-versioning" default="default" basedir=".">
     <description>Adds automatic versioning information to DMDirc</description>
 
-    <available file=".git" property="is.git"/>
+    <available file="${git.dir}" property="is.git"/>
 
     <target name="-init-version">
         <taskdef name="git-describe" classname="org.mdonoughe.JGitDescribeTask" classpathref="lib.classpath"/>
@@ -11,7 +11,7 @@
     <target name="-add-version" depends="-init-version, -add-git-version" />
 
     <target name="-add-git-version" if="is.git">
-        <git-describe dir=".git" property="git.version" />
+        <git-describe dir="${git.dir}" property="git.version" />
         <manifest file="${manifest.file}">
             <attribute name="Version" value="${git.version}" />
         </manifest>
