@@ -1,0 +1,8 @@
+Change-Id: Ie6c6d5b897cbbd3bc92f072daad3f23430a78717
+Automatic-Compile+1: Greg Holmes <greg@dmdirc.com>
+Code-Review+2: Greg Holmes <greg@dmdirc.com>
+Submitted-by: Greg Holmes <greg@dmdirc.com>
+Submitted-at: Fri, 29 Jan 2010 17:54:28 +0100
+Reviewed-on: http://gerrit.dmdirc.com/704
+Project: util
+Branch: refs/heads/master

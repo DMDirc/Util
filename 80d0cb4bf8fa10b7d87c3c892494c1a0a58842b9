@@ -1,0 +1,8 @@
+Change-Id: I80d0cb4bf8fa10b7d87c3c892494c1a0a58842b9
+Automatic-Compile+1: Shane Mc Cormack <shane@dmdirc.com>
+Code-Review+2: Shane Mc Cormack <shane@dmdirc.com>
+Submitted-by: Shane Mc Cormack <shane@dmdirc.com>
+Submitted-at: Thu, 28 Jan 2010 05:38:22 +0100
+Reviewed-on: http://gerrit.dmdirc.com/684
+Project: util
+Branch: refs/heads/master

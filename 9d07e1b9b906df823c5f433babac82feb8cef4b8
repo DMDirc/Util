@@ -1,0 +1,8 @@
+Change-Id: I9d07e1b9b906df823c5f433babac82feb8cef4b8
+Code-Review+2: Chris Smith <chris@dmdirc.com>
+Automatic-Compile+1: DMDirc Local Commits <dmdirc@googlemail.com>
+Submitted-by: DMDirc Local Commits <dmdirc@googlemail.com>
+Submitted-at: Sat, 01 Jan 2011 00:50:01 +0100
+Reviewed-on: http://gerrit.dmdirc.com/1725
+Project: util
+Branch: refs/heads/master
