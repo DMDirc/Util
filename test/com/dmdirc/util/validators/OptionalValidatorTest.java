@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.dmdirc.util.validators;
 
 import org.junit.Test;
@@ -33,6 +32,13 @@ public class OptionalValidatorTest {
         final Validator<String> validator = new PermissiveValidator<String>();
         final OptionalValidator instance = new OptionalValidator(validator);
         assertEquals(validator, instance.getValidator());
+    }
+
+    @Test
+    public void testNullValue() {
+        final Validator<String> validator = new NotEmptyValidator();
+        final OptionalValidator instance = new OptionalValidator(validator);
+        assertTrue(instance.validate(null).isFailure());
     }
 
     @Test
@@ -63,5 +69,4 @@ public class OptionalValidatorTest {
         assertTrue(res.isFailure());
         assertTrue(res.getFailureReason().contains("at most 2"));
     }
-
 }
