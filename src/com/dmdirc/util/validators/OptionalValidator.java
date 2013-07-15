@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.dmdirc.util.validators;
 
 /**
@@ -27,7 +26,9 @@ package com.dmdirc.util.validators;
  */
 public class OptionalValidator implements Validator<String> {
 
-    /** The minimum value for this number. */
+    /**
+     * The minimum value for this number.
+     */
     protected final Validator<String> validator;
 
     /**
@@ -48,9 +49,15 @@ public class OptionalValidator implements Validator<String> {
         return validator;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationResponse validate(final String object) {
+        if (object == null) {
+            validator.validate(object);
+        }
+
         final int colonIndex = object.indexOf(':');
 
         if (colonIndex == -1) {
@@ -65,5 +72,4 @@ public class OptionalValidator implements Validator<String> {
 
         return validator.validate(object);
     }
-
 }
