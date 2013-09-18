@@ -1,3 +1,3 @@
 # UUID                                  	Group Name
 #
-ae3424a88214edb82f9315d0ed4ffd4fa5ca9aa1	Administrators
+ldap:cn=Gerrit Admins,ou=groups,dc=dmdirc,dc=com	ldap/Gerrit Admins
