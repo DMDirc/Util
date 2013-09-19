@@ -43,6 +43,7 @@ public class ValidatorChain<A> implements Validator<A> {
      *
      * @param validators The validators to be used in this chain.
      */
+    @SuppressWarnings({"unchecked", "varargs"})
     public ValidatorChain(final Validator<A> ... validators) {
         validatorList.addAll(Arrays.asList(validators));
     }
