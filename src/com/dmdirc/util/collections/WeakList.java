@@ -78,7 +78,7 @@ public class WeakList<T> implements List<T> {
      * @return A copy of the specified collection, with each item wrapped in
      * a weak reference.
      */
-    @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private Collection<WeakReference<T>> referenceCollection(
             final Collection<?> c) {
         final Collection<WeakReference<T>> res
@@ -108,7 +108,8 @@ public class WeakList<T> implements List<T> {
     }
 
     /** {@inheritDoc} */
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean contains(final Object o) {
         return list.contains(new EquatableWeakReference(o));
     }
@@ -138,7 +139,8 @@ public class WeakList<T> implements List<T> {
     }
 
     /** {@inheritDoc} */
-    @Override @SuppressWarnings(value = "unchecked")
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean remove(final Object o) {
         return list.remove(new EquatableWeakReference(o));
     }
