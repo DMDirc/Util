@@ -38,8 +38,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ListenerList {
 
     /** The map of class->listener or string->listener that we're using. */
-    private final Map<Object, Collection<Object>> listeners
-            = new HashMap<Object, Collection<Object>>();
+    private final Map<Object, Collection<Object>> listeners = new HashMap<>();
 
     /**
      * Adds a new listener of the specified type to this listener list.
@@ -53,7 +52,7 @@ public class ListenerList {
             throw new IllegalArgumentException("Listener cannot be null");
         }
         if (!listeners.containsKey(listenerType)) {
-            listeners.put(listenerType, new CopyOnWriteArrayList<Object>());
+            listeners.put(listenerType, new CopyOnWriteArrayList<>());
         }
 
         listeners.get(listenerType).add(listener);
@@ -70,7 +69,7 @@ public class ListenerList {
             throw new IllegalArgumentException("Listener cannot be null");
         }
         if (!listeners.containsKey(listenerType)) {
-            listeners.put(listenerType, new CopyOnWriteArrayList<Object>());
+            listeners.put(listenerType, new CopyOnWriteArrayList<>());
         }
 
         listeners.get(listenerType).add(listener);
@@ -112,7 +111,7 @@ public class ListenerList {
         if (listeners.containsKey(listenerType)) {
             return (Collection<T>) listeners.get(listenerType);
         } else {
-            return new CopyOnWriteArrayList<T>();
+            return new CopyOnWriteArrayList<>();
         }
     }
 
@@ -126,7 +125,7 @@ public class ListenerList {
         if (listeners.containsKey(listenerType)) {
             return listeners.get(listenerType);
         } else {
-            return new CopyOnWriteArrayList<Object>();
+            return new CopyOnWriteArrayList<>();
         }
     }
 
@@ -141,7 +140,7 @@ public class ListenerList {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public <T> T getCallable(final Class<T> listenerType) {
         return (T) Proxy.newProxyInstance(listenerType.getClassLoader(),
-                new Class[] { listenerType }, new CallHandler<T>(listenerType));
+                new Class[] { listenerType }, new CallHandler<>(listenerType));
     }
 
     /**
@@ -160,20 +159,18 @@ public class ListenerList {
          *
          * @param listenerType The type of listener to handle
          */
-        public CallHandler(final Class<T> listenerType) {
+        CallHandler(final Class<T> listenerType) {
             this.listenerType = listenerType;
         }
 
         /** {@inheritDoc} */
         @Override
         public Object invoke(final Object proxy, final Method method,
-            final Object[] args) throws Throwable {
+                final Object[] args) throws Throwable {
             for (T target : get(listenerType)) {
                 try {
                     method.invoke(target, args);
-                } catch (IllegalAccessException ex) {
-                    // Ignore, not possible
-                } catch (IllegalArgumentException ex) {
+                } catch (IllegalAccessException | IllegalArgumentException ex) {
                     // Ignore, not possible
                 } catch (InvocationTargetException ex) {
                     throw ex.getCause();
