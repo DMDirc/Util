@@ -41,9 +41,9 @@ import java.util.Set;
 public class DoubleMap<A,B> implements Map<A, B> {
 
     /** The keys in this map. */
-    protected final List<A> keys = new ArrayList<A>();
+    protected final List<A> keys = new ArrayList<>();
     /** The values in this map. */
-    protected final List<B> values = new ArrayList<B>();
+    protected final List<B> values = new ArrayList<>();
 
     /**
      * Retrieves the value associated with the specified key.
@@ -87,7 +87,7 @@ public class DoubleMap<A,B> implements Map<A, B> {
     /** {@inheritDoc} */
     @Override
     public Set<A> keySet() {
-        return new HashSet<A>(keys);
+        return new HashSet<>(keys);
     }
 
     /** {@inheritDoc} */
@@ -152,15 +152,15 @@ public class DoubleMap<A,B> implements Map<A, B> {
     /** {@inheritDoc} */
     @Override
     public Collection<B> values() {
-        return new ArrayList<B>(values);
+        return new ArrayList<>(values);
     }
 
     /** {@inheritDoc} */
     @Override
     public Set<Entry<A, B>> entrySet() {
-        final Set<Entry<A, B>> set = new HashSet<Entry<A, B>>();
+        final Set<Entry<A, B>> set = new HashSet<>();
         for (A key : keys) {
-            set.add(new SimpleEntry<A, B>(key, getValue(key)));
+            set.add(new SimpleEntry<>(key, getValue(key)));
         }
         return set;
     }

@@ -23,7 +23,6 @@
 package com.dmdirc.util;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,8 +39,7 @@ public class SimpleInjector {
     private final SimpleInjector[] parents;
 
     /** A mapping of known classes to the objects that should be injected. */
-    private final Map<Class<?>, Object> parameters
-            = new HashMap<Class<?>, Object>();
+    private final Map<Class<?>, Object> parameters = new HashMap<>();
 
     /**
      * Creates a new injector which will inherit injection parameters from
@@ -97,8 +95,7 @@ public class SimpleInjector {
      * @return A map of injectable parameters
      */
     public Map<Class<?>, Object> getParameters() {
-        final Map<Class<?>, Object> localParams
-                = new HashMap<Class<?>, Object>(parameters.size());
+        final Map<Class<?>, Object> localParams = new HashMap<>(parameters.size());
 
         for (SimpleInjector parent : parents) {
             localParams.putAll(parent.getParameters());
@@ -146,16 +143,8 @@ public class SimpleInjector {
             if (i == args.length) {
                 try {
                     return ctor.newInstance(args);
-                } catch (IllegalAccessException ex) {
+                } catch (ReflectiveOperationException ex) {
                     throwable = ex;
-                } catch (IllegalArgumentException ex) {
-                    throwable = ex;
-                } catch (InstantiationException ex) {
-                    throwable = ex;
-                } catch (InvocationTargetException ex) {
-                    throwable = ex;
-                } catch (LinkageError err) {
-                    throwable = err;
                 }
             }
         }

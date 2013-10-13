@@ -55,7 +55,7 @@ public class MapList<S, T> {
      * Creates a new, empty MapList.
      */
     public MapList() {
-        map = new HashMap<S, List<T>>();
+        map = new HashMap<>();
     }
 
     /**
@@ -255,7 +255,7 @@ public class MapList<S, T> {
      * @return This MapList's map.
      */
     public Map<S, List<T>> getMap() {
-        return new HashMap<S, List<T>>(map);
+        return new HashMap<>(map);
     }
 
 }

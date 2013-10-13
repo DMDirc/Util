@@ -23,6 +23,7 @@
 package com.dmdirc.util.io;
 
 import com.dmdirc.util.collections.MapList;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,15 +40,13 @@ import java.util.Map;
 public class ConfigFile extends TextFile {
 
     /** A list of domains in this config file. */
-    private final List<String> domains = new ArrayList<String>();
+    private final List<String> domains = new ArrayList<>();
 
     /** The values associated with each flat domain. */
-    private final MapList<String, String> flatdomains
-            = new MapList<String, String>();
+    private final MapList<String, String> flatdomains = new MapList<>();
 
     /** The key/value sets associated with each key domain. */
-    private final Map<String, Map<String, String>> keydomains
-            = new HashMap<String, Map<String, String>>();
+    private final Map<String, Map<String, String>> keydomains = new HashMap<>();
 
     /** Whether or not we should automatically create domains. */
     private boolean automake;
@@ -158,7 +157,7 @@ public class ConfigFile extends TextFile {
                     + "that isn't writable");
         }
 
-        final List<String> lines = new ArrayList<String>();
+        final List<String> lines = new ArrayList<>();
 
         lines.add("# This is a DMDirc configuration file.");
         lines.add("# Written on: " + new GregorianCalendar().getTime()

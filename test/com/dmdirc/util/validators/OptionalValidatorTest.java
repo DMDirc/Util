@@ -29,7 +29,7 @@ public class OptionalValidatorTest {
 
     @Test
     public void testGetValidator() {
-        final Validator<String> validator = new PermissiveValidator<String>();
+        final Validator<String> validator = new PermissiveValidator<>();
         final OptionalValidator instance = new OptionalValidator(validator);
         assertEquals(validator, instance.getValidator());
     }

@@ -32,8 +32,8 @@ public class EquatableWeakReferenceTest {
     @Test
     public void testEquals() {
         final Object myObject = "moo";
-        final Reference<Object> myRef = new WeakReference<Object>(myObject);
-        final EquatableWeakReference<Object> ewf = new EquatableWeakReference<Object>(myObject);
+        final Reference<Object> myRef = new WeakReference<>(myObject);
+        final EquatableWeakReference<Object> ewf = new EquatableWeakReference<>(myObject);
 
         assertTrue(ewf.equals(myObject));
         assertTrue(ewf.equals(myRef));
@@ -44,7 +44,7 @@ public class EquatableWeakReferenceTest {
     @Test
     public void testHashCode() {
         final Object myObject = "moo";
-        final EquatableWeakReference<Object> ewf = new EquatableWeakReference<Object>(myObject);
+        final EquatableWeakReference<Object> ewf = new EquatableWeakReference<>(myObject);
         
         assertEquals(myObject.hashCode(), ewf.hashCode());
     }

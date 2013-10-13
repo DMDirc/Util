@@ -100,7 +100,7 @@ public class ConfigFileTest {
     public void testColons() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
         ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
         data.put("test:2", "hello");
         data.put("test3", "hello:");
@@ -121,7 +121,7 @@ public class ConfigFileTest {
     public void testEquals() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
         ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
         data.put("test=2", "hello");
         data.put("test3", "hello=");
@@ -142,7 +142,7 @@ public class ConfigFileTest {
     public void testNewlines() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
         ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
         data.put("test2", "hello\ngoodbye");
         data.put("test3", "hello\n");
@@ -165,7 +165,7 @@ public class ConfigFileTest {
     public void testBackslash() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
         ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         data.put("test1", "hello\\");
         data.put("test2", "\\nhello");
         data.put("test3\\", "hello");
@@ -186,7 +186,7 @@ public class ConfigFileTest {
     public void testHash() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
         ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         data.put("test1#", "hello");
         data.put("#test2", "hello");
         data.put("test3", "#hello");
