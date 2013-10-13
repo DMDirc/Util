@@ -39,7 +39,7 @@ public class WeakList<T> implements List<T> {
 
     /** The items in this list. */
     private final List<WeakReference<T>> list
-            = new ArrayList<WeakReference<T>>();
+            = new ArrayList<>();
 
     /**
      * Removes any entries from the list that have been GC'd.
@@ -59,7 +59,7 @@ public class WeakList<T> implements List<T> {
      * @return A list containing the items referenced by the specified list
      */
     private List<T> dereferenceList(final List<WeakReference<T>> list) {
-        final List<T> res = new ArrayList<T>();
+        final List<T> res = new ArrayList<>();
 
         for (WeakReference<T> item : list) {
             if (item.get() != null) {
@@ -82,7 +82,7 @@ public class WeakList<T> implements List<T> {
     private Collection<WeakReference<T>> referenceCollection(
             final Collection<?> c) {
         final Collection<WeakReference<T>> res
-                = new ArrayList<WeakReference<T>>();
+                = new ArrayList<>();
 
         for (Object item : c) {
             res.add(new EquatableWeakReference(item));
@@ -135,7 +135,7 @@ public class WeakList<T> implements List<T> {
     /** {@inheritDoc} */
     @Override
     public boolean add(final T e) {
-        return list.add(new EquatableWeakReference<T>(e));
+        return list.add(new EquatableWeakReference<>(e));
     }
 
     /** {@inheritDoc} */
@@ -192,7 +192,7 @@ public class WeakList<T> implements List<T> {
     /** {@inheritDoc} */
     @Override
     public T set(final int index, final T element) {
-        list.set(index, new EquatableWeakReference<T>(element));
+        list.set(index, new EquatableWeakReference<>(element));
 
         return element;
     }
@@ -200,7 +200,7 @@ public class WeakList<T> implements List<T> {
     /** {@inheritDoc} */
     @Override
     public void add(final int index, final T element) {
-        list.add(index, new EquatableWeakReference<T>(element));
+        list.add(index, new EquatableWeakReference<>(element));
     }
 
     /** {@inheritDoc} */

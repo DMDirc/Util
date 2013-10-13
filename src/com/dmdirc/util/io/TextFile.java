@@ -133,7 +133,7 @@ public class TextFile {
             inputStream = file == null ? is : new FileInputStream(file);
             inputReader = new InputStreamReader(inputStream, charset);
             reader = new BufferedReader(inputReader);
-            lines = new ArrayList<String>();
+            lines = new ArrayList<>();
 
             String line;
 

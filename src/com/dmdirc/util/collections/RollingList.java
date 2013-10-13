@@ -33,7 +33,7 @@ import java.util.List;
 public class RollingList<T> {
 
     /** The items in this rolling list. */
-    private final List<T> items = new ArrayList<T>();
+    private final List<T> items = new ArrayList<>();
     /** The maximum capacity of this list. */
     private final int capacity;
     /** Whether or not to add a fake empty item to the end of this list. */
@@ -212,6 +212,6 @@ public class RollingList<T> {
      * @return A list of items in this rolling list.
      */
     public List<T> getList() {
-        return new ArrayList<T>(items);
+        return new ArrayList<>(items);
     }
 }

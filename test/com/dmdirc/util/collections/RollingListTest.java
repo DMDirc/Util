@@ -30,7 +30,7 @@ public class RollingListTest {
 
     @Test
     public void testIsEmpty() {
-        final RollingList<String> rl = new RollingList<String>(1);
+        final RollingList<String> rl = new RollingList<>(1);
         assertTrue(rl.isEmpty());
         assertTrue(rl.getList().isEmpty());
         
@@ -41,7 +41,7 @@ public class RollingListTest {
     
     @Test
     public void testRolling() {
-        final RollingList<String> rl = new RollingList<String>(1);
+        final RollingList<String> rl = new RollingList<>(1);
         
         rl.add("Foo");
         rl.add("Bar");
@@ -54,7 +54,7 @@ public class RollingListTest {
     
     @Test
     public void testClear() {
-        final RollingList<String> rl = new RollingList<String>(3);
+        final RollingList<String> rl = new RollingList<>(3);
         
         rl.add("Foo");
         rl.add("Bar");
@@ -67,7 +67,7 @@ public class RollingListTest {
     
     @Test
     public void testPositions() {
-        final RollingList<String> rl = new RollingList<String>(3);
+        final RollingList<String> rl = new RollingList<>(3);
         
         rl.add("Foo");
         rl.add("Bar");
@@ -84,7 +84,7 @@ public class RollingListTest {
 
     @Test
     public void testSetPosition() {
-        final RollingList<String> rl = new RollingList<String>(3);
+        final RollingList<String> rl = new RollingList<>(3);
 
         rl.add("Foo");
         rl.add("Bar");
@@ -103,7 +103,7 @@ public class RollingListTest {
     
     @Test
     public void testPrevNext() {
-        final RollingList<String> rl = new RollingList<String>(3);
+        final RollingList<String> rl = new RollingList<>(3);
         
         rl.add("Foo");
         rl.add("Bar");
@@ -122,7 +122,7 @@ public class RollingListTest {
     
     @Test
     public void testEmpty() {
-        final RollingList<String> rl = new RollingList<String>(1, "Meep");
+        final RollingList<String> rl = new RollingList<>(1, "Meep");
         rl.add("Foo");
         
         assertEquals("Meep", rl.getNext());

@@ -33,7 +33,7 @@ public class MapListTest {
 
     @Test
     public void testIsEmpty() {
-        final MapList<String, String> test = new MapList<String, String>();
+        final MapList<String, String> test = new MapList<>();
         assertTrue(test.isEmpty());
 
         test.add("a", "b");
@@ -44,8 +44,8 @@ public class MapListTest {
 
     @Test
     public void testAddCollection() {
-        final MapList<String, String> test = new MapList<String, String>();
-        final List<String> testList = new ArrayList<String>();
+        final MapList<String, String> test = new MapList<>();
+        final List<String> testList = new ArrayList<>();
         testList.add("d");
         testList.add("e");
         test.add("key", testList);
@@ -57,7 +57,7 @@ public class MapListTest {
 
     @Test
     public void testClear() {
-        final MapList<String, String> test = new MapList<String, String>();
+        final MapList<String, String> test = new MapList<>();
         test.add("a", "b");
         test.add("d", "e");
         test.clear();
@@ -66,7 +66,7 @@ public class MapListTest {
 
     @Test
     public void testClearKey() {
-        final MapList<String, String> test = new MapList<String, String>();
+        final MapList<String, String> test = new MapList<>();
         test.add("a", "b");
         test.add("d", "e");
         test.clear("a");
@@ -76,7 +76,7 @@ public class MapListTest {
 
     @Test
     public void testRemove() {
-        final MapList<String, String> test = new MapList<String, String>();
+        final MapList<String, String> test = new MapList<>();
         test.add("a", "b");
         test.add("d", "e");
         test.remove("z", "b");
@@ -93,7 +93,7 @@ public class MapListTest {
 
     @Test
     public void testRemoveKey() {
-        final MapList<String, String> instance = new MapList<String, String>();
+        final MapList<String, String> instance = new MapList<>();
         instance.add("a", "b");
         assertTrue(instance.containsKey("a"));
         instance.remove("a");
@@ -102,7 +102,7 @@ public class MapListTest {
 
     @Test
     public void testKeySet() {
-        final MapList<String, String> test = new MapList<String, String>();
+        final MapList<String, String> test = new MapList<>();
         test.add("a", "b");
         test.add("d", "e");
         assertEquals(2, test.keySet().size());
@@ -112,21 +112,21 @@ public class MapListTest {
 
     @Test
     public void testContainsKey() {
-        final MapList<String, String> test = new MapList<String, String>();
+        final MapList<String, String> test = new MapList<>();
         test.add("a", "b");
         assertTrue(test.containsKey("a"));
     }
 
     @Test
     public void testContainsValue() {
-        final MapList<String, String> test = new MapList<String, String>();
+        final MapList<String, String> test = new MapList<>();
         test.add("a", "b");
         assertTrue(test.containsValue("a", "b"));
     }
 
     @Test
     public void testGet() {
-        final MapList<String, String> test = new MapList<String, String>();
+        final MapList<String, String> test = new MapList<>();
         test.add("a", "b");
         assertEquals(1, test.get("a").size());
         assertEquals("b", test.get("a").get(0));
@@ -135,10 +135,10 @@ public class MapListTest {
 
     @Test
     public void testInherit() {
-        final MapList<String, String> test1 = new MapList<String, String>();
+        final MapList<String, String> test1 = new MapList<>();
         test1.add("a", "b");
 
-        final MapList<String, String> test2 = new MapList<String, String>(test1);
+        final MapList<String, String> test2 = new MapList<>(test1);
         assertEquals(1, test2.get("a").size());
         assertEquals("b", test2.get("a").get(0));
         assertEquals("b", test2.get("a", 0));
@@ -146,11 +146,11 @@ public class MapListTest {
 
     @Test
     public void testGetMap() {
-        final MapList<String, String> test1 = new MapList<String, String>();
+        final MapList<String, String> test1 = new MapList<>();
         test1.add("a", "b");
         assertNotSame(test1.getMap(), test1.getMap());
 
-        final MapList<String, String> test2 = new MapList<String, String>(test1);
+        final MapList<String, String> test2 = new MapList<>(test1);
         assertEquals(test1.getMap(), test2.getMap());
     }
 

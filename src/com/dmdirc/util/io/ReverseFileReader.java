@@ -127,7 +127,7 @@ public class ReverseFileReader {
         }
         // Used to store result to output.
 
-        final ArrayList<Byte> line = new ArrayList<Byte>(seekLength);
+        final ArrayList<Byte> line = new ArrayList<>(seekLength);
         // Used to store position in file pre-read
         long fp = 0;
         // Used to store position in file when this is called
@@ -224,7 +224,7 @@ public class ReverseFileReader {
      * @return The requested lines
      */
     public Stack<String> getLines(final int numLines) {
-        final Stack<String> result = new Stack<String>();
+        final Stack<String> result = new Stack<>();
         for (int i = 0; i < numLines; ++i) {
             try {
                 result.push(getNextLine());

@@ -41,7 +41,7 @@ public class SimpleInjector {
 
     /** A mapping of known classes to the objects that should be injected. */
     private final Map<Class<?>, Object> parameters
-            = new HashMap<Class<?>, Object>();
+            = new HashMap<>();
 
     /**
      * Creates a new injector which will inherit injection parameters from
@@ -98,7 +98,7 @@ public class SimpleInjector {
      */
     public Map<Class<?>, Object> getParameters() {
         final Map<Class<?>, Object> localParams
-                = new HashMap<Class<?>, Object>(parameters.size());
+                = new HashMap<>(parameters.size());
 
         for (SimpleInjector parent : parents) {
             localParams.putAll(parent.getParameters());
@@ -146,16 +146,8 @@ public class SimpleInjector {
             if (i == args.length) {
                 try {
                     return ctor.newInstance(args);
-                } catch (IllegalAccessException ex) {
+                } catch (        IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException | LinkageError ex) {
                     throwable = ex;
-                } catch (IllegalArgumentException ex) {
-                    throwable = ex;
-                } catch (InstantiationException ex) {
-                    throwable = ex;
-                } catch (InvocationTargetException ex) {
-                    throwable = ex;
-                } catch (LinkageError err) {
-                    throwable = err;
                 }
             }
         }

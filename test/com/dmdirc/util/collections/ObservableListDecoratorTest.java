@@ -41,8 +41,8 @@ public class ObservableListDecoratorTest {
 
     @Before
     public void setup() {
-        list = new LinkedList<String>();
-        obslist = new ObservableListDecorator<String>(list);
+        list = new LinkedList<>();
+        obslist = new ObservableListDecorator<>(list);
         observer = mock(ListObserver.class);
         obslist.addListListener(observer);
     }
