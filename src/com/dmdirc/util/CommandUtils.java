@@ -44,7 +44,7 @@ public final class CommandUtils {
      * @return An array of arguments corresponding to the command
      */
     public static String[] parseArguments(final String command) {
-        final List<String> args = new ArrayList<String>();
+        final List<String> args = new ArrayList<>();
         final StringBuilder builder = new StringBuilder();
         boolean inquote = false;
 

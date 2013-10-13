@@ -71,7 +71,7 @@ public final class Downloader {
     public static List<String> getPage(final String url, final String postData)
             throws IOException {
 
-        final List<String> res = new ArrayList<String>();
+        final List<String> res = new ArrayList<>();
 
         final URLConnection urlConn = getConnection(url, postData);
 

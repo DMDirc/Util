@@ -30,7 +30,7 @@ public class DoubleMapTest {
 
     @Test
     public void testPut() {
-        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
+        final DoubleMap<String, String> dm = new DoubleMap<>();
         dm.put("a", "b");
         
         assertEquals(1, dm.keySet().size());
@@ -41,19 +41,19 @@ public class DoubleMapTest {
     
     @Test(expected=NullPointerException.class)
     public void testPutNull1() {
-        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
+        final DoubleMap<String, String> dm = new DoubleMap<>();
         dm.put(null, "b");
     }
     
     @Test(expected=NullPointerException.class)
     public void testPutNull2() {
-        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
+        final DoubleMap<String, String> dm = new DoubleMap<>();
         dm.put("a", null);
     }    
     
     @Test
     public void testGet() {
-        final DoubleMap<String, String> dm = new DoubleMap<String, String>();
+        final DoubleMap<String, String> dm = new DoubleMap<>();
         dm.put("a", "b");
         dm.put("b", "c");
         dm.put("c", "a");

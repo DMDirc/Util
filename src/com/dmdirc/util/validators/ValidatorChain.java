@@ -35,8 +35,7 @@ import java.util.List;
 public class ValidatorChain<A> implements Validator<A> {
 
     /** A list of validators to use. */
-    private final List<Validator<A>> validatorList
-            = new ArrayList<Validator<A>>();
+    private final List<Validator<A>> validatorList = new ArrayList<>();
 
     /**
      * Creates a new validator chain containing the specified validators.
