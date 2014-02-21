@@ -19,35 +19,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.dmdirc.util.validators;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Allows multiple validators to be chained together.
  *
  * @param <A> The type of class that this chain validates
- * @author chris
  */
 public class ValidatorChain<A> implements Validator<A> {
 
-    /** A list of validators to use. */
-    private final List<Validator<A>> validatorList = new ArrayList<>();
+    /**
+     * A list of validators to use.
+     */
+    private final List<Validator<A>> validatorList;
+
+    /**
+     * Creates a new validator chain containing the specified validators.
+     *
+     * @param validators The validators to be used in this chain.
+     * @deprecated Use a builder or pass a list to avoid unchecked warnings.
+     */
+    @SuppressWarnings({"unchecked", "varargs"})
+    @Deprecated
+    public ValidatorChain(final Validator<A>... validators) {
+        validatorList = Arrays.asList(validators);
+    }
 
     /**
      * Creates a new validator chain containing the specified validators.
      *
      * @param validators The validators to be used in this chain.
      */
-    @SuppressWarnings({"unchecked", "varargs"})
-    public ValidatorChain(final Validator<A> ... validators) {
-        validatorList.addAll(Arrays.asList(validators));
+    public ValidatorChain(final List<Validator<A>> validators) {
+        validatorList = Collections.unmodifiableList(validators);
     }
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final A object) {
         for (Validator<A> validator : validatorList) {
@@ -61,4 +71,14 @@ public class ValidatorChain<A> implements Validator<A> {
         return new ValidationResponse();
     }
 
+    /**
+     * Creates a builder which can be used to construct a new
+     * {@link ValidatorChain}.
+     *
+     * @param <T> The type of validator that will be in the chain.
+     * @return A builder to use to make a validator.
+     */
+    public static <T> ValidatorChainBuilder<T> builder() {
+        return new ValidatorChainBuilder<>();
+    }
 }
