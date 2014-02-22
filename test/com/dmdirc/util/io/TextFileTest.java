@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.dmdirc.util.io;
 
 import java.io.File;
@@ -28,71 +27,82 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TextFileTest {
-    
-    private static File tfile;
 
     @Test
     public void testGetLines() throws IOException {
-        final TextFile file =
-                new TextFile(getClass().getResourceAsStream("test1.txt"));
+        final TextFile file
+                = new TextFile(getClass().getResourceAsStream("test1.txt"));
         final List<String> lines = file.getLines();
 
         assertEquals(7, lines.size());
         assertEquals("Line 1", lines.get(0));
     }
-    
+
     @Test
     public void testGetLines2() throws IOException {
-        final TextFile file =
-                new TextFile(getClass().getResourceAsStream("test1.txt"));
+        final TextFile file
+                = new TextFile(getClass().getResourceAsStream("test1.txt"));
         final List<String> lines = file.getLines();
 
         assertEquals(7, lines.size());
         assertEquals("Line 1", lines.get(0));
     }
-    
+
     @Test
     public void testWrite() throws IOException {
-        tfile = File.createTempFile("dmdirc_unit_test", null);
-        TextFile file = new TextFile(tfile);
-        
+        File tempFile = File.createTempFile("dmdirc_unit_test", null);
+        TextFile file = new TextFile(tempFile);
+
         final List<String> lines = Arrays.asList(new String[]{
             "hello", "this is a test", "meep"
         });
-        
+
         file.writeLines(lines);
-        
-        file = new TextFile(tfile);
+
+        file = new TextFile(tempFile);
         final List<String> newLines = file.getLines();
-        
+
         assertEquals(lines, newLines);
+        tempFile.deleteOnExit();
     }
-    
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test(expected = UnsupportedOperationException.class)
     public void testIllegalWrite() throws IOException {
-        final TextFile file =
-                new TextFile(getClass().getResourceAsStream("test1.txt"));
+        final TextFile file
+                = new TextFile(getClass().getResourceAsStream("test1.txt"));
         file.writeLines(Arrays.asList(new String[]{
             "hello", "this is a test", "meep"
         }));
     }
-    
-    @Test(expected=UnsupportedOperationException.class)
+
+    @Test(expected = UnsupportedOperationException.class)
     public void testIllegalDelete() throws IOException {
-        final TextFile file =
-                new TextFile(getClass().getResourceAsStream("test1.txt"));
+        final TextFile file
+                = new TextFile(getClass().getResourceAsStream("test1.txt"));
         file.delete();
     }
-    
+
     @Test
-    public void testDelete() {
-        assertTrue(tfile.exists());
-        TextFile file = new TextFile(tfile);
+    public void testDelete() throws IOException {
+        File tempFile = File.createTempFile("dmdirc_unit_test", "de;ete");
+        TextFile file = new TextFile(tempFile);
+
+        final List<String> lines = Arrays.asList(new String[]{
+            "hello", "this is a test", "meep"
+        });
+
+        file.writeLines(lines);
+
+        assertTrue(tempFile.exists());
+        file = new TextFile(tempFile);
         file.delete();
-        assertFalse(tfile.exists());
+        assertFalse(tempFile.exists());
     }
-    
+
 }
