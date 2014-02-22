@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.dmdirc.util.io;
 
 import java.io.File;
@@ -30,7 +29,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ConfigFileTest {
 
@@ -46,7 +47,7 @@ public class ConfigFileTest {
         cf.read();
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void testWrite() throws IOException {
         cf.write();
     }
@@ -99,6 +100,7 @@ public class ConfigFileTest {
     @Test
     public void testColons() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
+        file.deleteOnExit();
         ConfigFile config = new ConfigFile(file);
         Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
@@ -120,6 +122,7 @@ public class ConfigFileTest {
     @Test
     public void testEquals() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
+        file.deleteOnExit();
         ConfigFile config = new ConfigFile(file);
         Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
@@ -141,6 +144,7 @@ public class ConfigFileTest {
     @Test
     public void testNewlines() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
+        file.deleteOnExit();
         ConfigFile config = new ConfigFile(file);
         Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
@@ -164,6 +168,7 @@ public class ConfigFileTest {
     @Test
     public void testBackslash() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
+        file.deleteOnExit();
         ConfigFile config = new ConfigFile(file);
         Map<String, String> data = new HashMap<>();
         data.put("test1", "hello\\");
@@ -185,6 +190,7 @@ public class ConfigFileTest {
     @Test
     public void testHash() throws IOException, InvalidConfigFileException {
         final File file = File.createTempFile("DMDirc.unittest", null);
+        file.deleteOnExit();
         ConfigFile config = new ConfigFile(file);
         Map<String, String> data = new HashMap<>();
         data.put("test1#", "hello");
@@ -219,6 +225,7 @@ public class ConfigFileTest {
     @Test
     public void testDelete() throws IOException {
         final File file = File.createTempFile("DMDirc_unittest", null);
+        file.deleteOnExit();
         ConfigFile config = new ConfigFile(file);
         config.write();
         assertTrue(file.exists());
@@ -236,7 +243,7 @@ public class ConfigFileTest {
         assertTrue(file.isFlatDomain("section one point one"));
     }
 
-    @Test(expected=InvalidConfigFileException.class)
+    @Test(expected = InvalidConfigFileException.class)
     public void testInvalidLine() throws IOException, InvalidConfigFileException {
         final ConfigFile file = new ConfigFile(getClass().getResourceAsStream("test1.txt"));
         file.read();
