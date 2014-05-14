@@ -19,18 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.dmdirc.util.io;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +37,21 @@ import java.util.List;
  */
 public class TextFile {
 
-    /** The file we're dealing with. */
-    private File file;
-    /** The input stream we're dealing with. */
+    /**
+     * The file we're dealing with.
+     */
+    private Path path;
+    /**
+     * The input stream we're dealing with.
+     */
     private InputStream is;
-    /** The lines we've read from the file. */
+    /**
+     * The lines we've read from the file.
+     */
     private List<String> lines;
-    /** The charset to use to read the file. */
+    /**
+     * The charset to use to read the file.
+     */
     private final Charset charset;
 
     /**
@@ -69,6 +75,16 @@ public class TextFile {
     }
 
     /**
+     * Creates a new instance of TextFile for the specified Path, and uses the
+     * default charset.
+     *
+     * @param path The path to read
+     */
+    public TextFile(final Path path) {
+        this(path, Charset.defaultCharset());
+    }
+
+    /**
      * Creates a new instance of TextFile for an input stream, and uses the
      * default charset.
      *
@@ -79,21 +95,32 @@ public class TextFile {
     }
 
     /**
-     * Creates a new instance of TextFile for the specified File, which is to
-     * be read using the specified charset.
+     * Creates a new instance of TextFile for the specified File, which is to be
+     * read using the specified charset.
      *
      * @param file The file to read
      * @param charset The charset to read the file in
      * @since 0.6.3m1
      */
     public TextFile(final File file, final Charset charset) {
-        this.file = file;
+        this(file.toPath(), charset);
+    }
+
+    /**
+     * Creates a new instance of TextFile for the specified Path, which is to be
+     * read using the specified charset.
+     *
+     * @param path The path to read
+     * @param charset The charset to read the file in
+     */
+    public TextFile(final Path path, final Charset charset) {
+        this.path = path;
         this.charset = charset;
     }
 
     /**
-     * Creates a new instance of TextFile for an input stream, which is to
-     * be read using the specified charset.
+     * Creates a new instance of TextFile for an input stream, which is to be
+     * read using the specified charset.
      *
      * @param is The input stream to read from
      * @param charset The charset to read the file in
@@ -125,25 +152,15 @@ public class TextFile {
      * @throws IOException If an I/O exception occurs
      */
     public void readLines() throws IOException {
-        BufferedReader reader = null;
-        InputStreamReader inputReader = null;
-        InputStream inputStream = null;
-
-        try {
-            inputStream = file == null ? is : new FileInputStream(file);
-            inputReader = new InputStreamReader(inputStream, charset);
-            reader = new BufferedReader(inputReader);
+        try (BufferedReader reader = path == null
+                ? new BufferedReader(new InputStreamReader(is, charset))
+                : Files.newBufferedReader(path, charset)) {
             lines = new ArrayList<>();
-
             String line;
 
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
             }
-        } finally {
-            StreamUtils.close(reader);
-            StreamUtils.close(inputReader);
-            StreamUtils.close(inputStream);
         }
     }
 
@@ -153,7 +170,14 @@ public class TextFile {
      * @return True if the file is writable, false otherwise
      */
     public boolean isWritable() {
-        return file != null;
+        if (path == null) {
+            return false;
+        }
+        if (Files.exists(path)) {
+            return Files.isWritable(path);
+        } else {
+            return Files.isWritable(path.getParent());
+        }
     }
 
     /**
@@ -163,23 +187,12 @@ public class TextFile {
      * @throws IOException if an I/O exception occurs
      */
     public void writeLines(final List<String> lines) throws IOException {
-        if (file == null) {
+        if (path == null) {
             throw new UnsupportedOperationException("Cannot write to TextFile "
                     + "opened with an InputStream");
         }
 
-        BufferedWriter writer = null;
-
-        try {
-            writer = new BufferedWriter(new FileWriter(file));
-
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
-        } finally {
-            StreamUtils.close(writer);
-        }
+        Files.write(path, lines);
     }
 
     /**
@@ -188,19 +201,36 @@ public class TextFile {
      * @return This TextFile's file, or null
      */
     public File getFile() {
-        return file;
+        if (path == null) {
+            return null;
+        }
+        return path.toFile();
+    }
+
+    /**
+     * Retrieves the Path for this TextFile, if there is one.
+     *
+     * @return This TextFile's path, or null
+     */
+    public Path getPath() {
+        if (path == null) {
+            return null;
+        }
+        return path;
     }
 
     /**
      * Deletes the file associated with this textfile, if there is one.
+     *
+     * @throws IOException if the file is unable to be deleted
      */
-    public void delete() {
-        if (file == null) {
+    public void delete() throws IOException {
+        if (path == null) {
             throw new UnsupportedOperationException("Cannot delete TextFile "
                     + "opened with an InputStream");
         }
 
-        file.delete();
+        Files.delete(path);
     }
 
 }
