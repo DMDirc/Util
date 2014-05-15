@@ -103,7 +103,7 @@ public class TextFile {
      * @since 0.6.3m1
      */
     public TextFile(final File file, final Charset charset) {
-        this(file.toPath(), charset);
+        this(file == null ? null : file.toPath(), charset);
     }
 
     /**
