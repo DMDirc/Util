@@ -40,19 +40,19 @@ public class TextFile {
     /**
      * The file we're dealing with.
      */
-    private Path path;
+    private final Path path;
     /**
      * The input stream we're dealing with.
      */
-    private InputStream is;
-    /**
-     * The lines we've read from the file.
-     */
-    private List<String> lines;
+    private final InputStream is;
     /**
      * The charset to use to read the file.
      */
     private final Charset charset;
+    /**
+     * The lines we've read from the file.
+     */
+    private List<String> lines;
 
     /**
      * Creates a new instance of TextFile for the specified file, and uses the
@@ -115,6 +115,7 @@ public class TextFile {
      */
     public TextFile(final Path path, final Charset charset) {
         this.path = path;
+        this.is = null;
         this.charset = charset;
     }
 
@@ -127,6 +128,7 @@ public class TextFile {
      * @since 0.6.3m1
      */
     public TextFile(final InputStream is, final Charset charset) {
+        this.path = null;
         this.is = is;
         this.charset = charset;
     }
