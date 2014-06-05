@@ -41,12 +41,7 @@ import java.util.Map;
 /**
  * Allows easy downloading of files from HTTP sites.
  */
-public final class Downloader {
-
-    /** Creates a new instance of Downloader. */
-    private Downloader() {
-        // Shouldn't be used
-    }
+public class Downloader {
 
     /**
      * Retrieves the specified page.
@@ -55,7 +50,7 @@ public final class Downloader {
      * @return A list of lines received from the server
      * @throws java.io.IOException If there's an I/O error while downloading
      */
-    public static List<String> getPage(final String url) throws IOException {
+    public List<String> getPage(final String url) throws IOException {
 
         return getPage(url, "");
     }
@@ -68,7 +63,7 @@ public final class Downloader {
      * @return A list of lines received from the server
      * @throws java.io.IOException If there's an I/O error while downloading
      */
-    public static List<String> getPage(final String url, final String postData)
+    public List<String> getPage(final String url, final String postData)
             throws IOException {
 
         final List<String> res = new ArrayList<>();
@@ -105,7 +100,7 @@ public final class Downloader {
      * @return A list of lines received from the server
      * @throws java.io.IOException If there's an I/O error while downloading
      */
-    public static List<String> getPage(final String url,
+    public List<String> getPage(final String url,
             final Map<String, String> postData) throws IOException {
         final StringBuilder data = new StringBuilder();
 
@@ -126,7 +121,7 @@ public final class Downloader {
      * @param file The file to save the page to
      * @throws java.io.IOException If there's an I/O error while downloading
      */
-    public static void downloadPage(final String url, final String file)
+    public void downloadPage(final String url, final String file)
             throws IOException {
         downloadPage(url, file, null);
     }
@@ -139,7 +134,7 @@ public final class Downloader {
      * @param listener The progress listener for this download
      * @throws java.io.IOException If there's an I/O error while downloading
      */
-    public static void downloadPage(final String url, final String file,
+    public void downloadPage(final String url, final String file,
             final DownloadListener listener) throws IOException {
 
         final URLConnection urlConn = getConnection(url, "");
@@ -189,7 +184,7 @@ public final class Downloader {
      * @throws java.net.MalformedURLException If the specified URL is malformed
      * @throws java.io.IOException If an I/O exception occurs while connecting
      */
-    private static URLConnection getConnection(final String url,
+    private URLConnection getConnection(final String url,
             final String postData)
             throws MalformedURLException, IOException {
         final URL myUrl = new URL(url);
