@@ -46,12 +46,10 @@ public class ReverseFileReader {
      * Create a new ReverseFileReader.
      *
      * @param filename File to open.
-     * @throws FileNotFoundException If the file is not a regular file.
      * @throws SecurityException If a security manager exists and its checkRead method denies read access to the file.
      * @throws IOException If there is an error seeking to the end of the file.
      */
-    public ReverseFileReader(final String filename) throws FileNotFoundException,
-            SecurityException, IOException {
+    public ReverseFileReader(final String filename) throws SecurityException, IOException {
         file = new RandomAccessFile(filename, "r");
         reset();
     }
@@ -60,12 +58,10 @@ public class ReverseFileReader {
      * Create a new ReverseFileReader.
      *
      * @param myFile Existing file to use.
-     * @throws FileNotFoundException If the file is not a regular file.
      * @throws SecurityException If a security manager exists and its checkRead method denies read access to the file.
      * @throws IOException If there is an error seeking to the end of the file.
      */
-    public ReverseFileReader(final File myFile) throws FileNotFoundException,
-            SecurityException, IOException {
+    public ReverseFileReader(final File myFile) throws SecurityException, IOException {
         file = new RandomAccessFile(myFile, "r");
         reset();
     }
@@ -118,10 +114,9 @@ public class ReverseFileReader {
      * Get the next full line.
      *
      * @return The next full line.
-     * @throws EOFException If there is no more lines.
      * @throws IOException If an error reading or seeking occured, or if the fiel is closed.
      */
-    public String getNextLine() throws EOFException, IOException {
+    public String getNextLine() throws IOException {
         if (file == null) {
             throw new IOException("File has been closed.");
         }
