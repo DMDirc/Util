@@ -181,12 +181,11 @@ public class Downloader {
      * @param url The URL to connect to
      * @param postData The POST data to pass to the URL
      * @return An URLConnection for the specified URL/data
-     * @throws java.net.MalformedURLException If the specified URL is malformed
      * @throws java.io.IOException If an I/O exception occurs while connecting
      */
     private URLConnection getConnection(final String url,
             final String postData)
-            throws MalformedURLException, IOException {
+            throws IOException {
         final URL myUrl = new URL(url);
         final URLConnection urlConn = myUrl.openConnection();
 
