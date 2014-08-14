@@ -77,7 +77,7 @@ public final class DateUtils {
         seconds -= doDuration(buff, seconds, 60 * 60 * 24, "day");
         seconds -= doDuration(buff, seconds, 60 * 60, "hour");
         seconds -= doDuration(buff, seconds, 60, "minute");
-        seconds -= doDuration(buff, seconds, 1, "second");
+        doDuration(buff, seconds, 1, "second");
 
         return buff.length() == 0 ? "0 seconds" : buff.toString();
     }

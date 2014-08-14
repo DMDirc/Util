@@ -124,13 +124,13 @@ public class ReverseFileReader {
 
         final ArrayList<Byte> line = new ArrayList<>(seekLength);
         // Used to store position in file pre-read
-        long fp = 0;
+        long fp;
         // Used to store position in file when this is called
-        long startfp = 0;
+        long startfp;
         // Used to store read bytes
         byte[] bytes;
         // Distance seeked
-        int seekDistance = 0;
+        int seekDistance;
 
         // Check current position, if 0 we are at the start of the file
         // and should throw an exception.
