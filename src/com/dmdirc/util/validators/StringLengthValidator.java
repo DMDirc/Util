@@ -44,7 +44,6 @@ public class StringLengthValidator implements Validator<String> {
         this.max = max;
     }
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         if (object.length() < min && min != -1) {

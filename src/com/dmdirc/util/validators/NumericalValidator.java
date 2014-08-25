@@ -65,7 +65,6 @@ public class NumericalValidator implements Validator<String> {
         return min;
     }
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         int intv;

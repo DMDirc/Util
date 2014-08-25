@@ -49,9 +49,6 @@ public class OptionalValidator implements Validator<String> {
         return validator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ValidationResponse validate(final String object) {
         if (object == null) {

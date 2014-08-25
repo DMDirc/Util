@@ -27,7 +27,6 @@ package com.dmdirc.util.validators;
  */
 public class RegexValidator implements Validator<String> {
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         try {

@@ -43,13 +43,11 @@ public class QueuedLinkedHashSet<E> extends LinkedHashSet<E>
      */
     private static final long serialVersionUID = 1;
 
-    /** {@inheritDoc} */
     @Override
     public boolean offer(final E e) {
         return add(e);
     }
 
-    /** {@inheritDoc} */
     @Override
     public E remove() {
         if (isEmpty()) {
@@ -58,7 +56,6 @@ public class QueuedLinkedHashSet<E> extends LinkedHashSet<E>
         return poll();
     }
 
-    /** {@inheritDoc} */
     @Override
     public E poll() {
         final E object = peek();
@@ -68,7 +65,6 @@ public class QueuedLinkedHashSet<E> extends LinkedHashSet<E>
         return object;
     }
 
-    /** {@inheritDoc} */
     @Override
     public E element() {
         if (isEmpty()) {
@@ -77,7 +73,6 @@ public class QueuedLinkedHashSet<E> extends LinkedHashSet<E>
         return peek();
     }
 
-    /** {@inheritDoc} */
     @Override
     public E peek() {
         if (isEmpty()) {

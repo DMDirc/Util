@@ -71,7 +71,6 @@ public class DoubleMap<A,B> implements Map<A, B> {
         return keys.get(values.indexOf(value));
     }
 
-    /** {@inheritDoc} */
     @Override
     public B put(final A key, final B value) {
         if (key == null || value == null) {
@@ -84,46 +83,39 @@ public class DoubleMap<A,B> implements Map<A, B> {
         return value;
     }
 
-    /** {@inheritDoc} */
     @Override
     public Set<A> keySet() {
         return new HashSet<>(keys);
     }
 
-    /** {@inheritDoc} */
     @Override
     public int size() {
         return keys.size();
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean isEmpty() {
         return keys.isEmpty();
     }
 
-    /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
     public boolean containsKey(final Object key) {
         return keys.contains((A) key);
     }
 
-    /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
     public boolean containsValue(final Object value) {
         return values.contains((B) value);
     }
 
-    /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
     public B get(final Object key) {
         return getValue((A) key);
     }
 
-    /** {@inheritDoc} */
     @Override
     public B remove(final Object key) {
         if (keys.indexOf(key) == -1) {
@@ -134,7 +126,6 @@ public class DoubleMap<A,B> implements Map<A, B> {
         return value;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void putAll(final Map<? extends A, ? extends B> m) {
         for (Entry<? extends A, ? extends B> entry : m.entrySet()) {
@@ -142,20 +133,17 @@ public class DoubleMap<A,B> implements Map<A, B> {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void clear() {
         keys.clear();
         values.clear();
     }
 
-    /** {@inheritDoc} */
     @Override
     public Collection<B> values() {
         return new ArrayList<>(values);
     }
 
-    /** {@inheritDoc} */
     @Override
     public Set<Entry<A, B>> entrySet() {
         final Set<Entry<A, B>> set = new HashSet<>();

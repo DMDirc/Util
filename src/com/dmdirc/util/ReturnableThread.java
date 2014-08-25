@@ -32,7 +32,6 @@ public abstract class ReturnableThread<T> extends Thread {
     /** Returnable object. */
     private T value;
 
-    /** {@inheritDoc} */
     @Override
     public abstract void run();
 
