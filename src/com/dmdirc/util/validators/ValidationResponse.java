@@ -24,8 +24,6 @@ package com.dmdirc.util.validators;
 /**
  * Describes the response from a Validator. The response may be either positive
  * or negative. Negative responses have an associated failure reason.
- *
- * @author chris
  */
 public class ValidationResponse {
 

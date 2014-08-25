@@ -26,7 +26,6 @@ package com.dmdirc.util.validators;
  * Validates that the value is a valid IRC colour (hex or mIRC).
  *
  * @since 0.6.5
- * @author chris
  */
 public class ColourValidator extends RegexStringValidator implements
         Validator<String> {
