@@ -25,7 +25,6 @@ package com.dmdirc.util.validators;
  * A validator that permits everything.
  *
  * @param <V> The type of data that this validator validates
- * @author chris
  */
 public class PermissiveValidator<V> implements Validator<V> {
 

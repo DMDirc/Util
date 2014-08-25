@@ -24,8 +24,6 @@ package com.dmdirc.util.validators;
 
 /**
  * Validates a regular expression.
- *
- * @author chris
  */
 public class RegexValidator implements Validator<String> {
 

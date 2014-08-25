@@ -27,7 +27,6 @@ package com.dmdirc.util.validators;
  * with "false:".
  *
  * @since 0.6.5
- * @author chris
  */
 public class DisabledOptionValidator implements Validator<String> {
 

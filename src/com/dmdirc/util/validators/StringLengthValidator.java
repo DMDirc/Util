@@ -23,8 +23,6 @@ package com.dmdirc.util.validators;
 
 /**
  * Validates that the length of a string is within certain bounds.
- *
- * @author chris
  */
 public class StringLengthValidator implements Validator<String> {
 

@@ -24,8 +24,6 @@ package com.dmdirc.util.validators;
 
 /**
  * Validates that a number is within certain bounds.
- *
- * @author chris
  */
 public class NumericalValidator implements Validator<String> {
 
