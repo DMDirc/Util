@@ -91,9 +91,7 @@ public class StreamReader extends Thread {
      */
     @Override
     public void run() {
-        final BufferedReader reader = new BufferedReader(
-                new InputStreamReader(stream));
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (list != null) {
@@ -105,8 +103,6 @@ public class StreamReader extends Thread {
             }
         } catch (IOException ex) {
             // OH WELL
-        } finally {
-            StreamUtils.close(stream);
         }
     }
 }

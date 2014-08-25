@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -70,14 +69,9 @@ public class Downloader {
 
         final URLConnection urlConn = getConnection(url, postData);
 
-        BufferedReader in = null;
-
-        try {
-            in = new BufferedReader(new InputStreamReader(
-                    urlConn.getInputStream()));
-
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(
+                urlConn.getInputStream()))) {
             String line;
-
             do {
                 line = in.readLine();
 
@@ -85,8 +79,6 @@ public class Downloader {
                     res.add(line);
                 }
             } while (line != null);
-        } finally {
-            StreamUtils.close(in);
         }
 
         return res;
@@ -140,12 +132,8 @@ public class Downloader {
         final URLConnection urlConn = getConnection(url, "");
         final File myFile = new File(file);
 
-        OutputStream output = null;
-        InputStream input = null;
-
-        try {
-            output = new FileOutputStream(myFile);
-            input = urlConn.getInputStream();
+        try (OutputStream output = new FileOutputStream(myFile);
+                InputStream input = urlConn.getInputStream()) {
             final int length = urlConn.getContentLength();
             int current = 0;
 
@@ -169,9 +157,6 @@ public class Downloader {
                     }
                 }
             } while (count > 0);
-        } finally {
-            StreamUtils.close(input);
-            StreamUtils.close(output);
         }
     }
 
@@ -198,14 +183,9 @@ public class Downloader {
             urlConn.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
 
-            DataOutputStream out = null;
-
-            try {
-                out = new DataOutputStream(urlConn.getOutputStream());
+            try (DataOutputStream out = new DataOutputStream(urlConn.getOutputStream())) {
                 out.writeBytes(postData);
                 out.flush();
-            } finally {
-                StreamUtils.close(out);
             }
         }
 
