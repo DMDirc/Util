@@ -33,7 +33,6 @@ public class IdentValidator implements Validator<String> {
     private static final String FAILURE_REASON = "Ident must only contain "
             + "letters, numbers and []{}|-^\\.";
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         if (object == null || !object.matches(IDENT_REGEX)) {

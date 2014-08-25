@@ -34,7 +34,6 @@ public class NotEmptyValidator implements Validator<String> {
      */
     private static final long serialVersionUID = 1;
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         if (object == null || object.isEmpty()) {

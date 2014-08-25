@@ -43,7 +43,6 @@ public class RegexStringValidator implements Validator<String> {
         this.failedReason = failedReason;
     }
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         if (object != null && object.matches(regex)) {

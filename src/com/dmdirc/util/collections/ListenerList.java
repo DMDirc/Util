@@ -163,7 +163,6 @@ public class ListenerList {
             this.listenerType = listenerType;
         }
 
-        /** {@inheritDoc} */
         @Override
         public Object invoke(final Object proxy, final Method method,
                 final Object[] args) throws Throwable {

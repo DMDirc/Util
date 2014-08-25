@@ -30,7 +30,6 @@ package com.dmdirc.util.validators;
  */
 public class DisabledOptionValidator implements Validator<String> {
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         if (object != null && object.startsWith("false:")) {

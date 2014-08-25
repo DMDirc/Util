@@ -28,7 +28,6 @@ package com.dmdirc.util.validators;
  */
 public class PermissiveValidator<V> implements Validator<V> {
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final V object) {
         return new ValidationResponse();

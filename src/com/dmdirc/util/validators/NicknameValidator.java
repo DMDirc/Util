@@ -34,7 +34,6 @@ public class NicknameValidator implements Validator<String> {
     private static final String FAILURE_REASON = "Nickname must only contain "
             + "letters, numbers and []{}|-^\\.`_";
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         if (object == null || !object.matches(NICKNAME_REGEX)) {

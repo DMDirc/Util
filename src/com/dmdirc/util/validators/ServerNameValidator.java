@@ -27,9 +27,6 @@ package com.dmdirc.util.validators;
  */
 public class ServerNameValidator extends URIValidator {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ValidationResponse validate(final String object) {
         if (object == null || object.isEmpty()) {

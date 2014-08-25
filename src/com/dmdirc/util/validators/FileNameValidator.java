@@ -32,7 +32,6 @@ public class FileNameValidator implements Validator<String> {
     /** Failure reason. */
     private static final String FAILURE_REASON = "Must be a valid filename";
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         if (object == null || !object.matches(FILENAME_REGEX)) {

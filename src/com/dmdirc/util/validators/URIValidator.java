@@ -30,7 +30,6 @@ import java.net.URISyntaxException;
  */
 public class URIValidator implements Validator<String> {
 
-    /** {@inheritDoc} */
     @Override
     public ValidationResponse validate(final String object) {
         try {

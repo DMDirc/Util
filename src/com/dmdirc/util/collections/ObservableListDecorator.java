@@ -50,55 +50,46 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         this.list = list;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void addListListener(final ListObserver listener) {
         listeners.add(ListObserver.class, listener);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void removeListListener(final ListObserver listener) {
         listeners.remove(ListObserver.class, listener);
     }
 
-    /** {@inheritDoc} */
     @Override
     public int size() {
         return list.size();
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean isEmpty() {
         return list.isEmpty();
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean contains(final Object o) {
         return list.contains(o);
     }
 
-    /** {@inheritDoc} */
     @Override
     public Iterator<T> iterator() {
         return list.iterator();
     }
 
-    /** {@inheritDoc} */
     @Override
     public Object[] toArray() {
         return list.toArray();
     }
 
-    /** {@inheritDoc} */
     @Override
     public <S> S[] toArray(final S[] a) {
         return list.toArray(a);
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean add(final T e) {
         list.add(e);
@@ -109,7 +100,6 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return true;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean remove(final Object o) {
         final int index = list.indexOf(o);
@@ -124,13 +114,11 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return false;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean containsAll(final Collection<?> c) {
         return list.containsAll(c);
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean addAll(final Collection<? extends T> c) {
         if (list.addAll(c)) {
@@ -142,7 +130,6 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return false;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean addAll(final int index, final Collection<? extends T> c) {
         if (list.addAll(index, c)) {
@@ -154,7 +141,6 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return false;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean removeAll(final Collection<?> c) {
         final int length = list.size();
@@ -169,7 +155,6 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return false;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean retainAll(final Collection<?> c) {
         final int length = list.size();
@@ -184,7 +169,6 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return false;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void clear() {
         final int length = list.size();
@@ -197,13 +181,11 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public T get(final int index) {
         return list.get(index);
     }
 
-    /** {@inheritDoc} */
     @Override
     public T set(final int index, final T element) {
         final T res = list.set(index, element);
@@ -213,7 +195,6 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return res;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void add(final int index, final T element) {
         list.add(index, element);
@@ -221,7 +202,6 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         listeners.getCallable(ListObserver.class).onItemsAdded(this, index, index);
     }
 
-    /** {@inheritDoc} */
     @Override
     public T remove(final int index) {
         final T res = list.remove(index);
@@ -231,31 +211,26 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return res;
     }
 
-    /** {@inheritDoc} */
     @Override
     public int indexOf(final Object o) {
         return list.indexOf(o);
     }
 
-    /** {@inheritDoc} */
     @Override
     public int lastIndexOf(final Object o) {
         return list.lastIndexOf(o);
     }
 
-    /** {@inheritDoc} */
     @Override
     public ListIterator<T> listIterator() {
         return list.listIterator();
     }
 
-    /** {@inheritDoc} */
     @Override
     public ListIterator<T> listIterator(final int index) {
         return list.listIterator(index);
     }
 
-    /** {@inheritDoc} */
     @Override
     public List<T> subList(final int fromIndex, final int toIndex) {
         return list.subList(fromIndex, toIndex);
