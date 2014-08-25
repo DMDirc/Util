@@ -24,7 +24,6 @@ package com.dmdirc.util.io;
 
 import java.io.EOFException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
@@ -139,7 +138,7 @@ public class ReverseFileReader {
             throw new EOFException("Reached Start of file");
         }
 
-        // Keep looping untill we get a full line, or the end of the file
+        // Keep looping until we get a full line, or the end of the file
         boolean keepLooping = true;
         boolean gotNewLine;
         while (keepLooping) {
@@ -167,7 +166,7 @@ public class ReverseFileReader {
             // And loop looking for data
             // This uses seekDistance so that only wanted data is checked.
             for (int i = seekDistance - 1; i >= 0; --i) {
-                // Check for New line Character, or a non carraige-return char
+                // Check for New line Character, or a non carriage-return char
                 if (bytes[i] == '\n') {
                     // Seek to the location of this character and exit this loop.
                     file.seek(fp + i);
@@ -184,7 +183,7 @@ public class ReverseFileReader {
 
             if (fp == 0 && !gotNewLine) {
                 // This part of the loop started from the start of the file, but didn't
-                // find a new line anywhere. no more loops are posssible, so Treat
+                // find a new line anywhere. no more loops are possible, so Treat
                 // this as "got new line"
                 gotNewLine = true;
                 file.seek(0);

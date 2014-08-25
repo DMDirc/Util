@@ -94,7 +94,7 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
 
     /** {@inheritDoc} */
     @Override
-    public <T> T[] toArray(final T[] a) {
+    public <S> S[] toArray(final S[] a) {
         return list.toArray(a);
     }
 
