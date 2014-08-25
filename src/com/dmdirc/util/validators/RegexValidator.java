@@ -34,6 +34,7 @@ public class RegexValidator implements Validator<String> {
             // Is there a proper way of doing this, as opposed to just seeing
             // if it breaks?
 
+            //noinspection ResultOfMethodCallIgnored
             "abc".matches(object);
             return new ValidationResponse();
         } catch (Exception ex) {
