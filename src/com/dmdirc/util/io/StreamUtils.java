@@ -35,7 +35,6 @@ public final class StreamUtils {
 
     /** Shouldn't be called. */
     private StreamUtils() {
-        super();
     }
 
     /**
