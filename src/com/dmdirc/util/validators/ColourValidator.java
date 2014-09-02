@@ -27,8 +27,7 @@ package com.dmdirc.util.validators;
  *
  * @since 0.6.5
  */
-public class ColourValidator extends RegexStringValidator implements
-        Validator<String> {
+public class ColourValidator extends RegexStringValidator {
 
     /**
      * Creates a new colour validator.
