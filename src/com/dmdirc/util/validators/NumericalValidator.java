@@ -67,7 +67,7 @@ public class NumericalValidator implements Validator<String> {
 
     @Override
     public ValidationResponse validate(final String object) {
-        int intv;
+        final int intv;
 
         try {
             intv = Integer.parseInt(object);
