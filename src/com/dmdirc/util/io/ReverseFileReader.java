@@ -125,7 +125,7 @@ public class ReverseFileReader {
         // Used to store position in file pre-read
         long fp;
         // Used to store position in file when this is called
-        long startfp;
+        final long startfp;
         // Used to store read bytes
         byte[] bytes;
         // Distance seeked
@@ -203,7 +203,7 @@ public class ReverseFileReader {
         }
 
         // Return the data obtained.
-        byte[] result = new byte[line.size()];
+        final byte[] result = new byte[line.size()];
         for (int i = 0; i < line.size(); ++i) {
             result[i] = line.get(i);
         }
