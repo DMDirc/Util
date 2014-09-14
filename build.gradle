@@ -1,0 +1,95 @@
+import org.mdonoughe.JGitDescribeTask
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group = 'com.dmdirc'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+    test {
+        java {
+            srcDir 'test'
+        }
+        resources {
+            srcDir 'test-res'
+        }
+    }
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.+'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name 'snapshots'
+            url 'http://nexus.dmdirc.com/nexus/content/repositories/snapshots/'
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
+}
+
+task getCredentials << {
+    def target = file('nexus-teamcity.gradle')
+    if (!target.exists()) {
+        new URL('http://www.dmdirc.com/private/nexus-teamcity.gradle').withInputStream{
+            i -> target.withOutputStream { it << i }
+        }
+    }
+
+    apply from: 'nexus-teamcity.gradle'
+    project.publishing.repositories[0].credentials {
+        username "$nexusUser"
+        password "$nexusPass"
+    }
+}
+
+task getVersion << {
+    def jgit = new org.mdonoughe.JGitDescribeTask()
+    jgit.setDir(new File("$rootDir", '.git'))
+
+    project.version = jgit.getDescription() + '-SNAPSHOT'
+
+    project.tasks.withType(PublishToMavenRepository) {
+        publishTask -> publishTask.publication.version = project.version
+    }
+
+    project.tasks.withType(GenerateMavenPom).each {
+        generateMavenPomTask -> generateMavenPomTask.pom.getProjectIdentity().version = project.version
+    }
+}
+
+task publishSnapshot(dependsOn: ['getCredentials', 'getVersion', 'publishMavenJavaPublicationToSnapshotsRepository']) << {
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'http://nexus.dmdirc.com/nexus/content/repositories/thirdparty/'
+        }
+    }
+
+    dependencies {
+        classpath group: 'com.github.shanemcc', name: 'jgit-describe', version: '0.5'
+        classpath group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '2.3.1.+'
+    }
+}
