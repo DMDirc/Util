@@ -4,8 +4,5 @@
 /build/
 /dist
 /lib/*.jar
-build-before-profiler.xml
-/nbproject/profiler-build-impl.xml
-/nbproject/genfiles.properties
-/nbproject/private
 /nexus-teamcity.gradle
+/.gradle
