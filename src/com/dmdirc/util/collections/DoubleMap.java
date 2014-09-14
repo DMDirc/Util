@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -101,13 +100,13 @@ public class DoubleMap<A,B> implements Map<A, B> {
     @Override
     @SuppressWarnings("unchecked")
     public boolean containsKey(final Object key) {
-        return keys.contains((A) key);
+        return keys.contains(key);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean containsValue(final Object value) {
-        return values.contains((B) value);
+        return values.contains(value);
     }
 
     @Override
