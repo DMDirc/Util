@@ -59,18 +59,18 @@ public class EmailAddressValidatorTest {
             {"email@example", false},});
     }
 
-    private String input;
+    private final String input;
 
-    private boolean expected;
+    private final boolean expected;
 
-    public EmailAddressValidatorTest(final String input, boolean expected) {
+    public EmailAddressValidatorTest(final String input, final boolean expected) {
         this.input = input;
         this.expected = expected;
     }
 
     @Test
     public void test() {
-        final EmailAddressValidator instance = new EmailAddressValidator();
+        final Validator<String> instance = new EmailAddressValidator();
         assertEquals(expected, !instance.validate(input).isFailure());
     }
 }
