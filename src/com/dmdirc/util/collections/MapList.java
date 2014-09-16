@@ -40,7 +40,7 @@ import java.util.Set;
  * synchronized externally.
  * <p>
  * The <code>List</code>s used to back this map are synchronized using the
- * {@link Collections#synchronizedList(java.util.List)} method, which requires
+ * {@link Collections#synchronizedList(List)} method, which requires
  * manual synchronization in any code iterating over the values.
  *
  * @param <S> the type of keys maintained by this map

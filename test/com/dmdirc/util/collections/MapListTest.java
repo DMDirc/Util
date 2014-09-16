@@ -23,6 +23,7 @@
 package com.dmdirc.util.collections;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class MapListTest {
     @Test
     public void testAddCollection() {
         final MapList<String, String> test = new MapList<>();
-        final List<String> testList = new ArrayList<>();
+        final Collection<String> testList = new ArrayList<>();
         testList.add("d");
         testList.add("e");
         test.add("key", testList);

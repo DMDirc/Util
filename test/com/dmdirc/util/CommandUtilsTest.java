@@ -31,7 +31,7 @@ public class CommandUtilsTest {
 
     @Test
     public void testParseArguments() {
-        final String[][][] tests = new String[][][]{
+        final String[][][] tests = {
             {{"abcdef abcdef abcdef"}, {"abcdef", "abcdef", "abcdef"}},
             {{"abcdef \"abcdef abcdef\""}, {"abcdef", "abcdef abcdef"}},
             {{"abcdef \"abcdef foo abcdef\""}, {"abcdef", "abcdef foo abcdef"}},

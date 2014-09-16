@@ -145,7 +145,7 @@ public class ListenerList {
 
     /**
      * Utility class to handle calls to a "callable" interface as returned by
-     * {@link #getCallable(java.lang.Class)}.
+     * {@link #getCallable(Class)}.
      *
      * @param <T> The type of listener being called
      */

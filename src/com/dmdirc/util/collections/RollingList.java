@@ -155,8 +155,7 @@ public class RollingList<T> {
      * @return True if there is an element, false otherwise.
      */
     public boolean hasNext() {
-        return (items.size() > position + 1) || ((items.size() > position)
-                && addEmpty);
+        return items.size() > position + 1 || items.size() > position && addEmpty;
     }
 
     /**

@@ -28,13 +28,13 @@ public class StringLengthValidatorTest {
 
     @Test
     public void testUnlimited() {
-        final StringLengthValidator slv = new StringLengthValidator(-1, 10);
+        final Validator slv = new StringLengthValidator(-1, 10);
         
         assertFalse(slv.validate("123").isFailure());
         assertFalse(slv.validate("").isFailure());
         assertFalse(slv.validate("123456789").isFailure());
         
-        final StringLengthValidator slv2 = new StringLengthValidator(0, -1);
+        final Validator slv2 = new StringLengthValidator(0, -1);
         
         assertFalse(slv2.validate("123456789").isFailure());
         assertFalse(slv2.validate("1").isFailure());
@@ -42,25 +42,25 @@ public class StringLengthValidatorTest {
     
     @Test
     public void testMinimum() {
-        final StringLengthValidator slv = new StringLengthValidator(5, 100);
+        final Validator slv = new StringLengthValidator(5, 100);
         
         assertTrue(slv.validate("").isFailure());
         assertTrue(slv.validate("123").isFailure());
         assertTrue(slv.validate("1234").isFailure());
-        assertTrue(slv.validate("1234").getFailureReason().indexOf("at least 5") > -1);
+        assertTrue(slv.validate("1234").getFailureReason().contains("at least 5"));
         assertFalse(slv.validate("12345").isFailure());
         assertFalse(slv.validate("12345789").isFailure());
     }
     
     @Test
     public void testMaximum() {
-        final StringLengthValidator slv = new StringLengthValidator(0, 3);
+        final Validator slv = new StringLengthValidator(0, 3);
         
         assertFalse(slv.validate("").isFailure());
         assertFalse(slv.validate("12").isFailure());
         assertFalse(slv.validate("123").isFailure());
         assertTrue(slv.validate("1234").isFailure());
-        assertTrue(slv.validate("1234").getFailureReason().indexOf("at most 3") > -1);
+        assertTrue(slv.validate("1234").getFailureReason().contains("at most 3"));
         assertTrue(slv.validate("12345").isFailure());
     }    
 

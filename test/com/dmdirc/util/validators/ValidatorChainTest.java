@@ -29,8 +29,7 @@ public class ValidatorChainTest {
 
     @Test
     public void testValidate() {
-        @SuppressWarnings("unchecked")
-        final ValidatorChain<String> chain = new ValidatorChain<>(
+        final Validator<String> chain = new ValidatorChain<>(
                 new NotEmptyValidator(), new RegexStringValidator("[a-z]*", "abc"));
         
         assertTrue(chain.validate("").isFailure());

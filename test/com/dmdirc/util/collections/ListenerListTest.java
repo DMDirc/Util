@@ -97,12 +97,12 @@ public class ListenerListTest {
     @Test
     public void testGenericGetListeners() {
         final Object listener = new Object();
-        final String listener2 = "";
         final ListenerList instance = new ListenerList();
         assertTrue(instance.get(Object.class).isEmpty());
         instance.add(Object.class, listener);
         assertTrue(instance.get(Object.class).contains(listener));
         assertTrue(instance.get(String.class).isEmpty());
+        final String listener2 = "";
         instance.add(String.class, listener2);
         assertTrue(instance.get(String.class).contains(listener2));
     }
@@ -110,12 +110,12 @@ public class ListenerListTest {
     @Test
     public void testStringGetListeners() {
         final Object listener = new Object();
-        final String listener2 = "";
         final ListenerList instance = new ListenerList();
         assertTrue(instance.get("Object").isEmpty());
         instance.add("Object", listener);
         assertTrue(instance.get("Object").contains(listener));
         assertTrue(instance.get("String").isEmpty());
+        final String listener2 = "";
         instance.add("String", listener2);
         assertTrue(instance.get("String").contains(listener2));
     }

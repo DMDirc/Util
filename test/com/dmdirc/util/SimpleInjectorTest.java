@@ -100,19 +100,19 @@ public class SimpleInjectorTest {
         assertNull(result);
     }
 
-    class TestObject implements Serializable {
+    static class TestObject implements Serializable {
 
         public TestObject(final String test) { // NOPMD
         }
     }
 
-    class PrivateObject implements Serializable {
+    static class PrivateObject implements Serializable {
 
         private PrivateObject() {
         }
     }
 
-    class ExceptionObject implements Serializable {
+    static class ExceptionObject implements Serializable {
 
         public ExceptionObject() {
             throw new IndexOutOfBoundsException();

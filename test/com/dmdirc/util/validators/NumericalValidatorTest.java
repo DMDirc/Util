@@ -49,13 +49,13 @@ public class NumericalValidatorTest {
         final ValidationResponse vr = new NumericalValidator(3, 5).validate("foo");
 
         assertTrue(vr.isFailure());
-        assertTrue(vr.getFailureReason().indexOf("number") > -1);
+        assertTrue(vr.getFailureReason().contains("number"));
     }
 
     @Test
     public void testMin() {
-        final NumericalValidator nv1 = new NumericalValidator(-1, -1);
-        final NumericalValidator nv2 = new NumericalValidator(-5, -1);
+        final Validator nv1 = new NumericalValidator(-1, -1);
+        final Validator nv2 = new NumericalValidator(-5, -1);
 
         assertFalse(nv1.validate("-5").isFailure());
         assertFalse(nv2.validate("-5").isFailure());
@@ -66,8 +66,8 @@ public class NumericalValidatorTest {
 
     @Test
     public void testMax() {
-        final NumericalValidator nv1 = new NumericalValidator(-1, -1);
-        final NumericalValidator nv2 = new NumericalValidator(-1, 10);
+        final Validator nv1 = new NumericalValidator(-1, -1);
+        final Validator nv2 = new NumericalValidator(-1, 10);
 
         assertFalse(nv1.validate("-5").isFailure());
         assertFalse(nv1.validate("50").isFailure());

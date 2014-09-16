@@ -48,7 +48,8 @@ public class SimpleInjector {
      * @param parents The injectors to inherit parameters from.
      */
     public SimpleInjector(final SimpleInjector ... parents) {
-        this.parents = parents;
+        this.parents = new SimpleInjector[parents.length];
+        System.arraycopy(parents, 0, this.parents, 0, parents.length);
     }
 
     /**
@@ -67,7 +68,7 @@ public class SimpleInjector {
     /**
      * Adds the specified object as an injectable parameter for all of its
      * known classes and interface. This is equivalent to calling
-     * {@link #addParameter(java.lang.Class, java.lang.Object)} for the object's
+     * {@link #addParameter(Class, Object)} for the object's
      * class, all superclasses, and all interfaces.
      *
      * @param object The object to be injected
