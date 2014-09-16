@@ -30,19 +30,19 @@ public class DisabledOptionValidatorTest {
 
     @Test
     public void testValidateNull() {
-        final DisabledOptionValidator instance = new DisabledOptionValidator();
+        final Validator instance = new DisabledOptionValidator();
         assertFalse(instance.validate(null).isFailure());
     }
 
     @Test
     public void testValidateFalse() {
-        final DisabledOptionValidator instance = new DisabledOptionValidator();
+        final Validator instance = new DisabledOptionValidator();
         assertTrue(instance.validate("false:moo").isFailure());
     }
 
     @Test
     public void testValidateTrue() {
-        final DisabledOptionValidator instance = new DisabledOptionValidator();
+        final Validator instance = new DisabledOptionValidator();
         assertFalse(instance.validate("true:moo").isFailure());
     }
 }

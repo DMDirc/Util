@@ -35,7 +35,7 @@ public class ReturnableThreadTest {
         assertSame(result, instance.getObject());
     }
 
-    private class RetunableThreadImpl extends ReturnableThread {
+    private static class RetunableThreadImpl extends ReturnableThread {
         @Override
         public void run() {
         }

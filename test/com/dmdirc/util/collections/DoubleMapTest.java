@@ -22,6 +22,8 @@
 
 package com.dmdirc.util.collections;
 
+import java.util.Map;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -29,7 +31,7 @@ public class DoubleMapTest {
 
     @Test
     public void testPut() {
-        final DoubleMap<String, String> dm = new DoubleMap<>();
+        final Map<String, String> dm = new DoubleMap<>();
         dm.put("a", "b");
         
         assertEquals(1, dm.keySet().size());
@@ -40,13 +42,13 @@ public class DoubleMapTest {
     
     @Test(expected=NullPointerException.class)
     public void testPutNull1() {
-        final DoubleMap<String, String> dm = new DoubleMap<>();
+        final Map<String, String> dm = new DoubleMap<>();
         dm.put(null, "b");
     }
     
     @Test(expected=NullPointerException.class)
     public void testPutNull2() {
-        final DoubleMap<String, String> dm = new DoubleMap<>();
+        final Map<String, String> dm = new DoubleMap<>();
         dm.put("a", null);
     }    
     

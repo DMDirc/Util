@@ -28,10 +28,10 @@ public class NotEmptyValidatorTest {
 
     @Test
     public void testValidate() {
-        final NotEmptyValidator nev = new NotEmptyValidator();
+        final Validator nev = new NotEmptyValidator();
         
         assertTrue(nev.validate("").isFailure());
-        assertTrue(nev.validate("").getFailureReason().indexOf("empty") > -1);
+        assertTrue(nev.validate("").getFailureReason().contains("empty"));
         assertFalse(nev.validate("moo").isFailure());
         assertFalse(nev.validate(" ").isFailure());
     }

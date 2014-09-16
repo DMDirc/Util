@@ -23,6 +23,7 @@
 package com.dmdirc.util.collections;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -35,7 +36,7 @@ public class WeakListTest {
 
     @Test
     public void testIsEmpty() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         assertTrue(instance.isEmpty());
         instance.add("test1");
         assertFalse(instance.isEmpty());
@@ -43,14 +44,14 @@ public class WeakListTest {
 
     @Test
     public void testAdd() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         assertTrue(instance.add("test1"));
         assertFalse(instance.isEmpty());
     }
 
     @Test
     public void testAddInt() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         assertTrue(instance.add("test1"));
         instance.add(0, "test2");
         assertEquals("test2", instance.get(0));
@@ -58,7 +59,7 @@ public class WeakListTest {
 
     @Test
     public void testRemove() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.add("test1");
         assertFalse(instance.isEmpty());
         assertTrue(instance.remove("test1"));
@@ -67,19 +68,19 @@ public class WeakListTest {
 
     @Test
     public void testRemoveInt() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         assertTrue(instance.isEmpty());
         instance.add("test1");
         instance.add("test2");
         assertEquals(2, instance.size());
         instance.remove(1);
-        assertTrue(instance.contains(("test1")));
-        assertFalse(instance.contains(("test2")));
+        assertTrue(instance.contains("test1"));
+        assertFalse(instance.contains("test2"));
     }
 
     @Test
     public void testGet() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.add("test1");
         instance.add("test2");
         assertEquals("test1", instance.get(0));
@@ -88,7 +89,7 @@ public class WeakListTest {
 
     @Test
     public void testContains() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         assertFalse(instance.contains("test1"));
         instance.add("test1");
         assertTrue(instance.contains("test1"));
@@ -99,7 +100,7 @@ public class WeakListTest {
      */
     @Test
     public void testToArray0args() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         assertEquals(0, instance.toArray().length);
         instance.add("test1");
         instance.add("test2");
@@ -114,7 +115,7 @@ public class WeakListTest {
      */
     @Test
     public void testToArrayGenericType() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         assertEquals(0, instance.toArray(new String[instance.size()]).length);
         instance.add("test1");
         instance.add("test2");
@@ -129,10 +130,10 @@ public class WeakListTest {
      */
     @Test
     public void testContainsAllAddAll() {
-        final List<String> list = new ArrayList<>();
+        final Collection<String> list = new ArrayList<>();
         list.add("test1");
         list.add("test2");
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         assertFalse(instance.containsAll(list));
         instance.addAll(list);
         assertTrue(instance.contains("test1"));
@@ -142,10 +143,10 @@ public class WeakListTest {
 
     @Test
     public void testAddAllIntCollection() {
-        final List<String> list = new ArrayList<>();
+        final Collection<String> list = new ArrayList<>();
         list.add("test1");
         list.add("test2");
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.add("test3");
         System.out.println(instance);
         assertEquals("test3", instance.get(0));
@@ -158,9 +159,9 @@ public class WeakListTest {
     @Test
     public void testIndexOf() {
         final String one = "test1";
-        final String two = "test2";
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.add(one);
+        final String two = "test2";
         instance.add(two);
         assertEquals(2, instance.size());
         assertEquals(0, instance.indexOf(one));
@@ -170,9 +171,9 @@ public class WeakListTest {
     @Test
     public void testLastIndexOf() {
         final String one = "test1";
-        final String two = "test2";
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.add(one);
+        final String two = "test2";
         instance.add(two);
         instance.add(one);
         assertEquals(3, instance.size());
@@ -181,10 +182,10 @@ public class WeakListTest {
 
     @Test
     public void testRemoveAll() {
-        final List<String> list = new ArrayList<>();
+        final Collection<String> list = new ArrayList<>();
         list.add("test1");
         list.add("test2");
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.addAll(list);
         assertFalse(instance.isEmpty());
         instance.removeAll(list);
@@ -193,10 +194,10 @@ public class WeakListTest {
 
     @Test
     public void testRetainAll() {
-        final List<String> list = new ArrayList<>();
+        final Collection<String> list = new ArrayList<>();
         list.add("test1");
         list.add("test2");
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.addAll(list);
         instance.add("test3");
         instance.add("test4");
@@ -207,10 +208,10 @@ public class WeakListTest {
 
     @Test
     public void testClear() {
-        final List<String> list = new ArrayList<>();
+        final Collection<String> list = new ArrayList<>();
         list.add("test1");
         list.add("test2");
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.addAll(list);
         assertFalse(instance.isEmpty());
         instance.clear();
@@ -219,7 +220,7 @@ public class WeakListTest {
 
     @Test
     public void testSet() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.add("test1");
         assertEquals("test1", instance.get(0));
         instance.set(0, "test2");
@@ -228,7 +229,7 @@ public class WeakListTest {
 
     @Test
     public void testIterator() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         Iterator result = instance.iterator();
         assertFalse(result.hasNext());
         instance.add("test1");
@@ -241,7 +242,7 @@ public class WeakListTest {
 
     @Test
     public void testListIterator0args() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         ListIterator result = instance.listIterator();
         assertFalse(result.hasNext());
         instance.add("test1");
@@ -254,7 +255,7 @@ public class WeakListTest {
 
     @Test(expected=IndexOutOfBoundsException.class)
     public void testListIteratorInt() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         ListIterator result = instance.listIterator(1);
         assertFalse(result.hasNext());
         instance.add("test1");
@@ -269,7 +270,7 @@ public class WeakListTest {
 
     @Test
     public void testSubList() {
-        final WeakList<String> instance = new WeakList<>();
+        final List<String> instance = new WeakList<>();
         instance.add("test1");
         instance.add("test2");
         instance.add("test3");

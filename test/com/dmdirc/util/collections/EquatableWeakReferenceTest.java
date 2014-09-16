@@ -36,7 +36,7 @@ public class EquatableWeakReferenceTest {
 
         assertTrue(ewf.equals(myObject));
         assertTrue(ewf.equals(myRef));
-        assertFalse(ewf.equals("bar"));
+        assertFalse("bar".equals(ewf));
         assertFalse(ewf.equals(new WeakReference<Object>("bar")));
     }
 
