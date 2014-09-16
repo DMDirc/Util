@@ -22,7 +22,6 @@
 
 package com.dmdirc.util.collections;
 
-import com.dmdirc.util.collections.RollingList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

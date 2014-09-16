@@ -30,20 +30,20 @@ public class URIValidatorTest {
 
     @Test
     public void testValidateNoHostname() {
-        ServerNameValidator instance = new ServerNameValidator();
+        final ServerNameValidator instance = new ServerNameValidator();
         assertEquals("Address requires a hostname.",
                 instance.validate("irc://").getFailureReason());
     }
 
     @Test
     public void testValidateInvalidURI() {
-        URIValidator instance = new URIValidator();
+        final URIValidator instance = new URIValidator();
         assertTrue(instance.validate("http://^").isFailure());
     }
 
     @Test
     public void testValidateValid() {
-        URIValidator instance = new URIValidator();
+        final URIValidator instance = new URIValidator();
         assertFalse(instance.validate("http://google.com:80").isFailure());
     }
 }

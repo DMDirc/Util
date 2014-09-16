@@ -49,7 +49,7 @@ public class WeakListTest {
     }
 
     @Test
-    public void testAdd_Int() {
+    public void testAddInt() {
         final WeakList<String> instance = new WeakList<>();
         assertTrue(instance.add("test1"));
         instance.add(0, "test2");
@@ -66,7 +66,7 @@ public class WeakListTest {
     }
 
     @Test
-    public void testRemove_Int() {
+    public void testRemoveInt() {
         final WeakList<String> instance = new WeakList<>();
         assertTrue(instance.isEmpty());
         instance.add("test1");
@@ -98,7 +98,7 @@ public class WeakListTest {
      * Test of toArray method, of class WeakList.
      */
     @Test
-    public void testToArray_0args() {
+    public void testToArray0args() {
         final WeakList<String> instance = new WeakList<>();
         assertEquals(0, instance.toArray().length);
         instance.add("test1");
@@ -113,9 +113,9 @@ public class WeakListTest {
      * Test of toArray method, of class WeakList.
      */
     @Test
-    public void testToArray_GenericType() {
+    public void testToArrayGenericType() {
         final WeakList<String> instance = new WeakList<>();
-        assertEquals(0, instance.toArray(new String[0]).length);
+        assertEquals(0, instance.toArray(new String[instance.size()]).length);
         instance.add("test1");
         instance.add("test2");
         final Object[] result = instance.toArray(new String[2]);
@@ -141,7 +141,7 @@ public class WeakListTest {
     }
 
     @Test
-    public void testAddAll_int_Collection() {
+    public void testAddAllIntCollection() {
         final List<String> list = new ArrayList<>();
         list.add("test1");
         list.add("test2");
@@ -240,7 +240,7 @@ public class WeakListTest {
     }
 
     @Test
-    public void testListIterator_0args() {
+    public void testListIterator0args() {
         final WeakList<String> instance = new WeakList<>();
         ListIterator result = instance.listIterator();
         assertFalse(result.hasNext());
@@ -253,7 +253,7 @@ public class WeakListTest {
     }
 
     @Test(expected=IndexOutOfBoundsException.class)
-    public void testListIterator_int() {
+    public void testListIteratorInt() {
         final WeakList<String> instance = new WeakList<>();
         ListIterator result = instance.listIterator(1);
         assertFalse(result.hasNext());
@@ -274,7 +274,7 @@ public class WeakListTest {
         instance.add("test2");
         instance.add("test3");
         instance.add("test4");
-        List result = instance.subList(1, 3);
+        final List result = instance.subList(1, 3);
         assertEquals(2, result.size());
         assertTrue(result.contains("test2"));
         assertTrue(result.contains("test3"));

@@ -21,7 +21,6 @@
  */
 package com.dmdirc.util.validators;
 
-import com.dmdirc.util.validators.RegexStringValidator;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

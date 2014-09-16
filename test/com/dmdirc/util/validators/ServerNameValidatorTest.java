@@ -31,38 +31,38 @@ public class ServerNameValidatorTest {
 
     @Test
     public void testValidateNull() {
-        ServerNameValidator instance = new ServerNameValidator();
+        final ServerNameValidator instance = new ServerNameValidator();
         assertTrue(instance.validate(null).isFailure());
     }
 
     @Test
     public void testValidateEmpty() {
-        ServerNameValidator instance = new ServerNameValidator();
+        final ServerNameValidator instance = new ServerNameValidator();
         assertTrue(instance.validate("").isFailure());
     }
 
     @Test
     public void testValidateNoProtocol() {
-        ServerNameValidator instance = new ServerNameValidator();
+        final ServerNameValidator instance = new ServerNameValidator();
         assertFalse(instance.validate("test.com").isFailure());
     }
 
     @Test
     public void testValidateNoHostname() {
-        ServerNameValidator instance = new ServerNameValidator();
+        final ServerNameValidator instance = new ServerNameValidator();
         assertEquals("Address requires a hostname.",
                 instance.validate("irc://").getFailureReason());
     }
 
     @Test
     public void testValidateInvalidURI() {
-        ServerNameValidator instance = new ServerNameValidator();
+        final ServerNameValidator instance = new ServerNameValidator();
         assertTrue(instance.validate("irc://^").isFailure());
     }
 
     @Test
     public void testValidateValid() {
-        ServerNameValidator instance = new ServerNameValidator();
+        final ServerNameValidator instance = new ServerNameValidator();
         assertFalse(instance.validate("irc://test.com").isFailure());
     }
 }
