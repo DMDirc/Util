@@ -22,9 +22,6 @@
 
 package com.dmdirc.util.collections;
 
-import com.dmdirc.util.collections.ObservableListDecorator;
-import com.dmdirc.util.collections.ObservableList;
-import com.dmdirc.util.collections.ListObserver;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;

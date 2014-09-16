@@ -31,14 +31,14 @@ public class SimpleInjectorTest {
 
     @Test
     public void testNoParams() {
-        SimpleInjector instance = new SimpleInjector();
+        final SimpleInjector instance = new SimpleInjector();
         assertTrue(instance.getParameters().isEmpty());
     }
 
     @Test
     public void testAddParams() {
         final Object object = new Object();
-        SimpleInjector instance = new SimpleInjector();
+        final SimpleInjector instance = new SimpleInjector();
         instance.addParameter(Object.class, object);
         assertEquals(1, instance.getParameters().size());
     }
@@ -46,7 +46,7 @@ public class SimpleInjectorTest {
     @Test
     public void testAddObjectsParams() {
         final TestObject object = new TestObject("");
-        SimpleInjector instance = new SimpleInjector();
+        final SimpleInjector instance = new SimpleInjector();
         instance.addParameter(object);
         assertEquals(3, instance.getParameters().size());
     }
@@ -54,22 +54,22 @@ public class SimpleInjectorTest {
     @Test
     public void testParentsParams() {
         final Object object = new Object();
-        SimpleInjector parent = new SimpleInjector();
+        final SimpleInjector parent = new SimpleInjector();
         parent.addParameter(Object.class, object);
-        SimpleInjector child = new SimpleInjector(parent);
+        final SimpleInjector child = new SimpleInjector(parent);
         assertEquals(1, child.getParameters().size());
     }
 
     @Test
     public void testCreateInstanceNoParams() {
-        SimpleInjector instance = new SimpleInjector();
+        final SimpleInjector instance = new SimpleInjector();
         final Object result = instance.createInstance(Object.class);
         assertNotNull(result);
     }
 
     @Test
     public void testCreateInstanceParams() {
-        SimpleInjector instance = new SimpleInjector();
+        final SimpleInjector instance = new SimpleInjector();
         instance.addParameter(String.class, "test");
         instance.addParameter(SimpleInjectorTest.class, this);
         final TestObject result = instance.createInstance(TestObject.class);
@@ -78,14 +78,14 @@ public class SimpleInjectorTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testCreateUnsatisfiedConstructor() {
-        SimpleInjector instance = new SimpleInjector();
+        final SimpleInjector instance = new SimpleInjector();
         final Object result = instance.createInstance(TestObject.class);
         assertNull(result);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testCreatePrivateConstructor() {
-        SimpleInjector instance = new SimpleInjector();
+        final SimpleInjector instance = new SimpleInjector();
         instance.addParameter(String.class, "");
         final Object result = instance.createInstance(PrivateObject.class);
         assertNull(result);
@@ -93,7 +93,7 @@ public class SimpleInjectorTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testCreateExceptionConstructor() {
-        SimpleInjector instance = new SimpleInjector();
+        final SimpleInjector instance = new SimpleInjector();
         instance.addParameter(String.class, "");
         instance.addParameter(SimpleInjectorTest.class, this);
         final Object result = instance.createInstance(ExceptionObject.class);
@@ -102,7 +102,7 @@ public class SimpleInjectorTest {
 
     class TestObject implements Serializable {
 
-        public TestObject(final String test) {
+        public TestObject(final String test) { // NOPMD
         }
     }
 

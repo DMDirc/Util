@@ -21,7 +21,6 @@
  */
 package com.dmdirc.util.collections;
 
-import com.dmdirc.util.collections.EquatableWeakReference;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import org.junit.Test;

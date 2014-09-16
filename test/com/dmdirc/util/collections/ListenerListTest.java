@@ -32,7 +32,7 @@ public class ListenerListTest {
     public void testGenericAddListener() {
         final Object listener = new Object();
         final Object listener2 = new Object();
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add(Object.class, listener);
         instance.add(Object.class, listener2);
         assertTrue(instance.get(Object.class).contains(listener));
@@ -42,7 +42,7 @@ public class ListenerListTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testGenericAddNull() {
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add(Object.class, null);
         assertFalse(instance.get(Object.class).contains(null));
     }
@@ -51,7 +51,7 @@ public class ListenerListTest {
     public void testStringAddListener() {
         final Object listener = new Object();
         final Object listener2 = new Object();
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add("Object", listener);
         instance.add("Object", listener2);
         assertTrue(instance.get("Object").contains(listener));
@@ -59,7 +59,7 @@ public class ListenerListTest {
     }
     @Test(expected=IllegalArgumentException.class)
     public void testStringAddNull() {
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add("Object", null);
         assertFalse(instance.get(Object.class).contains(null));
     }
@@ -67,7 +67,7 @@ public class ListenerListTest {
     @Test
     public void testGenericRemoveListener() {
         final Object listener = new Object();
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add(Object.class, listener);
         assertTrue(instance.get(Object.class).contains(listener));
         instance.remove(Object.class, listener);
@@ -77,7 +77,7 @@ public class ListenerListTest {
     @Test
     public void testStringRemoveListener() {
         final Object listener = new Object();
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add("Object", listener);
         assertTrue(instance.get("Object").contains(listener));
         instance.remove("Object", listener);
@@ -87,7 +87,7 @@ public class ListenerListTest {
     @Test
     public void testStringRemoveUnknownListener() {
         final Object listener = new Object();
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add("Object", listener);
         assertTrue(instance.get("Object").contains(listener));
         instance.remove("String", listener);
@@ -98,7 +98,7 @@ public class ListenerListTest {
     public void testGenericGetListeners() {
         final Object listener = new Object();
         final String listener2 = "";
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         assertTrue(instance.get(Object.class).isEmpty());
         instance.add(Object.class, listener);
         assertTrue(instance.get(Object.class).contains(listener));
@@ -111,7 +111,7 @@ public class ListenerListTest {
     public void testStringGetListeners() {
         final Object listener = new Object();
         final String listener2 = "";
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         assertTrue(instance.get("Object").isEmpty());
         instance.add("Object", listener);
         assertTrue(instance.get("Object").contains(listener));
@@ -124,7 +124,7 @@ public class ListenerListTest {
     public void testGetCallableNoArgs() {
         final TestCallable one = mock(TestCallable.class);
         final TestCallable two = mock(TestCallable.class);
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add(TestCallable.class, one);
         instance.add(TestCallable.class, two);
         final TestCallable test = instance.getCallable(TestCallable.class);
@@ -136,7 +136,7 @@ public class ListenerListTest {
     @Test
     public void testGetCallableArg() {
         final TestCallable one = mock(TestCallable.class);
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add(TestCallable.class, one);
         final TestCallable test = instance.getCallable(TestCallable.class);
         test.testMethod("test");
@@ -146,7 +146,7 @@ public class ListenerListTest {
     @Test
     public void testGetCallableArgs() {
         final TestCallable one = mock(TestCallable.class);
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add(TestCallable.class, one);
         final TestCallable test = instance.getCallable(TestCallable.class);
         test.testMethod("test", "test1");
@@ -157,7 +157,7 @@ public class ListenerListTest {
     public void testGetCallableThrowsException() {
         final TestCallable one = mock(TestCallable.class);
         when(one.testMethod()).thenThrow(new IndexOutOfBoundsException());
-        ListenerList instance = new ListenerList();
+        final ListenerList instance = new ListenerList();
         instance.add(TestCallable.class, one);
         final TestCallable test = instance.getCallable(TestCallable.class);
         test.testMethod();

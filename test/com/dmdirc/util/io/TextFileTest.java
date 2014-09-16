@@ -56,12 +56,10 @@ public class TextFileTest {
 
     @Test
     public void testWrite() throws IOException {
-        File tempFile = File.createTempFile("dmdirc_unit_test", null);
+        final File tempFile = File.createTempFile("dmdirc_unit_test", null);
         TextFile file = new TextFile(tempFile);
 
-        final List<String> lines = Arrays.asList(new String[]{
-            "hello", "this is a test", "meep"
-        });
+        final List<String> lines = Arrays.asList("hello", "this is a test", "meep");
 
         file.writeLines(lines);
 
@@ -76,9 +74,7 @@ public class TextFileTest {
     public void testIllegalWrite() throws IOException {
         final TextFile file
                 = new TextFile(getClass().getResourceAsStream("test1.txt"));
-        file.writeLines(Arrays.asList(new String[]{
-            "hello", "this is a test", "meep"
-        }));
+        file.writeLines(Arrays.asList("hello", "this is a test", "meep"));
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -90,12 +86,10 @@ public class TextFileTest {
 
     @Test
     public void testDelete() throws IOException {
-        File tempFile = File.createTempFile("dmdirc_unit_test", "de;ete");
+        final File tempFile = File.createTempFile("dmdirc_unit_test", "de;ete");
         TextFile file = new TextFile(tempFile);
 
-        final List<String> lines = Arrays.asList(new String[]{
-            "hello", "this is a test", "meep"
-        });
+        final List<String> lines = Arrays.asList("hello", "this is a test", "meep");
 
         file.writeLines(lines);
 

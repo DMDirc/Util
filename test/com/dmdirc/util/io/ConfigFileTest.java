@@ -226,7 +226,7 @@ public class ConfigFileTest {
     public void testDelete() throws IOException {
         final File file = File.createTempFile("DMDirc_unittest", null);
         file.deleteOnExit();
-        ConfigFile config = new ConfigFile(file);
+        final ConfigFile config = new ConfigFile(file);
         config.write();
         assertTrue(file.exists());
         config.delete();

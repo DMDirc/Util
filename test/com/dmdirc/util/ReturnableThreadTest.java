@@ -30,7 +30,7 @@ public class ReturnableThreadTest {
     @Test
     public void testSetAndGetObject() {
         final Object result = new Object();
-        ReturnableThread instance = new RetunableThreadImpl();
+        final ReturnableThread instance = new RetunableThreadImpl();
         instance.setObject(result);
         assertSame(result, instance.getObject());
     }
