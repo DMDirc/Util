@@ -67,7 +67,7 @@ public final class DateUtils {
      * number of days, hours, minutes and seconds.
      *
      * @param duration The duration in seconds to be formatted
-     * @return A textual version of the duration
+     * @return A textual version of the duration in words (e.g. '3 days, 1 minute, 4 seconds').
      */
     public static String formatDuration(final int duration) {
         final StringBuilder buff = new StringBuilder();
@@ -80,5 +80,42 @@ public final class DateUtils {
         doDuration(buff, seconds, 1, "second");
 
         return buff.length() == 0 ? "0 seconds" : buff.toString();
+    }
+
+    /**
+     * Appends the specified number as a 0-padded 2 digit time.
+     *
+     * @param builder The builder to append the number to.
+     * @param number The number to be appended.
+     * @return The given builder, as a convenience.
+     */
+    private static StringBuilder appendTime(final StringBuilder builder, final int number) {
+        if (number < 10) {
+            builder.append('0');
+        }
+        builder.append(number);
+        return builder;
+    }
+
+    /**
+     * Formats the specified number of seconds as a string containing the
+     * number of hours, minutes and seconds.
+     *
+     * @param duration The duration in seconds to be formatted
+     * @return A textual version of the duration as a time (e.g. '03:02:12').
+     */
+    public static String formatDurationAsTime(final int duration) {
+        final StringBuilder result = new StringBuilder();
+        final int hours = duration / 3600;
+        final int minutes = duration / 60 % 60;
+        final int seconds = duration % 60;
+
+        if (hours > 0) {
+            appendTime(result, hours).append(':');
+        }
+
+        appendTime(result, minutes).append(':');
+        appendTime(result, seconds);
+        return result.toString();
     }
 }
