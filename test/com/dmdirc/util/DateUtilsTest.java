@@ -79,4 +79,34 @@ public class DateUtilsTest {
         assertEquals("0 seconds", DateUtils.formatDuration(-100));
     }
 
+    @Test
+    public void testFormatDurationAsTimeNoSeconds() {
+        assertEquals("00:00", DateUtils.formatDurationAsTime(0));
+    }
+
+    @Test
+    public void testFormatDurationAsTimeSingleDigits() {
+        assertEquals("01:05", DateUtils.formatDurationAsTime(65));
+    }
+
+    @Test
+    public void testFormatDurationAsTimeDoubleDigits() {
+        assertEquals("10:50", DateUtils.formatDurationAsTime(650));
+    }
+
+    @Test
+    public void testFormatDurationAsTimeHours() {
+        assertEquals("01:10:50", DateUtils.formatDurationAsTime(4250));
+    }
+
+    @Test
+    public void testFormatDurationAsTimeHoursOnly() {
+        assertEquals("01:00:00", DateUtils.formatDurationAsTime(3600));
+    }
+
+    @Test
+    public void testFormatDurationAsTimeLotsOfHours() {
+        assertEquals("100:10:50", DateUtils.formatDurationAsTime(360650));
+    }
+
 }
