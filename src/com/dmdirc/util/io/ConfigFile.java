@@ -28,7 +28,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +42,7 @@ import java.util.Map;
 public class ConfigFile extends TextFile {
 
     /** A list of domains in this config file. */
-    private final List<String> domains = new ArrayList<>();
+    private final Collection<String> domains = new ArrayList<>();
 
     /** The values associated with each flat domain. */
     private final MapList<String, String> flatdomains = new MapList<>();
@@ -79,6 +81,15 @@ public class ConfigFile extends TextFile {
     }
 
     /**
+     * Creates a new config file from the specified path.
+     *
+     * @param path The path to read/write.
+     */
+    public ConfigFile(final Path path) {
+        super(path, Charset.forName("UTF-8"));
+    }
+
+    /**
      * Sets the "automake" value of this config file. If automake is set to
      * true, any calls to getKeyDomain will automatically create the domain
      * if it did not previously exist.
@@ -96,16 +107,14 @@ public class ConfigFile extends TextFile {
      * @throws InvalidConfigFileException if the config file isn't valid
      */
     public void read() throws IOException, InvalidConfigFileException {
-        String domain = null;
-        boolean keydomain = false;
-        int offset;
-
         keydomains.clear();
         flatdomains.clear();
         domains.clear();
 
         readLines();
 
+        String domain = null;
+        boolean keydomain = false;
         for (String line : getLines()) {
             String tline = line;
 
@@ -116,9 +125,10 @@ public class ConfigFile extends TextFile {
 
             if (tline.indexOf('#') == 0 || tline.isEmpty()) {
                 continue;
-            } else if (
-                    (tline.endsWith(":") && !tline.endsWith("\\:"))
-                    && findEquals(tline) == -1) {
+            }
+
+            final int offset;
+            if (tline.endsWith(":") && !tline.endsWith("\\:") && findEquals(tline) == -1) {
                 domain = unescape(tline.substring(0, tline.length() - 1));
 
                 domains.add(domain);
@@ -160,8 +170,7 @@ public class ConfigFile extends TextFile {
         final List<String> lines = new ArrayList<>();
 
         lines.add("# This is a DMDirc configuration file.");
-        lines.add("# Written on: " + new GregorianCalendar().getTime()
-                .toString());
+        lines.add("# Written on: " + new GregorianCalendar().getTime());
 
         writeMeta(lines);
 
@@ -181,7 +190,7 @@ public class ConfigFile extends TextFile {
             } else {
                 for (Map.Entry<String, String> entry : keydomains.get(domain)
                         .entrySet()) {
-                    lines.add("  " + escape(entry.getKey()) + "="
+                    lines.add("  " + escape(entry.getKey()) + '='
                             + escape(entry.getValue()));
                 }
             }
@@ -195,7 +204,7 @@ public class ConfigFile extends TextFile {
      *
      * @param lines The set of lines to be appended to
      */
-    private void writeMeta(final List<String> lines) {
+    private void writeMeta(final Collection<String> lines) {
         lines.add("");
         lines.add("# This section indicates which sections below take "
                 + "key/value");
@@ -205,9 +214,7 @@ public class ConfigFile extends TextFile {
         lines.add("keysections:");
 
         for (String domain : domains) {
-            if ("keysections".equals(domain)) {
-                continue;
-            } else if (keydomains.containsKey(domain)) {
+            if (!"keysections".equals(domain) && keydomains.containsKey(domain)) {
                 lines.add("  " + domain);
             }
         }
@@ -286,7 +293,7 @@ public class ConfigFile extends TextFile {
      * @param name The name of the domain to be added
      * @param data The content of the domain
      */
-    public void addDomain(final String name, final List<String> data) {
+    public void addDomain(final String name, final Collection<String> data) {
         domains.add(name);
         flatdomains.add(name, data);
     }
@@ -308,7 +315,7 @@ public class ConfigFile extends TextFile {
      * @param input The string to unescape
      * @return The string with all escape chars (\) resolved
      */
-    protected static String unescape(final String input) {
+    protected static String unescape(final CharSequence input) {
         boolean escaped = false;
         final StringBuilder temp = new StringBuilder();
 
@@ -354,7 +361,7 @@ public class ConfigFile extends TextFile {
      * @param input The string to be searched
      * @return The offset of the first non-escaped instance of '=', or -1.
      */
-    protected static int findEquals(final String input) {
+    protected static int findEquals(final CharSequence input) {
         boolean escaped = false;
 
         for (int i = 0; i < input.length(); i++) {
