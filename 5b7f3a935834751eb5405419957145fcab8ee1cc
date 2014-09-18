@@ -1,0 +1,7 @@
+Code-Review+2: Greg Holmes <greg@dmdirc.com>
+Automatic-Compile+1: DMDirc Build Manager
+Submitted-by: Greg Holmes <greg@dmdirc.com>
+Submitted-at: Thu, 18 Sep 2014 15:37:13 +0100
+Reviewed-on: http://gerrit.dmdirc.com/4000
+Project: util
+Branch: refs/heads/master
