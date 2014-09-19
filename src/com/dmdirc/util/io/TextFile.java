@@ -30,6 +30,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -137,7 +138,7 @@ public class TextFile {
      * Retrieves the contents of the file as a list of lines. If getLines() or
      * readLines() has previously been called, a cached version is returned.
      *
-     * @return A list of lines in the file
+     * @return An unmodifiable list of lines in the file
      * @throws IOException if an I/O exception occurs
      */
     public List<String> getLines() throws IOException {
@@ -145,7 +146,7 @@ public class TextFile {
             readLines();
         }
 
-        return lines;
+        return Collections.unmodifiableList(lines);
     }
 
     /**
@@ -188,34 +189,13 @@ public class TextFile {
      * @param lines The lines to be written
      * @throws IOException if an I/O exception occurs
      */
-    public void writeLines(final List<String> lines) throws IOException {
+    public void writeLines(final Iterable<String> lines) throws IOException {
         if (path == null) {
             throw new UnsupportedOperationException("Cannot write to TextFile "
                     + "opened with an InputStream");
         }
 
         Files.write(path, lines, charset);
-    }
-
-    /**
-     * Retrieves the File for this TextFile, if there is one.
-     *
-     * @return This TextFile's file, or null
-     */
-    public File getFile() {
-        if (path == null) {
-            return null;
-        }
-        return path.toFile();
-    }
-
-    /**
-     * Retrieves the Path for this TextFile, if there is one.
-     *
-     * @return This TextFile's path, or null
-     */
-    public Path getPath() {
-        return path;
     }
 
     /**
