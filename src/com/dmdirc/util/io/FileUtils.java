@@ -23,6 +23,7 @@
 package com.dmdirc.util.io;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
@@ -49,9 +50,12 @@ public final class FileUtils {
      * @throws IOException If the resource couldn't be copied.
      */
     public static void copyResources(final URL source, final Path destination) throws IOException {
-        final Path sourcePath = Paths.get(source.toString());
-
-        copyRecursively(sourcePath, destination, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            copyRecursively(Paths.get(source.toURI()), destination,
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (URISyntaxException ex) {
+            throw new IOException("Unable to get source URI", ex);
+        }
     }
 
     /**
@@ -65,7 +69,7 @@ public final class FileUtils {
      */
     public static void copyRecursively(final Path source, final Path destination,
             final CopyOption... options) throws IOException {
-        final Path destinationPath = destination.resolve(source.getFileName());
+        final Path destinationPath = destination.resolve(source.getFileName().toString());
 
         if (Files.isDirectory(source)) {
             Files.createDirectories(destinationPath);
