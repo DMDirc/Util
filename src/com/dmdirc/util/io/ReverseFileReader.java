@@ -36,7 +36,7 @@ import java.util.Stack;
 /**
  * Reads a file in reverse.
  */
-public class ReverseFileReader {
+public class ReverseFileReader implements AutoCloseable {
 
     /** Path to the file we're reading. */
     private final Path file;
@@ -91,17 +91,11 @@ public class ReverseFileReader {
         seekLength = newValue;
     }
 
-    /**
-     * Close the file pointer.
-     * This should be called before removing the reference to this object
-     *
-     * @throws IOException If there is an error closing the file, or if it has been closed already.
-     */
+    @Override
     public void close() throws IOException {
-        if (!byteChannel.isOpen()) {
-            throw new IOException("Channel has been closed.");
+        if (byteChannel.isOpen()) {
+            byteChannel.close();
         }
-        byteChannel.close();
     }
 
     /**
