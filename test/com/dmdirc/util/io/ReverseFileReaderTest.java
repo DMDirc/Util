@@ -22,21 +22,21 @@
 
 package com.dmdirc.util.io;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Stack;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ReverseFileReaderTest {
 
     @Test
     public void testIndividual() throws IOException, URISyntaxException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test1.txt").toURI()));
+                Paths.get(getClass().getResource("test1.txt").toURI()));
         assertEquals("Line 7", reader.getNextLine());
         assertEquals("Line 6", reader.getNextLine());
         assertEquals("Line 5", reader.getNextLine());
@@ -50,7 +50,7 @@ public class ReverseFileReaderTest {
     @Test
     public void testCarriageReturn() throws IOException, URISyntaxException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test4.txt").toURI()));
+                Paths.get((getClass().getResource("test4.txt").toURI())));
         reader.getNextLine();
         assertEquals("Normal line", reader.getNextLine());
         reader.close();
@@ -59,7 +59,7 @@ public class ReverseFileReaderTest {
     @Test
     public void testLongLine() throws IOException, URISyntaxException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test4.txt").toURI()));
+                Paths.get((getClass().getResource("test4.txt").toURI())));
         assertEquals("This is a line that is longer than 50 characters, so " +
                 "should cause the reader to have to scan back multiple times.",
                 reader.getNextLine());
@@ -69,7 +69,7 @@ public class ReverseFileReaderTest {
     @Test
     public void testStack() throws IOException, URISyntaxException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test1.txt").toURI()));
+                Paths.get((getClass().getResource("test1.txt").toURI())));
         final Stack<String> lines = reader.getLines(10);
 
         assertEquals(7, lines.size());
@@ -86,7 +86,7 @@ public class ReverseFileReaderTest {
     @Test
     public void testSmallStack() throws IOException, URISyntaxException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test1.txt").toURI()));
+                Paths.get((getClass().getResource("test1.txt").toURI())));
         final Stack<String> lines = reader.getLines(3);
 
         assertEquals(3, lines.size());
@@ -97,9 +97,36 @@ public class ReverseFileReaderTest {
     }
 
     @Test
+    public void testgetLinesAsString() throws IOException, URISyntaxException {
+        final ReverseFileReader reader = new ReverseFileReader(
+                Paths.get((getClass().getResource("test5.txt").toURI())));
+        final String lines = reader.getLinesAsString(3);
+        assertEquals("Line 1\nLine 2\nLine 3\n", lines);
+        reader.close();
+    }
+
+    @Test
+    public void testgetLinesAsStringLeadingNewline() throws IOException, URISyntaxException {
+        final ReverseFileReader reader = new ReverseFileReader(
+                Paths.get((getClass().getResource("test5.txt").toURI())));
+        final String lines = reader.getLinesAsString(4);
+        assertEquals("Line 1\nLine 2\nLine 3\n", lines);
+        reader.close();
+    }
+
+    @Test
+    public void testIllegalGetLinesAsString() throws IOException, URISyntaxException {
+        final ReverseFileReader reader = new ReverseFileReader(
+                Paths.get((getClass().getResource("test5.txt").toURI())));
+        reader.close();
+        final String lines = reader.getLinesAsString(4);
+        assertEquals("", lines);
+    }
+
+    @Test
     public void testReset() throws IOException, URISyntaxException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test1.txt").toURI()));
+                Paths.get((getClass().getResource("test1.txt").toURI())));
         assertEquals("Line 7", reader.getNextLine());
         assertEquals("Line 6", reader.getNextLine());
         reader.reset();
@@ -112,7 +139,7 @@ public class ReverseFileReaderTest {
     @Test(expected=IOException.class)
     public void testIllegalClose() throws URISyntaxException, IOException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test1.txt").toURI()));
+                Paths.get((getClass().getResource("test1.txt").toURI())));
         reader.close();
         reader.close();
     }
@@ -120,7 +147,7 @@ public class ReverseFileReaderTest {
     @Test(expected=IOException.class)
     public void testIllegalReset() throws URISyntaxException, IOException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test1.txt").toURI()));
+                Paths.get((getClass().getResource("test1.txt").toURI())));
         reader.close();
         reader.reset();
     }
@@ -128,7 +155,7 @@ public class ReverseFileReaderTest {
     @Test(expected=IOException.class)
     public void testIllegalGetNextLine() throws URISyntaxException, IOException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test1.txt").toURI()));
+                Paths.get((getClass().getResource("test1.txt").toURI())));
         reader.close();
         reader.getNextLine();
     }
@@ -136,7 +163,7 @@ public class ReverseFileReaderTest {
     @Test
     public void testSeekLength() throws IOException, URISyntaxException {
         final ReverseFileReader reader = new ReverseFileReader(
-                new File(getClass().getResource("test1.txt").toURI()));
+                Paths.get((getClass().getResource("test1.txt").toURI())));
         reader.setSeekLength((byte) 100);
         assertEquals((byte) 100, reader.getSeekLength());
     }
