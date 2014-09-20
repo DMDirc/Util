@@ -136,8 +136,7 @@ public class ReverseFileReaderTest {
         reader.close();
     }
 
-    @Test(expected=IOException.class)
-    public void testIllegalClose() throws URISyntaxException, IOException {
+    public void testCloseIsIdempotent() throws URISyntaxException, IOException {
         final ReverseFileReader reader = new ReverseFileReader(
                 Paths.get((getClass().getResource("test1.txt").toURI())));
         reader.close();
