@@ -22,18 +22,12 @@
 
 package com.dmdirc.util.io;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -117,33 +111,6 @@ public class Downloader {
     public void downloadPage(final String url, final Path file)
             throws IOException {
         downloadPage(url, file, null);
-    }
-
-    /**
-     * Downloads the specified page to disk.
-     *
-     * @param url The URL to retrieve
-     * @param file The file to save the page to
-     * @throws IOException If there's an I/O error while downloading
-     */
-    @Deprecated
-    public void downloadPage(final String url, final String file)
-            throws IOException {
-        downloadPage(url, Paths.get(file), null);
-    }
-
-    /**
-     * Downloads the specified page to disk.
-     *
-     * @param url The URL to retrieve
-     * @param file The file to save the page to
-     * @param listener The progress listener for this download
-     * @throws IOException If there's an I/O error while downloading
-     */
-    @Deprecated
-    public void downloadPage(final String url, final String file,
-            final DownloadListener listener) throws IOException {
-        downloadPage(url, Paths.get(file), listener);
     }
 
     /**
