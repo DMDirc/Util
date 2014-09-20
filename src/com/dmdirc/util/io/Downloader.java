@@ -24,8 +24,6 @@ package com.dmdirc.util.io;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +31,9 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class Downloader {
      *
      * @param url The URL to retrieve
      * @return A list of lines received from the server
-     * @throws java.io.IOException If there's an I/O error while downloading
+     * @throws IOException If there's an I/O error while downloading
      */
     public List<String> getPage(final String url) throws IOException {
 
@@ -60,7 +61,7 @@ public class Downloader {
      * @param url The URL to retrieve
      * @param postData The raw POST data to send
      * @return A list of lines received from the server
-     * @throws java.io.IOException If there's an I/O error while downloading
+     * @throws IOException If there's an I/O error while downloading
      */
     public List<String> getPage(final String url, final String postData)
             throws IOException {
@@ -90,7 +91,7 @@ public class Downloader {
      * @param url The URL to retrieve
      * @param postData A map of post data that should be sent
      * @return A list of lines received from the server
-     * @throws java.io.IOException If there's an I/O error while downloading
+     * @throws IOException If there's an I/O error while downloading
      */
     public List<String> getPage(final String url,
             final Map<String, String> postData) throws IOException {
@@ -111,9 +112,9 @@ public class Downloader {
      *
      * @param url The URL to retrieve
      * @param file The file to save the page to
-     * @throws java.io.IOException If there's an I/O error while downloading
+     * @throws IOException If there's an I/O error while downloading
      */
-    public void downloadPage(final String url, final String file)
+    public void downloadPage(final String url, final Path file)
             throws IOException {
         downloadPage(url, file, null);
     }
@@ -123,19 +124,44 @@ public class Downloader {
      *
      * @param url The URL to retrieve
      * @param file The file to save the page to
-     * @param listener The progress listener for this download
-     * @throws java.io.IOException If there's an I/O error while downloading
+     * @throws IOException If there's an I/O error while downloading
      */
+    @Deprecated
+    public void downloadPage(final String url, final String file)
+            throws IOException {
+        downloadPage(url, Paths.get(file), null);
+    }
+
+    /**
+     * Downloads the specified page to disk.
+     *
+     * @param url The URL to retrieve
+     * @param file The file to save the page to
+     * @param listener The progress listener for this download
+     * @throws IOException If there's an I/O error while downloading
+     */
+    @Deprecated
     public void downloadPage(final String url, final String file,
+            final DownloadListener listener) throws IOException {
+        downloadPage(url, Paths.get(file), listener);
+    }
+
+    /**
+     * Downloads the specified page to disk.
+     *
+     * @param url The URL to retrieve
+     * @param file The file to save the page to
+     * @param listener The progress listener for this download
+     * @throws IOException If there's an I/O error while downloading
+     */
+    public void downloadPage(final String url, final Path file,
             final DownloadListener listener) throws IOException {
 
         final URLConnection urlConn = getConnection(url, "");
-        final File myFile = new File(file);
 
-        try (OutputStream output = new FileOutputStream(myFile);
+        try (OutputStream output = Files.newOutputStream(file);
                 InputStream input = urlConn.getInputStream()) {
             final int length = urlConn.getContentLength();
-            int current = 0;
 
             if (listener != null) {
                 listener.setIndeterminate(length == -1);
@@ -144,6 +170,7 @@ public class Downloader {
             final byte[] buffer = new byte[512];
             int count;
 
+            int current = 0;
             do {
                 count = input.read(buffer);
 
@@ -166,13 +193,12 @@ public class Downloader {
      * @param url The URL to connect to
      * @param postData The POST data to pass to the URL
      * @return An URLConnection for the specified URL/data
-     * @throws java.io.IOException If an I/O exception occurs while connecting
+     * @throws IOException If an I/O exception occurs while connecting
      */
     private URLConnection getConnection(final String url,
             final String postData)
             throws IOException {
-        final URL myUrl = new URL(url);
-        final URLConnection urlConn = myUrl.openConnection();
+        final URLConnection urlConn = getURLConnection(url);
 
         urlConn.setUseCaches(false);
         urlConn.setDoInput(true);
@@ -190,6 +216,11 @@ public class Downloader {
         }
 
         return urlConn;
+    }
+
+    protected URLConnection getURLConnection(final String url) throws IOException {
+        final URL myUrl = new URL(url);
+        return myUrl.openConnection();
     }
 
 }
