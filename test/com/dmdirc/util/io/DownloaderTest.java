@@ -26,6 +26,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -37,24 +43,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyByte;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DownloaderTest {
@@ -71,12 +64,11 @@ public class DownloaderTest {
                 "OMG IM A FAKE DOWNLOAD".getBytes("UTF-8"));
         when(mockedConnection.getInputStream()).thenReturn(is);
         when(mockedConnection.getOutputStream()).thenReturn(os);
-        when(mockedConnection.getLastModified()).thenReturn((Long)10L, (Long)11L);
+        when(mockedConnection.getLastModified()).thenReturn(10L, (Long)11L);
     }
 
     @Test
     public void testGetPage() throws IOException {
-        final String postData = "sdfgsdfgsdfg";
         new TestableDownloader().getPage("rar");
         verify(mockedConnection, never()).setRequestProperty("Content-Type",
                 "application/x-www-form-urlencoded");
