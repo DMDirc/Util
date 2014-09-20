@@ -23,10 +23,13 @@
 package com.dmdirc.util.io;
 
 import java.io.EOFException;
-import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -35,33 +38,25 @@ import java.util.Stack;
  */
 public class ReverseFileReader {
 
+    /** Path to the file we're reading. */
+    private final Path file;
     /** File to manipulate. */
-    private RandomAccessFile file;
-
+    private SeekableByteChannel byteChannel;
     /** Number of bytes to skip backwards at a time. */
     private byte seekLength = 50;
 
     /**
      * Create a new ReverseFileReader.
      *
-     * @param filename File to open.
-     * @throws SecurityException If a security manager exists and its checkRead method denies read access to the file.
-     * @throws IOException If there is an error seeking to the end of the file.
-     */
-    public ReverseFileReader(final String filename) throws SecurityException, IOException {
-        file = new RandomAccessFile(filename, "r");
-        reset();
-    }
-
-    /**
-     * Create a new ReverseFileReader.
+     * @param file File to read
      *
-     * @param myFile Existing file to use.
-     * @throws SecurityException If a security manager exists and its checkRead method denies read access to the file.
+     * @throws SecurityException If a security manager exists and its checkRead method denies
+     * read access to the file.
      * @throws IOException If there is an error seeking to the end of the file.
      */
-    public ReverseFileReader(final File myFile) throws SecurityException, IOException {
-        file = new RandomAccessFile(myFile, "r");
+    public ReverseFileReader(final Path file) throws SecurityException, IOException {
+        this.file = file;
+        byteChannel = Files.newByteChannel(file, StandardOpenOption.READ);
         reset();
     }
 
@@ -70,11 +65,12 @@ public class ReverseFileReader {
      *
      * @throws IOException If there is an error seeking, or the file is closed.
      */
-    public void reset() throws IOException {
-        if (file == null) {
-            throw new IOException("File has been closed.");
+    public final void reset() throws IOException {
+        if (!byteChannel.isOpen()) {
+            throw new IOException("Channel has been closed.");
         }
-        file.seek(file.length());
+        byteChannel = Files.newByteChannel(file, StandardOpenOption.READ);
+        byteChannel.position(byteChannel.size());
     }
 
     /**
@@ -102,11 +98,10 @@ public class ReverseFileReader {
      * @throws IOException If there is an error closing the file, or if it has been closed already.
      */
     public void close() throws IOException {
-        if (file == null) {
-            throw new IOException("File has been closed.");
+        if (!byteChannel.isOpen()) {
+            throw new IOException("Channel has been closed.");
         }
-        file.close();
-        file = null;
+        byteChannel.close();
     }
 
     /**
@@ -116,37 +111,26 @@ public class ReverseFileReader {
      * @throws IOException If an error reading or seeking occured, or if the fiel is closed.
      */
     public String getNextLine() throws IOException {
-        if (file == null) {
-            throw new IOException("File has been closed.");
+        if (!byteChannel.isOpen()) {
+            throw new IOException("Channel has been closed.");
         }
         // Used to store result to output.
-
         final ArrayList<Byte> line = new ArrayList<>(seekLength);
-        // Used to store position in file pre-read
-        long fp;
-        // Used to store position in file when this is called
-        final long startfp;
-        // Used to store read bytes
-        byte[] bytes;
-        // Distance seeked
-        int seekDistance;
-
         // Check current position, if 0 we are at the start of the file
         // and should throw an exception.
-        startfp = file.getFilePointer();
+        final long startfp = byteChannel.position();
         if (startfp == 0) {
             throw new EOFException("Reached Start of file");
         }
 
         // Keep looping until we get a full line, or the end of the file
         boolean keepLooping = true;
-        boolean gotNewLine;
         while (keepLooping) {
-            gotNewLine = false;
             // Get Current Position
-            fp = file.getFilePointer();
+            long fp = byteChannel.position();
 
             // Check how far to seek backwards (seekLength or to the start of the file)
+            final int seekDistance;
             if (fp < seekLength) {
                 // Seek to the start of the file;
                 seekDistance = (int) fp;
@@ -154,27 +138,28 @@ public class ReverseFileReader {
             } else {
                 // Seek to position current-seekLength
                 seekDistance = seekLength;
-                fp = fp - seekDistance;
+                fp -= seekDistance;
             }
             // Seek!
-            file.seek(fp);
+            byteChannel.position(fp);
 
-            bytes = new byte[seekDistance];
+            final ByteBuffer bytes = ByteBuffer.allocate(seekDistance);
             // Read into the bytes array
-            file.read(bytes);
+            byteChannel.read(bytes);
 
             // And loop looking for data
             // This uses seekDistance so that only wanted data is checked.
+            boolean gotNewLine = false;
             for (int i = seekDistance - 1; i >= 0; --i) {
                 // Check for New line Character, or a non carriage-return char
-                if (bytes[i] == '\n') {
+                if (bytes.get(i) == '\n') {
                     // Seek to the location of this character and exit this loop.
-                    file.seek(fp + i);
+                    byteChannel.position(fp + i);
                     gotNewLine = true;
                     break;
-                } else if (bytes[i] != '\r') {
+                } else if (bytes.get(i) != '\r') {
                     // Add to the result, the loop will continue going.
-                    line.add(0, bytes[i]);
+                    line.add(0, bytes.get(i));
                 }
             }
 
@@ -186,7 +171,7 @@ public class ReverseFileReader {
                 // find a new line anywhere. no more loops are possible, so Treat
                 // this as "got new line"
                 gotNewLine = true;
-                file.seek(0);
+                byteChannel.position(0);
             }
 
             // Do we need to continue?
@@ -197,7 +182,7 @@ public class ReverseFileReader {
             } else {
                 // We have not found a new line anywhere,
                 // Seek to the pre-read position, and repeat.
-                file.seek(fp);
+                byteChannel.position(fp);
             }
 
         }
@@ -240,7 +225,7 @@ public class ReverseFileReader {
         final StringBuilder result = new StringBuilder();
         for (int i = 0; i < numLines; ++i) {
             try {
-                result.insert(0, "\n");
+                result.insert(0, '\n');
                 result.insert(0, getNextLine());
             } catch (IOException e) {
                 break;
