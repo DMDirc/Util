@@ -31,6 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -115,7 +116,8 @@ public class DownloaderTest {
         assertFalse(Files.exists(file));
         new TestableDownloader().downloadPage("rar", file);
         assertTrue(Files.exists(file));
-        assertEquals(Lists.newArrayList("OMG IM A FAKE DOWNLOAD"), Files.readAllLines(file));
+        assertEquals(Lists.newArrayList("OMG IM A FAKE DOWNLOAD"), Files.readAllLines(file,
+                Charset.forName("UTF-8")));
     }
 
     @Test
@@ -124,7 +126,8 @@ public class DownloaderTest {
         assertFalse(Files.exists(file));
         new TestableDownloader().downloadPage("rar", file, listener);
         assertTrue(Files.exists(file));
-        assertEquals(Lists.newArrayList("OMG IM A FAKE DOWNLOAD"), Files.readAllLines(file));
+        assertEquals(Lists.newArrayList("OMG IM A FAKE DOWNLOAD"), Files.readAllLines(file,
+                Charset.forName("UTF-8")));
         verify(listener).setIndeterminate(anyBoolean());
         verify(listener, atLeastOnce()).downloadProgress(anyInt());
     }
