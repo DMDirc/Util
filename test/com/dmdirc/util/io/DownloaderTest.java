@@ -26,16 +26,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
@@ -43,24 +37,36 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyByte;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DownloaderTest {
 
     @Mock private URLConnection mockedConnection;
-    @Mock private OutputStream os;
     @Mock private DownloadListener listener;
+    private ByteArrayOutputStream os;
     private FileSystem fakeFS;
 
     @Before
     public void setup() throws IOException {
         fakeFS = Jimfs.newFileSystem(Configuration.unix());
-        ByteArrayInputStream is = new ByteArrayInputStream(
+        os = new ByteArrayOutputStream();
+
+        final ByteArrayInputStream is = new ByteArrayInputStream(
                 "OMG IM A FAKE DOWNLOAD".getBytes("UTF-8"));
         when(mockedConnection.getInputStream()).thenReturn(is);
         when(mockedConnection.getOutputStream()).thenReturn(os);
@@ -72,7 +78,7 @@ public class DownloaderTest {
         new TestableDownloader().getPage("rar");
         verify(mockedConnection, never()).setRequestProperty("Content-Type",
                 "application/x-www-form-urlencoded");
-        verify(os, never()).write(anyByte());
+        assertEquals(0, os.size());
     }
 
     @Test
@@ -81,10 +87,7 @@ public class DownloaderTest {
         new TestableDownloader().getPage("rar", postData);
         verify(mockedConnection).setRequestProperty("Content-Type",
                 "application/x-www-form-urlencoded");
-        final InOrder order = inOrder(os);
-        for (int i=0; i < postData.length(); i++) {
-            order.verify(os).write((byte) postData.charAt(i));
-        }
+        assertEquals(postData, os.toString());
     }
 
     @Test
@@ -92,14 +95,13 @@ public class DownloaderTest {
         final Map<String, String> postData = Maps.newHashMap();
         postData.put("key1", "value1");
         postData.put("key2", "value2");
-        final String postDataString = "key1=value1&key2=value2";
         new TestableDownloader().getPage("rar", postData);
         verify(mockedConnection).setRequestProperty("Content-Type",
                 "application/x-www-form-urlencoded");
-        final InOrder order = inOrder(os);
-        for (int i=0; i < postDataString.length(); i++) {
-            order.verify(os).write(postDataString.charAt(i));
-        }
+
+        final String postDataString1 = "key1=value1&key2=value2";
+        final String postDataString2 = "key2=value2&key1=value1";
+        assertTrue(postDataString1.equals(os.toString()) || postDataString2.equals(os.toString()));
     }
 
     @Test
@@ -125,6 +127,7 @@ public class DownloaderTest {
     }
 
     private class TestableDownloader extends Downloader {
+        @Override
         protected URLConnection getURLConnection(final String url) throws IOException {
             return mockedConnection;
         }
