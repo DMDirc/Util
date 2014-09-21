@@ -24,7 +24,6 @@ package com.dmdirc.util.io;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.Socket;
 
 /**
  * Utilities for dealing with streams.
@@ -44,22 +43,6 @@ public final class StreamUtils {
      * @param stream The stream to be closed
      */
     public static void close(final Closeable stream) {
-        if (stream != null) {
-            try {
-                stream.close();
-            } catch (IOException ex) {
-                // Do nothing. We don't care.
-            }
-        }
-    }
-
-    /**
-     * Closes the stream if it is non-null, and ignores any IOExceptions
-     * raised by doing so.
-     *
-     * @param stream The stream to be closed
-     */
-    public static void close(final Socket stream) {
         if (stream != null) {
             try {
                 stream.close();
