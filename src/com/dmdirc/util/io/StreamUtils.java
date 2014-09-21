@@ -24,6 +24,8 @@ package com.dmdirc.util.io;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Utilities for dealing with streams.
@@ -34,6 +36,20 @@ public final class StreamUtils {
 
     /** Shouldn't be called. */
     private StreamUtils() {
+    }
+
+    public static void readStream(final InputStream inputStream) {
+        new StreamReader(inputStream).run();
+    }
+
+    public static void readStreamIntoStringBuffer(final InputStream inputStream,
+            final StringBuffer stringBuffer) {
+        new StreamReader(inputStream, stringBuffer).start();
+    }
+
+    public static void readStreamIntoList(final InputStream inputStream,
+            final List<String> list) {
+        new StreamReader(inputStream, list).start();
     }
 
     /**

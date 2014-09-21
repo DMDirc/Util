@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Simple stream reader to read a stream and save/discard the data.
  */
-public class StreamReader extends Thread {
+class StreamReader extends Thread {
 
     /** This is the Input Stream we are reading. */
     private final InputStream stream;
@@ -45,7 +45,7 @@ public class StreamReader extends Thread {
      *
      * @param stream The stream to read
      */
-    public StreamReader(final InputStream stream) {
+    StreamReader(final InputStream stream) {
         super("StreamReader");
 
         this.stream = stream;
@@ -57,7 +57,7 @@ public class StreamReader extends Thread {
      * @param stream The stream to read
      * @param list The list to store the output from the stream in
      */
-    public StreamReader(final InputStream stream, final List<String> list) {
+    StreamReader(final InputStream stream, final List<String> list) {
         super("StreamReader");
 
         this.stream = stream;
@@ -70,7 +70,7 @@ public class StreamReader extends Thread {
      * @param stream The stream to read
      * @param buffer The StringBuffer to store the output from the stream in
      */
-    public StreamReader(final InputStream stream, final StringBuffer buffer) {
+    StreamReader(final InputStream stream, final StringBuffer buffer) {
         super("StreamReader");
 
         this.stream = stream;
@@ -82,7 +82,7 @@ public class StreamReader extends Thread {
      *
      * @return The output list
      */
-    public List<String> getList() {
+    List<String> getList() {
         return list;
     }
 
