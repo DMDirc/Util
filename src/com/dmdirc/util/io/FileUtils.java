@@ -34,6 +34,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +46,51 @@ public final class FileUtils {
 
     private FileUtils() {
         // Shouldn't be instansiated.
+    }
+
+    /**
+     * Checks whether this application has been run from a jar or not.
+     *
+     * @param clazz Class used to locate the application
+     *
+     * @return true if the application was launched from a jar, false otherwise
+     *
+     * @throws IllegalStateException If the application path cannot be determined for any reason
+     */
+    public static boolean isRunningFromJar(final Class<?> clazz) throws IllegalStateException {
+        return getApplicationPath(clazz).getFileName().endsWith(".jar");
+    }
+
+    /**
+     * Returns the base location for the specified class, this is either the a jar or a folder
+     * depending on how the application was launched.
+     *
+     * This can fail for a number of reasons, it is not wholly reliable.
+     *
+     * @param clazz Class used to locate the application
+     *
+     * @return A {@link Path} to application location
+     *
+     * @throws IllegalStateException If the application path cannot be determined for any reason
+     */
+    public static Path getApplicationPath(final Class<?> clazz) throws IllegalStateException {
+        final ProtectionDomain pd;
+        try {
+            pd = clazz.getProtectionDomain();
+        } catch (SecurityException ex) {
+            throw new IllegalStateException("Unable to get protection domain", ex);
+        }
+        final CodeSource cs = pd.getCodeSource();
+        if (cs == null) {
+            throw new IllegalStateException("Unable to get the code source");
+        }
+        final URI uri;
+        try {
+            uri = cs.getLocation().toURI();
+        } catch (URISyntaxException ex) {
+            throw new IllegalStateException("Unable to convert location to URI", ex);
+        }
+        return Paths.get(uri);
     }
 
     /**
