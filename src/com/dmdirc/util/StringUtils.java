@@ -22,6 +22,8 @@
 
 package com.dmdirc.util;
 
+import javax.annotation.Nonnull;
+
 /**
  * Utilities for dealing with strings.
  */
@@ -41,7 +43,7 @@ public final class StringUtils {
      * the index of the first character beyond the end of the word. If the specified index is not
      * contained within a word (i.e., is whitespace) then 0,0 is returned.
      */
-    public static int[] indiciesOfWord(final CharSequence text, final int index) {
+    public static int[] indiciesOfWord(@Nonnull final CharSequence text, final int index) {
         final int start = indexOfStartOfWord(text, index);
         final int end = indexOfEndOfWord(text, index);
 
@@ -61,7 +63,7 @@ public final class StringUtils {
      *
      * @return Start index of the word surrounding the index
      */
-    public static int indexOfStartOfWord(final CharSequence text, final int index) {
+    public static int indexOfStartOfWord(@Nonnull final CharSequence text, final int index) {
         int start = index;
 
         // Traverse backwards
@@ -83,7 +85,7 @@ public final class StringUtils {
      *
      * @return End index of the word surrounding the index
      */
-    public static int indexOfEndOfWord(final CharSequence text, final int index) {
+    public static int indexOfEndOfWord(@Nonnull final CharSequence text, final int index) {
         int end = index;
 
         // And forwards
