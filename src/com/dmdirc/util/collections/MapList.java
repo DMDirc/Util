@@ -136,7 +136,7 @@ public class MapList<S, T> {
      */
     public List<T> safeGet(final S key) {
         if (!map.containsKey(key)) {
-            map.put(key, Collections.synchronizedList(new ArrayList<T>()));
+            map.put(key, Collections.synchronizedList(new ArrayList<>()));
         }
 
         return map.get(key);

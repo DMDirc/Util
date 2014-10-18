@@ -45,7 +45,7 @@ public class WeakMapList<S,T> extends MapList<S, T> {
     @Override
     public List<T> safeGet(final S key) {
         if (!map.containsKey(key)) {
-            map.put(key, new WeakList<T>());
+            map.put(key, new WeakList<>());
         }
 
         return map.get(key);

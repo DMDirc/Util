@@ -28,6 +28,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
 
 /**
  * Implements a list of weak references. The weak references (and subsequent
@@ -58,15 +61,9 @@ public class WeakList<T> implements List<T> {
      * @return A list containing the items referenced by the specified list
      */
     private List<T> dereferenceList(final List<WeakReference<T>> list) {
-        final List<T> res = new ArrayList<>();
-
-        for (WeakReference<T> item : list) {
-            if (item.get() != null) {
-                res.add(item.get());
-            }
-        }
-
-        return res;
+        return list.stream().filter(item -> item.get() != null)
+                .map(WeakReference::get)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -77,7 +74,7 @@ public class WeakList<T> implements List<T> {
      * @return A copy of the specified collection, with each item wrapped in
      * a weak reference.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     private Collection<WeakReference<T>> referenceCollection(
             final Collection<?> c) {
         final Collection<WeakReference<T>> res = new ArrayList<>();
@@ -104,23 +101,26 @@ public class WeakList<T> implements List<T> {
     }
 
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public boolean contains(final Object o) {
         return list.contains(new EquatableWeakReference(o));
     }
 
+    @Nonnull
     @Override
     public Iterator<T> iterator() {
         return dereferenceList(list).iterator();
     }
 
+    @Nonnull
     @Override
     public Object[] toArray() {
         return dereferenceList(list).toArray();
     }
 
+    @Nonnull
     @Override
-    public <S> S[] toArray(final S[] a) {
+    public <S> S[] toArray(@Nonnull final S[] a) {
         return dereferenceList(list).toArray(a);
     }
 
@@ -130,33 +130,33 @@ public class WeakList<T> implements List<T> {
     }
 
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public boolean remove(final Object o) {
         return list.remove(new EquatableWeakReference(o));
     }
 
     @Override
-    public boolean containsAll(final Collection<?> c) {
+    public boolean containsAll(@Nonnull final Collection<?> c) {
         return dereferenceList(list).containsAll(c);
     }
 
     @Override
-    public boolean addAll(final Collection<? extends T> c) {
+    public boolean addAll(@Nonnull final Collection<? extends T> c) {
         return list.addAll(referenceCollection(c));
     }
 
     @Override
-    public boolean addAll(final int index, final Collection<? extends T> c) {
+    public boolean addAll(final int index, @Nonnull final Collection<? extends T> c) {
         return list.addAll(index, referenceCollection(c));
     }
 
     @Override
-    public boolean removeAll(final Collection<?> c) {
+    public boolean removeAll(@Nonnull final Collection<?> c) {
         return list.removeAll(referenceCollection(c));
     }
 
     @Override
-    public boolean retainAll(final Collection<?> c) {
+    public boolean retainAll(@Nonnull final Collection<?> c) {
         return list.retainAll(referenceCollection(c));
     }
 
@@ -203,6 +203,7 @@ public class WeakList<T> implements List<T> {
         return dereferenceList(list).lastIndexOf(o);
     }
 
+    @Nonnull
     @Override
     public ListIterator<T> listIterator() {
         cleanUp();
@@ -210,6 +211,7 @@ public class WeakList<T> implements List<T> {
         return dereferenceList(list).listIterator();
     }
 
+    @Nonnull
     @Override
     public ListIterator<T> listIterator(final int index) {
         cleanUp();
@@ -217,6 +219,7 @@ public class WeakList<T> implements List<T> {
         return dereferenceList(list).listIterator(index);
     }
 
+    @Nonnull
     @Override
     public List<T> subList(final int fromIndex, final int toIndex) {
         return dereferenceList(list.subList(fromIndex, toIndex));

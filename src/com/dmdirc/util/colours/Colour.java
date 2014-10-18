@@ -108,16 +108,16 @@ public class Colour {
 
         final Colour other = (Colour) obj;
 
-        return this.red == other.getRed() && this.green == other.getGreen()
-                && this.blue == other.getBlue();
+        return red == other.getRed() && green == other.getGreen()
+                && blue == other.getBlue();
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 37 * hash + this.red;
-        hash = 37 * hash + this.green;
-        hash = 37 * hash + this.blue;
+        hash = 37 * hash + red;
+        hash = 37 * hash + green;
+        hash = 37 * hash + blue;
         return hash;
     }
 

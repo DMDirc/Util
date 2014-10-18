@@ -31,10 +31,12 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Reads and writes a standard DMDirc config file.
@@ -137,7 +139,7 @@ public class ConfigFile extends TextFile {
                         || flatdomains.containsValue("keysections", domain);
 
                 if (keydomain && !keydomains.containsKey(domain)) {
-                    keydomains.put(domain, new HashMap<String, String>());
+                    keydomains.put(domain, new HashMap<>());
                 } else if (!keydomain && !flatdomains.containsKey(domain)) {
                     flatdomains.add(domain);
                 }
@@ -184,15 +186,13 @@ public class ConfigFile extends TextFile {
             lines.add(escape(domain) + ':');
 
             if (flatdomains.containsKey(domain)) {
-                for (String entry : flatdomains.get(domain)) {
-                    lines.add("  " + escape(entry));
-                }
+                lines.addAll(flatdomains.get(domain).stream()
+                        .map(entry -> "  " + escape(entry))
+                        .collect(Collectors.toList()));
             } else {
-                for (Map.Entry<String, String> entry : keydomains.get(domain)
-                        .entrySet()) {
-                    lines.add("  " + escape(entry.getKey()) + '='
-                            + escape(entry.getValue()));
-                }
+                lines.addAll(keydomains.get(domain).entrySet().stream()
+                        .map(entry -> "  " + escape(entry.getKey()) + '=' + escape(entry.getValue()))
+                        .collect(Collectors.toList()));
             }
         }
 
@@ -213,11 +213,10 @@ public class ConfigFile extends TextFile {
         lines.add("# any sections that take key/values.");
         lines.add("keysections:");
 
-        for (String domain : domains) {
-            if (!"keysections".equals(domain) && keydomains.containsKey(domain)) {
-                lines.add("  " + domain);
-            }
-        }
+        lines.addAll(domains.stream()
+                .filter(domain -> !"keysections".equals(domain) && keydomains.containsKey(domain))
+                .map(domain -> "  " + domain)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -226,7 +225,7 @@ public class ConfigFile extends TextFile {
      * @return This config file's key domains
      */
     public Map<String, Map<String, String>> getKeyDomains() {
-        return keydomains;
+        return Collections.unmodifiableMap(keydomains);
     }
 
     /**
@@ -238,7 +237,7 @@ public class ConfigFile extends TextFile {
     public Map<String, String> getKeyDomain(final String domain) {
         if (automake && !isKeyDomain(domain)) {
             domains.add(domain);
-            keydomains.put(domain, new HashMap<String, String>());
+            keydomains.put(domain, new HashMap<>());
         }
 
         return keydomains.get(domain);
@@ -361,7 +360,7 @@ public class ConfigFile extends TextFile {
      * @param input The string to be searched
      * @return The offset of the first non-escaped instance of '=', or -1.
      */
-    protected static int findEquals(final CharSequence input) {
+    private static int findEquals(final CharSequence input) {
         boolean escaped = false;
 
         for (int i = 0; i < input.length(); i++) {

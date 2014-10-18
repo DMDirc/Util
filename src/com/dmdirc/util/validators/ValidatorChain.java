@@ -43,7 +43,7 @@ public class ValidatorChain<A> implements Validator<A> {
      * @param validators The validators to be used in this chain.
      * @deprecated Use a builder or pass a list to avoid unchecked warnings.
      */
-    @SuppressWarnings({"unchecked", "varargs"})
+    @SuppressWarnings("unchecked")
     @Deprecated
     public ValidatorChain(final Validator<A>... validators) {
         validatorList = Arrays.asList(validators);

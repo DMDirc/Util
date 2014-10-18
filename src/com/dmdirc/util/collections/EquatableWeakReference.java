@@ -24,6 +24,7 @@ package com.dmdirc.util.collections;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 
 /**
  * An extension of WeakReference that implements a sane equals and hashcode
@@ -44,6 +45,9 @@ public class EquatableWeakReference<T> extends WeakReference<T> {
 
     @Override
     public boolean equals(final Object obj) {
+        if (get() == null) {
+            return obj == null;
+        }
         if (obj instanceof Reference<?>) {
             return get().equals(((Reference<?>) obj).get());
         } else {
@@ -53,7 +57,7 @@ public class EquatableWeakReference<T> extends WeakReference<T> {
 
     @Override
     public int hashCode() {
-        return get().hashCode();
+        return Objects.hash(get());
     }
 
 }

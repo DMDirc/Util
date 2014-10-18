@@ -52,7 +52,7 @@ public class OptionalValidator implements Validator<String> {
     @Override
     public ValidationResponse validate(final String object) {
         if (object == null) {
-            return validator.validate(object);
+            return validator.validate(null);
         }
 
         final int colonIndex = object.indexOf(':');

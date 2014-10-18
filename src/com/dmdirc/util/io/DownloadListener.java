@@ -43,5 +43,6 @@ public interface DownloadListener {
      *
      * @since 0.6
      */
+    @SuppressWarnings("BooleanParameter")
     void setIndeterminate(final boolean indeterminate);
 }

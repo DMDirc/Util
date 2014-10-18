@@ -57,6 +57,7 @@ class StreamReader extends Thread {
      * @param stream The stream to read
      * @param list The list to store the output from the stream in
      */
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     StreamReader(final InputStream stream, final List<String> list) {
         super("StreamReader");
 
@@ -82,6 +83,7 @@ class StreamReader extends Thread {
      *
      * @return The output list
      */
+    @SuppressWarnings("ReturnOfCollectionOrArrayField")
     List<String> getList() {
         return list;
     }

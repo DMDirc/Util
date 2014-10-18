@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.annotation.Nonnull;
+
 /**
  * Decorates a {@link List} to add observable functionality.
  *
@@ -46,6 +48,7 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
      *
      * @param list The list to be decorated
      */
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public ObservableListDecorator(final List<T> list) {
         this.list = list;
     }
@@ -75,18 +78,21 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return list.contains(o);
     }
 
+    @Nonnull
     @Override
     public Iterator<T> iterator() {
         return list.iterator();
     }
 
+    @Nonnull
     @Override
     public Object[] toArray() {
         return list.toArray();
     }
 
+    @Nonnull
     @Override
-    public <S> S[] toArray(final S[] a) {
+    public <S> S[] toArray(@Nonnull final S[] a) {
         return list.toArray(a);
     }
 
@@ -115,12 +121,12 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
     }
 
     @Override
-    public boolean containsAll(final Collection<?> c) {
+    public boolean containsAll(@Nonnull final Collection<?> c) {
         return list.containsAll(c);
     }
 
     @Override
-    public boolean addAll(final Collection<? extends T> c) {
+    public boolean addAll(@Nonnull final Collection<? extends T> c) {
         if (list.addAll(c)) {
             listeners.getCallable(ListObserver.class).onItemsAdded(this,
                     list.size() - c.size(), list.size() - 1);
@@ -131,7 +137,7 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
     }
 
     @Override
-    public boolean addAll(final int index, final Collection<? extends T> c) {
+    public boolean addAll(final int index, @Nonnull final Collection<? extends T> c) {
         if (list.addAll(index, c)) {
             listeners.getCallable(ListObserver.class).onItemsAdded(this,
                     index, index + c.size());
@@ -142,7 +148,7 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
     }
 
     @Override
-    public boolean removeAll(final Collection<?> c) {
+    public boolean removeAll(@Nonnull final Collection<?> c) {
         final int length = list.size();
 
         if (list.removeAll(c)) {
@@ -156,7 +162,7 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
     }
 
     @Override
-    public boolean retainAll(final Collection<?> c) {
+    public boolean retainAll(@Nonnull final Collection<?> c) {
         final int length = list.size();
 
         if (list.retainAll(c)) {
@@ -221,16 +227,19 @@ public class ObservableListDecorator<T> implements ObservableList<T> {
         return list.lastIndexOf(o);
     }
 
+    @Nonnull
     @Override
     public ListIterator<T> listIterator() {
         return list.listIterator();
     }
 
+    @Nonnull
     @Override
     public ListIterator<T> listIterator(final int index) {
         return list.listIterator(index);
     }
 
+    @Nonnull
     @Override
     public List<T> subList(final int fromIndex, final int toIndex) {
         return list.subList(fromIndex, toIndex);
