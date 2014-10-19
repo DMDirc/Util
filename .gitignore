@@ -3,6 +3,4 @@
 /*.key
 /build/
 /dist
-/lib/*.jar
-/nexus-teamcity.gradle
 /.gradle
