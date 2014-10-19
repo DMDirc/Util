@@ -32,10 +32,10 @@ public class ServerNameValidator extends URIValidator {
         if (object == null || object.isEmpty()) {
             return new ValidationResponse("Server name is required.");
         }
-        if (!object.matches(".*://")) {
-            return super.validate("irc://" + object);
-        } else {
+        if (object.matches(".*://")) {
             return super.validate(object);
+        } else {
+            return super.validate("irc://" + object);
         }
     }
 }

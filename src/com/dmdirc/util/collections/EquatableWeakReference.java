@@ -44,6 +44,9 @@ public class EquatableWeakReference<T> extends WeakReference<T> {
 
     @Override
     public boolean equals(final Object obj) {
+        if (get() == null) {
+            return obj == null;
+        }
         if (obj instanceof Reference<?>) {
             return get().equals(((Reference<?>) obj).get());
         } else {
@@ -53,6 +56,9 @@ public class EquatableWeakReference<T> extends WeakReference<T> {
 
     @Override
     public int hashCode() {
+        if (get() == null) {
+            return 0;
+        }
         return get().hashCode();
     }
 

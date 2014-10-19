@@ -29,8 +29,10 @@ public class ValidatorChainTest {
 
     @Test
     public void testValidate() {
-        final Validator<String> chain = new ValidatorChain<>(
-                new NotEmptyValidator(), new RegexStringValidator("[a-z]*", "abc"));
+        final Validator<String> chain = new ValidatorChainBuilder<String>()
+                .addValidator(new NotEmptyValidator())
+                .addValidator(new RegexStringValidator("[a-z]*", "abc"))
+                .build();
         
         assertTrue(chain.validate("").isFailure());
         assertTrue(chain.validate("__").isFailure());

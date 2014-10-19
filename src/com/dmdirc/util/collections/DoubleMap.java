@@ -28,6 +28,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
 
 /**
  * An object that maps keys to values, and values back to keys. Currently
@@ -40,9 +43,9 @@ import java.util.Set;
 public class DoubleMap<A,B> implements Map<A, B> {
 
     /** The keys in this map. */
-    protected final List<A> keys = new ArrayList<>();
+    private final List<A> keys = new ArrayList<>();
     /** The values in this map. */
-    protected final List<B> values = new ArrayList<>();
+    private final List<B> values = new ArrayList<>();
 
     /**
      * Retrieves the value associated with the specified key.
@@ -82,6 +85,7 @@ public class DoubleMap<A,B> implements Map<A, B> {
         return value;
     }
 
+    @Nonnull
     @Override
     public Set<A> keySet() {
         return new HashSet<>(keys);
@@ -98,13 +102,11 @@ public class DoubleMap<A,B> implements Map<A, B> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean containsKey(final Object key) {
         return keys.contains(key);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean containsValue(final Object value) {
         return values.contains(value);
     }
@@ -126,7 +128,7 @@ public class DoubleMap<A,B> implements Map<A, B> {
     }
 
     @Override
-    public void putAll(final Map<? extends A, ? extends B> m) {
+    public void putAll(@Nonnull final Map<? extends A, ? extends B> m) {
         for (Entry<? extends A, ? extends B> entry : m.entrySet()) {
             put(entry.getKey(), entry.getValue());
         }
@@ -138,17 +140,17 @@ public class DoubleMap<A,B> implements Map<A, B> {
         values.clear();
     }
 
+    @Nonnull
     @Override
     public Collection<B> values() {
         return new ArrayList<>(values);
     }
 
+    @Nonnull
     @Override
     public Set<Entry<A, B>> entrySet() {
-        final Set<Entry<A, B>> set = new HashSet<>();
-        for (A key : keys) {
-            set.add(new SimpleEntry<>(key, getValue(key)));
-        }
-        return set;
+        return keys.stream()
+                .map(key -> new SimpleEntry<>(key, getValue(key)))
+                .collect(Collectors.toSet());
     }
 }

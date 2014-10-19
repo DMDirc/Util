@@ -19,11 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.dmdirc.util.collections;
+package com.dmdirc.util.io;
 
-import com.dmdirc.util.io.InvalidConfigFileException;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class InvalidConfigFileExceptionTest {
 
