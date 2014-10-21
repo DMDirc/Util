@@ -23,7 +23,9 @@
 package com.dmdirc.util.validators;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ValidatorChainTest {
 
@@ -33,7 +35,7 @@ public class ValidatorChainTest {
                 .addValidator(new NotEmptyValidator())
                 .addValidator(new RegexStringValidator("[a-z]*", "abc"))
                 .build();
-        
+
         assertTrue(chain.validate("").isFailure());
         assertTrue(chain.validate("__").isFailure());
         assertFalse(chain.validate("abc").isFailure());

@@ -21,7 +21,6 @@
  */
 package com.dmdirc.util.validators;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,18 +35,6 @@ public class ValidatorChain<A> implements Validator<A> {
      * A list of validators to use.
      */
     private final List<Validator<A>> validatorList;
-
-    /**
-     * Creates a new validator chain containing the specified validators.
-     *
-     * @param validators The validators to be used in this chain.
-     * @deprecated Use a builder or pass a list to avoid unchecked warnings.
-     */
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    public ValidatorChain(final Validator<A>... validators) {
-        validatorList = Arrays.asList(validators);
-    }
 
     /**
      * Creates a new validator chain containing the specified validators.
