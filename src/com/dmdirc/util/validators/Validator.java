@@ -27,6 +27,7 @@ package com.dmdirc.util.validators;
  *
  * @param <V> Type to validate
  */
+@FunctionalInterface
 public interface Validator<V> {
 
     /**
