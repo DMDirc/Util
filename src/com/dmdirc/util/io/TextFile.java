@@ -155,15 +155,16 @@ public class TextFile {
      * @throws IOException If an I/O exception occurs
      */
     public void readLines() throws IOException {
-        try (BufferedReader reader = path == null
-                ? new BufferedReader(new InputStreamReader(is, charset))
-                : Files.newBufferedReader(path, charset)) {
-            lines = new ArrayList<>();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
+        if (path == null) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset))) {
+                lines = new ArrayList<>();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
             }
+        } else {
+            lines = Files.readAllLines(path, charset);
         }
     }
 
