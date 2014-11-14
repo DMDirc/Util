@@ -38,14 +38,31 @@ import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Utility class to deal with files.
  */
 public final class FileUtils {
 
+    private static final Optional<FileSystem> JAR_FILE_SYSTEM = getJarFileSystem();
+
     private FileUtils() {
         // Shouldn't be instansiated.
+    }
+
+    private static Optional<FileSystem> getJarFileSystem() {
+        if (isRunningFromJar(FileUtils.class)) {
+            try {
+                final FileSystem fs = FileSystems.newFileSystem(
+                        getApplicationPath(FileUtils.class), null);
+                return Optional.of(fs);
+            } catch (IOException ex) {
+                return Optional.empty();
+            }
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -58,7 +75,7 @@ public final class FileUtils {
      * @throws IllegalStateException If the application path cannot be determined for any reason
      */
     public static boolean isRunningFromJar(final Class<?> clazz) throws IllegalStateException {
-        return getApplicationPath(clazz).getFileName().endsWith(".jar");
+        return getApplicationPath(clazz).getFileName().toString().endsWith(".jar");
     }
 
     /**
@@ -119,6 +136,26 @@ public final class FileUtils {
         } catch (URISyntaxException ex) {
             throw new IOException("Unable to get source URI", ex);
         }
+    }
+
+    /**
+     * Returns a {@link Path} for the specified bundled resource. If the app is running from a jar,
+     * the resource will be backed by a Zip file system.
+     *
+     * @param resource The resource to get a path for
+     * @return The path for the specified resource
+     * @throws URISyntaxException If the resource could not be mapped to a path
+     */
+    public static Path getPathForResource(final URL resource) throws URISyntaxException {
+        if (JAR_FILE_SYSTEM.isPresent()) {
+            final String path = resource.toURI().toString();
+            final int index = path.indexOf("!/");
+            if (index > -1) {
+                return JAR_FILE_SYSTEM.get().getPath(path.substring(index + 1));
+            }
+        }
+
+        return Paths.get(resource.toURI());
     }
 
     /**
