@@ -1,5 +1,9 @@
 import org.mdonoughe.JGitDescribeTask
 
+def jgit = new org.mdonoughe.JGitDescribeTask()
+jgit.setDir(new File("$projectDir", '.git'))
+project.version = jgit.getDescription() + '-SNAPSHOT'
+
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
@@ -62,22 +66,7 @@ task getCredentials << {
     }
 }
 
-task getVersion << {
-    def jgit = new org.mdonoughe.JGitDescribeTask()
-    jgit.setDir(new File("$rootDir", '.git'))
-
-    project.version = jgit.getDescription() + '-SNAPSHOT'
-
-    project.tasks.withType(PublishToMavenRepository) {
-        publishTask -> publishTask.publication.version = project.version
-    }
-
-    project.tasks.withType(GenerateMavenPom).each {
-        generateMavenPomTask -> generateMavenPomTask.pom.getProjectIdentity().version = project.version
-    }
-}
-
-task publishSnapshot(dependsOn: ['getCredentials', 'getVersion', 'publishMavenJavaPublicationToSnapshotsRepository']) << {
+task publishSnapshot(dependsOn: ['getCredentials', 'publishMavenJavaPublicationToSnapshotsRepository']) << {
 }
 
 buildscript {
