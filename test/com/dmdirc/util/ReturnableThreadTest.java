@@ -30,12 +30,12 @@ public class ReturnableThreadTest {
     @Test
     public void testSetAndGetObject() {
         final Object result = new Object();
-        final ReturnableThread instance = new RetunableThreadImpl();
+        final ReturnableThread<Object> instance = new RetunableThreadImpl();
         instance.setObject(result);
         assertSame(result, instance.getObject());
     }
 
-    private static class RetunableThreadImpl extends ReturnableThread {
+    private static class RetunableThreadImpl extends ReturnableThread<Object> {
         @Override
         public void run() {
         }
