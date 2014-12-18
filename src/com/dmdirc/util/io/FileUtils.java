@@ -118,7 +118,25 @@ public final class FileUtils {
      * @param destination The destination folder to copy the resource to.
      * @throws IOException If the resource couldn't be copied.
      */
+    public static void copyResourcesContents(final URL source, final Path destination)
+            throws IOException {
+        doCopyResources(source, destination, true);
+    }
+
+    /**
+     * Recursively copies the resources specified by the given URL to the destination folder.
+     * Existing files will be replaced.
+     *
+     * @param source The resource to be copied (file or folder).
+     * @param destination The destination folder to copy the resource to.
+     * @throws IOException If the resource couldn't be copied.
+     */
     public static void copyResources(final URL source, final Path destination) throws IOException {
+        doCopyResources(source, destination, false);
+    }
+
+    private static void doCopyResources(final URL source, final Path destination,
+            final boolean contents) throws IOException {
         try {
             final String path = source.toURI().toString();
             final int index = path.indexOf("!/");
@@ -126,11 +144,11 @@ public final class FileUtils {
                 final String file = path.substring(0, index);
                 final Map<String, String> env = new HashMap<>();
                 try (final FileSystem fs = FileSystems.newFileSystem(URI.create(file), env)) {
-                    copyRecursively(fs.getPath(path.substring(index + 2)), destination,
+                    doCopyRecursively(fs.getPath(path.substring(index + 2)), destination, contents,
                             StandardCopyOption.REPLACE_EXISTING);
                 }
             } else {
-                copyRecursively(Paths.get(source.toURI()), destination,
+                doCopyRecursively(Paths.get(source.toURI()), destination, contents,
                         StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (URISyntaxException ex) {
@@ -159,6 +177,20 @@ public final class FileUtils {
     }
 
     /**
+     * Recursively copies the contents of one path to another. Once complete, a deep copy of the
+     * source file or folder will be present in the destination directory.
+     *
+     * @param source The path that should be copied.
+     * @param destination The directory to place copied files in.
+     * @param options Options to use when copying.
+     * @throws IOException If any files couldn't be copied.
+     */
+    public static void copyRecursivelyContents(final Path source, final Path destination,
+            final CopyOption... options) throws IOException {
+        doCopyRecursively(source, destination, true, options);
+    }
+
+    /**
      * Recursively copies one path to another. Once complete, a deep copy of the source file or
      * folder will be present in the destination directory.
      *
@@ -169,7 +201,17 @@ public final class FileUtils {
      */
     public static void copyRecursively(final Path source, final Path destination,
             final CopyOption... options) throws IOException {
-        final Path destinationPath = destination.resolve(source.getFileName().toString());
+        doCopyRecursively(source, destination, false, options);
+    }
+
+    private static void doCopyRecursively(final Path source, final Path destination,
+            final boolean contents, final CopyOption... options) throws IOException {
+        final Path destinationPath;
+        if (contents) {
+            destinationPath = destination;
+        } else {
+            destinationPath = destination.resolve(source.getFileName().toString());
+        }
 
         if (Files.isDirectory(source)) {
             Files.createDirectories(destinationPath);
