@@ -108,7 +108,9 @@ public class Downloader {
         if (listener != null) {
             listener.setIndeterminate(true);
         }
-        Files.copy(getConnection(url, "").getInputStream(), file);
+        final URLConnection connection = getConnection(url, "");
+        Files.copy(new ListenerInputStream(connection.getInputStream(), listener,
+                        connection.getContentLength()), file);
     }
 
     /**

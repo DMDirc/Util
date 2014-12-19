@@ -47,6 +47,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -121,6 +123,7 @@ public class DownloaderTest {
         assertEquals(Lists.newArrayList("OMG IM A FAKE DOWNLOAD"), Files.readAllLines(file,
                 Charset.forName("UTF-8")));
         verify(listener).setIndeterminate(anyBoolean());
+        verify(listener, atLeastOnce()).downloadProgress(anyInt());
     }
 
     private class TestableDownloader extends Downloader {
