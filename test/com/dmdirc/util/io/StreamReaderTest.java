@@ -23,16 +23,11 @@
 package com.dmdirc.util.io;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
@@ -46,35 +41,7 @@ public class StreamReaderTest {
     public void testGetListDiscarding() throws Exception {
         final InputStream inputStream = spy(getClass().getResource("test5.txt").openStream());
         final StreamIgnorer streamReader = new StreamIgnorer(inputStream);
-        assertNull(streamReader.getList());
         streamReader.run();
-        assertNull(streamReader.getList());
         verify(inputStream, atLeastOnce()).read(any(byte[].class), anyInt(), anyInt());
-    }
-
-    @Test
-    public void testGetListBuffer() throws Exception {
-        final StringBuffer stringBuffer = new StringBuffer();
-        final StreamIgnorer streamReader = new StreamIgnorer(getClass().getResource("test5.txt")
-                .openStream(),
-                stringBuffer);
-        assertNull(streamReader.getList());
-        streamReader.run();
-        assertNull(streamReader.getList());
-        assertEquals("Line 1\nLine 2\nLine 3", stringBuffer.toString());
-    }
-
-    @Test
-    public void testGetListList() throws Exception {
-        final List<String> list = new ArrayList<>();
-        final StreamIgnorer streamReader = new StreamIgnorer(getClass().getResource("test5.txt")
-                .openStream(), list);
-        assertTrue(streamReader.getList().isEmpty());
-        streamReader.run();
-        assertEquals(4, list.size());
-        assertEquals("", list.get(0));
-        assertEquals("Line 1", list.get(1));
-        assertEquals("Line 2", list.get(2));
-        assertEquals("Line 3", list.get(3));
     }
 }
