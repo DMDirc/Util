@@ -25,17 +25,14 @@ package com.dmdirc.util.io;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Allows easy downloading of files from HTTP sites.
@@ -50,7 +47,6 @@ public class Downloader {
      * @throws IOException If there's an I/O error while downloading
      */
     public List<String> getPage(final String url) throws IOException {
-
         return getPage(url, "");
     }
 
@@ -64,23 +60,12 @@ public class Downloader {
      */
     public List<String> getPage(final String url, final String postData)
             throws IOException {
-
-        final List<String> res = new ArrayList<>();
-
         final URLConnection urlConn = getConnection(url, postData);
-
+        final List<String> res;
         try (BufferedReader in = new BufferedReader(new InputStreamReader(
                 urlConn.getInputStream()))) {
-            String line;
-            do {
-                line = in.readLine();
-
-                if (line != null) {
-                    res.add(line);
-                }
-            } while (line != null);
+            res = in.lines().collect(Collectors.toList());
         }
-
         return res;
     }
 
@@ -94,16 +79,8 @@ public class Downloader {
      */
     public List<String> getPage(final String url,
             final Map<String, String> postData) throws IOException {
-        final StringBuilder data = new StringBuilder();
-
-        for (Map.Entry<String, String> entry : postData.entrySet()) {
-            data.append('&');
-            data.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            data.append('=');
-            data.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-        }
-
-        return getPage(url, data.length() == 0 ? "" : data.substring(1));
+        return getPage(url, postData.entrySet().stream().map(Object::toString)
+                .collect(Collectors.joining("&")));
     }
 
     /**
@@ -126,37 +103,12 @@ public class Downloader {
      * @param listener The progress listener for this download
      * @throws IOException If there's an I/O error while downloading
      */
-    public void downloadPage(final String url, final Path file,
-            final DownloadListener listener) throws IOException {
-
-        final URLConnection urlConn = getConnection(url, "");
-
-        try (OutputStream output = Files.newOutputStream(file);
-                InputStream input = urlConn.getInputStream()) {
-            final int length = urlConn.getContentLength();
-
-            if (listener != null) {
-                listener.setIndeterminate(length == -1);
-            }
-
-            final byte[] buffer = new byte[512];
-            int count;
-
-            int current = 0;
-            do {
-                count = input.read(buffer);
-
-                if (count > 0) {
-                    current += count;
-                    output.write(buffer, 0, count);
-
-                    if (listener != null && length != -1) {
-                        listener.downloadProgress(100 * (float) current
-                                / length);
-                    }
-                }
-            } while (count > 0);
+    public void downloadPage(final String url, final Path file, final DownloadListener listener)
+            throws IOException {
+        if (listener != null) {
+            listener.setIndeterminate(true);
         }
+        Files.copy(getConnection(url, "").getInputStream(), file);
     }
 
     /**
@@ -167,8 +119,7 @@ public class Downloader {
      * @return An URLConnection for the specified URL/data
      * @throws IOException If an I/O exception occurs while connecting
      */
-    private URLConnection getConnection(final String url,
-            final String postData)
+    private URLConnection getConnection(final String url, final String postData)
             throws IOException {
         final URLConnection urlConn = getURLConnection(url);
 
@@ -178,8 +129,7 @@ public class Downloader {
         urlConn.setConnectTimeout(10000);
 
         if (!postData.isEmpty()) {
-            urlConn.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
+            urlConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
             try (DataOutputStream out = new DataOutputStream(urlConn.getOutputStream())) {
                 out.writeBytes(postData);
