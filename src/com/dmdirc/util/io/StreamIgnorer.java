@@ -22,39 +22,41 @@
 
 package com.dmdirc.util.io;
 
-import java.io.Closeable;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
- * Utilities for dealing with streams.
- *
- * @since 0.6.3m2
+ * Stream reader to read, but ignore a stream.
  */
-public final class StreamUtils {
+class StreamIgnorer extends Thread {
 
-    /** Shouldn't be called. */
-    private StreamUtils() {
-    }
+    /** This is the Input Stream we are reading. */
+    private final InputStream stream;
 
-    public static void readStream(final InputStream inputStream) {
-        new StreamIgnorer(inputStream).run();
+    /**
+     * Create a new Stream Ignorer that discards output.
+     *
+     * @param stream The stream to ignore
+     */
+    StreamIgnorer(final InputStream stream) {
+        super("StreamIgnorer");
+
+        this.stream = stream;
     }
 
     /**
-     * Closes the stream if it is non-null, and ignores any IOExceptions
-     * raised by doing so.
-     *
-     * @param stream The stream to be closed
+     * Wait for input on stream, and discards the data.
      */
-    public static void close(final Closeable stream) {
-        if (stream != null) {
-            try {
-                stream.close();
-            } catch (IOException ex) {
-                // Do nothing. We don't care.
+    @Override
+    public void run() {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+            while (reader.readLine() != null) {
+                //Totally Ignore
             }
+        } catch (IOException ex) {
+            // OH WELL
         }
     }
-
 }

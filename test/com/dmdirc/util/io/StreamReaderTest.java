@@ -45,7 +45,7 @@ public class StreamReaderTest {
     @Test
     public void testGetListDiscarding() throws Exception {
         final InputStream inputStream = spy(getClass().getResource("test5.txt").openStream());
-        final StreamReader streamReader = new StreamReader(inputStream);
+        final StreamIgnorer streamReader = new StreamIgnorer(inputStream);
         assertNull(streamReader.getList());
         streamReader.run();
         assertNull(streamReader.getList());
@@ -55,7 +55,7 @@ public class StreamReaderTest {
     @Test
     public void testGetListBuffer() throws Exception {
         final StringBuffer stringBuffer = new StringBuffer();
-        final StreamReader streamReader = new StreamReader(getClass().getResource("test5.txt")
+        final StreamIgnorer streamReader = new StreamIgnorer(getClass().getResource("test5.txt")
                 .openStream(),
                 stringBuffer);
         assertNull(streamReader.getList());
@@ -67,7 +67,7 @@ public class StreamReaderTest {
     @Test
     public void testGetListList() throws Exception {
         final List<String> list = new ArrayList<>();
-        final StreamReader streamReader = new StreamReader(getClass().getResource("test5.txt")
+        final StreamIgnorer streamReader = new StreamIgnorer(getClass().getResource("test5.txt")
                 .openStream(), list);
         assertTrue(streamReader.getList().isEmpty());
         streamReader.run();
