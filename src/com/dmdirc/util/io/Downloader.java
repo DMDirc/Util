@@ -108,9 +108,6 @@ public class Downloader {
      */
     public void downloadPage(final String url, final Path file, final DownloadListener listener)
             throws IOException {
-        if (listener != null) {
-            listener.setIndeterminate(true);
-        }
         final URLConnection connection = getConnection(url, "");
         Files.copy(new ListenerInputStream(connection.getInputStream(), listener,
                         connection.getContentLength()), file);

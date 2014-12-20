@@ -53,6 +53,9 @@ public class ListenerInputStream extends FilterInputStream {
         this.length = length;
         count = 0;
         mark = count;
+        if (length == -1) {
+            listener.setIndeterminate(true);
+        }
     }
 
     @Override
