@@ -22,6 +22,8 @@
 
 package com.dmdirc.util.io;
 
+import com.dmdirc.util.collections.URLEncodingMapFlattener;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -79,7 +81,8 @@ public class Downloader {
      */
     public List<String> getPage(final String url,
             final Map<String, String> postData) throws IOException {
-        return getPage(url, postData.entrySet().stream().map(Object::toString)
+        return getPage(url, postData.entrySet().stream()
+                .flatMap(e -> new URLEncodingMapFlattener().apply(e))
                 .collect(Collectors.joining("&")));
     }
 

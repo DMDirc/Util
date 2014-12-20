@@ -29,7 +29,8 @@ import java.io.InputStream;
 import javax.annotation.Nonnull;
 
 /**
- *
+ * Wrapped {@link InputStream} that provides updates to a {@link DownloadListener} as it reads a
+ * stream.
  */
 public class ListenerInputStream extends FilterInputStream {
 
@@ -38,6 +39,13 @@ public class ListenerInputStream extends FilterInputStream {
     private int count;
     private int mark;
 
+    /**
+     * Creates a new stream.
+     *
+     * @param in        Stream to wrap
+     * @param listener  Listener to gives up dates to
+     * @param length    Length of the stream, if -1 the listener will be indeterminate
+     */
     public ListenerInputStream(@Nonnull final InputStream in, final DownloadListener listener,
             final int length) {
         super(in);
@@ -98,6 +106,13 @@ public class ListenerInputStream extends FilterInputStream {
         return super.markSupported();
     }
 
+    /**
+     * Updates the listener and total read count.
+     *
+     * @param read Number of bytes further into stream.
+     *
+     * @return Returns the number of bytes read.
+     */
     private int update(final int read) {
         if (read > 0) {
             count += read;

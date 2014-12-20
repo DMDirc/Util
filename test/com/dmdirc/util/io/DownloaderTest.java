@@ -105,6 +105,20 @@ public class DownloaderTest {
     }
 
     @Test
+    public void testGetPageMapEncoding() throws IOException {
+        final Map<String, String> postData = Maps.newHashMap();
+        postData.put("ke&y1", "value1");
+        postData.put("key2", "val&ue2");
+        new TestableDownloader().getPage("rar", postData);
+        verify(mockedConnection).setRequestProperty("Content-Type",
+                "application/x-www-form-urlencoded");
+
+        final String postDataString1 = "ke%26y1=value1&key2=val%26ue2";
+        final String postDataString2 = "key2=val%26ue2&ke%26y1=value1";
+        assertTrue(postDataString1.equals(os.toString()) || postDataString2.equals(os.toString()));
+    }
+
+    @Test
     public void testDownloadPage() throws IOException {
         final Path file = fakeFS.getPath("test.txt");
         assertFalse(Files.exists(file));
