@@ -29,9 +29,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Allows reading and writing to a plain text file via a list of lines.
@@ -157,11 +157,7 @@ public class TextFile {
     public void readLines() throws IOException {
         if (path == null) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset))) {
-                lines = new ArrayList<>();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    lines.add(line);
-                }
+                lines = reader.lines().collect(Collectors.toList());
             }
         } else {
             lines = Files.readAllLines(path, charset);
