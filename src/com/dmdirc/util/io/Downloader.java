@@ -22,7 +22,7 @@
 
 package com.dmdirc.util.io;
 
-import com.dmdirc.util.collections.URLEncodingMapFlattener;
+import com.dmdirc.util.collections.CollectionFunctions;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -82,7 +82,7 @@ public class Downloader {
     public List<String> getPage(final String url,
             final Map<String, String> postData) throws IOException {
         return getPage(url, postData.entrySet().stream()
-                .flatMap(e -> new URLEncodingMapFlattener().apply(e))
+                .flatMap(CollectionFunctions::flattenAndEncodeKeyPair)
                 .collect(Collectors.joining("&")));
     }
 

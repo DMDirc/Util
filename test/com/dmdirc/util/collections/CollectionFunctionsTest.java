@@ -22,29 +22,29 @@
 
 package com.dmdirc.util.collections;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import com.google.common.collect.ImmutableMap;
+
+import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
-/**
- * Flattens a map into a key=value pair, URLEncoding both the key and the entry.
- */
-public class URLEncodingMapFlattener
-        implements Function<Map.Entry<String, String>, Stream<String>> {
+import org.junit.Test;
 
-    @Override
-    public Stream<String> apply(final Map.Entry<String, String> entry) {
-        String key;
-        String value;
-        try {
-            key = URLEncoder.encode(entry.getKey(), "UTF-8");
-            value = URLEncoder.encode(entry.getValue(), "UTF-8");
-        } catch (UnsupportedEncodingException ex){
-            key = entry.getKey();
-            value = entry.getValue();
-        }
-        return Stream.of(key + '=' + value);
+import static junit.framework.TestCase.assertEquals;
+
+public class CollectionFunctionsTest {
+
+    @Test
+    public void testflattenAndEncodeKeyPair() throws Exception {
+        final Map<String, String> map = ImmutableMap.<String, String>builder()
+                .put("key", "value")
+                .put("key&", "value&")
+                .build();
+        final List<String> result = map.entrySet().stream()
+                .flatMap(CollectionFunctions::flattenAndEncodeKeyPair)
+                .collect(Collectors.toList());
+        assertEquals(2, result.size());
+        assertEquals("key=value", result.get(0));
+        assertEquals("key%26=value%26", result.get(1));
     }
 }
