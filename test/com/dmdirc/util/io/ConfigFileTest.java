@@ -21,25 +21,56 @@
  */
 package com.dmdirc.util.io;
 
-import java.io.File;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.AccessMode;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ConfigFileTest {
 
+    @Mock private Path ro;
+    @Mock private FileSystem mockedFileSystem;
+    @Mock private FileSystemProvider fileSystemProvider;
     private ConfigFile cf;
+    private Path temp;
+    private FileSystem fileSystem;
 
     @Before
     public void setUp() throws Exception {
-        cf = new ConfigFile(getClass().getResourceAsStream("test2.txt"));
+        fileSystem = Jimfs.newFileSystem(Configuration.unix());
+        Files.copy(getClass().getResourceAsStream("test2.txt"), fileSystem.getPath("/test2.txt"));
+        cf = new ConfigFile(fileSystem.getPath("/test2.txt"));
+        temp = fileSystem.getPath("/temp.txt");
+        when(mockedFileSystem.provider()).thenReturn(fileSystemProvider);
+        when(ro.getFileSystem()).thenReturn(mockedFileSystem);
+        doThrow(new AccessDeniedException("Nup.")).when(fileSystemProvider).checkAccess(ro, AccessMode.WRITE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        fileSystem.close();
     }
 
     @Test
@@ -49,7 +80,7 @@ public class ConfigFileTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testWrite() throws IOException {
-        cf.write();
+        new ConfigFile(ro).write();
     }
 
     @Test
@@ -99,54 +130,48 @@ public class ConfigFileTest {
 
     @Test
     public void testColons() throws IOException, InvalidConfigFileException {
-        final File file = File.createTempFile("DMDirc.unittest", null);
-        file.deleteOnExit();
-        ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<>();
+        final ConfigFile config = new ConfigFile(temp);
+        final Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
         data.put("test:2", "hello");
         data.put("test3", "hello:");
         config.addDomain("test", data);
         config.write();
 
-        config = new ConfigFile(file);
-        config.read();
+        final ConfigFile config2 = new ConfigFile(temp);
+        config2.read();
 
-        assertTrue(config.isKeyDomain("test"));
-        data = config.getKeyDomain("test");
-        assertEquals("hello", data.get("test1"));
-        assertEquals("hello", data.get("test:2"));
-        assertEquals("hello:", data.get("test3"));
+        assertTrue(config2.isKeyDomain("test"));
+        final Map<String, String> test = config2.getKeyDomain("test");
+        assertEquals("hello", test.get("test1"));
+        assertEquals("hello", test.get("test:2"));
+        assertEquals("hello:", test.get("test3"));
     }
 
     @Test
     public void testEquals() throws IOException, InvalidConfigFileException {
-        final File file = File.createTempFile("DMDirc.unittest", null);
-        file.deleteOnExit();
-        ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<>();
+        final ConfigFile config = new ConfigFile(temp);
+        final Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
         data.put("test=2", "hello");
         data.put("test3", "hello=");
         config.addDomain("test", data);
         config.write();
 
-        config = new ConfigFile(file);
-        config.read();
+        final ConfigFile config2 = new ConfigFile(temp);
+        config2.read();
 
-        assertTrue(config.isKeyDomain("test"));
-        data = config.getKeyDomain("test");
-        assertEquals("hello", data.get("test1"));
-        assertEquals("hello", data.get("test=2"));
-        assertEquals("hello=", data.get("test3"));
+        assertTrue(config2.isKeyDomain("test"));
+        final Map<String, String> test = config2.getKeyDomain("test");
+        assertEquals("hello", test.get("test1"));
+        assertEquals("hello", test.get("test=2"));
+        assertEquals("hello=", test.get("test3"));
     }
 
     @Test
     public void testNewlines() throws IOException, InvalidConfigFileException {
-        final File file = File.createTempFile("DMDirc.unittest", null);
-        file.deleteOnExit();
-        ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<>();
+        final ConfigFile config = new ConfigFile(temp);
+        final Map<String, String> data = new HashMap<>();
         data.put("test1", "hello");
         data.put("test2", "hello\ngoodbye");
         data.put("test3", "hello\n");
@@ -154,59 +179,55 @@ public class ConfigFileTest {
         config.addDomain("test", data);
         config.write();
 
-        config = new ConfigFile(file);
-        config.read();
+        final ConfigFile config2 = new ConfigFile(temp);
+        config2.read();
 
-        assertTrue(config.isKeyDomain("test"));
-        data = config.getKeyDomain("test");
-        assertEquals("hello", data.get("test1"));
-        assertEquals("hello\ngoodbye", data.get("test2"));
-        assertEquals("hello\n", data.get("test3"));
-        assertEquals("hello\r\ngoodbye", data.get("test4"));
+        assertTrue(config2.isKeyDomain("test"));
+        final Map<String, String> test = config2.getKeyDomain("test");
+        assertEquals("hello", test.get("test1"));
+        assertEquals("hello\ngoodbye", test.get("test2"));
+        assertEquals("hello\n", test.get("test3"));
+        assertEquals("hello\r\ngoodbye", test.get("test4"));
     }
 
     @Test
     public void testBackslash() throws IOException, InvalidConfigFileException {
-        final File file = File.createTempFile("DMDirc.unittest", null);
-        file.deleteOnExit();
-        ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<>();
+        final ConfigFile config = new ConfigFile(temp);
+        final Map<String, String> data = new HashMap<>();
         data.put("test1", "hello\\");
         data.put("test2", "\\nhello");
         data.put("test3\\", "hello");
         config.addDomain("test", data);
         config.write();
 
-        config = new ConfigFile(file);
-        config.read();
+        final ConfigFile config2 = new ConfigFile(temp);
+        config2.read();
 
-        assertTrue(config.isKeyDomain("test"));
-        data = config.getKeyDomain("test");
-        assertEquals("hello\\", data.get("test1"));
-        assertEquals("\\nhello", data.get("test2"));
-        assertEquals("hello", data.get("test3\\"));
+        assertTrue(config2.isKeyDomain("test"));
+        final Map<String, String> test = config2.getKeyDomain("test");
+        assertEquals("hello\\", test.get("test1"));
+        assertEquals("\\nhello", test.get("test2"));
+        assertEquals("hello", test.get("test3\\"));
     }
 
     @Test
     public void testHash() throws IOException, InvalidConfigFileException {
-        final File file = File.createTempFile("DMDirc.unittest", null);
-        file.deleteOnExit();
-        ConfigFile config = new ConfigFile(file);
-        Map<String, String> data = new HashMap<>();
+        final ConfigFile config = new ConfigFile(temp);
+        final Map<String, String> data = new HashMap<>();
         data.put("test1#", "hello");
         data.put("#test2", "hello");
         data.put("test3", "#hello");
         config.addDomain("test", data);
         config.write();
 
-        config = new ConfigFile(file);
-        config.read();
+        final ConfigFile config2 = new ConfigFile(temp);
+        config2.read();
 
-        assertTrue(config.isKeyDomain("test"));
-        data = config.getKeyDomain("test");
-        assertEquals("hello", data.get("test1#"));
-        assertEquals("hello", data.get("#test2"));
-        assertEquals("#hello", data.get("test3"));
+        assertTrue(config2.isKeyDomain("test"));
+        final Map<String, String> test = config2.getKeyDomain("test");
+        assertEquals("hello", test.get("test1#"));
+        assertEquals("hello", test.get("#test2"));
+        assertEquals("#hello", test.get("test3"));
     }
 
     @Test
@@ -224,13 +245,11 @@ public class ConfigFileTest {
 
     @Test
     public void testDelete() throws IOException {
-        final File file = File.createTempFile("DMDirc_unittest", null);
-        file.deleteOnExit();
-        final ConfigFile config = new ConfigFile(file);
+        final ConfigFile config = new ConfigFile(temp);
         config.write();
-        assertTrue(file.exists());
+        assertTrue(Files.exists(temp));
         config.delete();
-        assertFalse(file.exists());
+        assertFalse(Files.exists(temp));
     }
 
     @Test

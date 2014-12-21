@@ -24,7 +24,6 @@ package com.dmdirc.util.io;
 
 import com.dmdirc.util.collections.MapList;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -62,24 +61,6 @@ public class ConfigFile extends TextFile {
      */
     public ConfigFile(final InputStream is) {
         super(is, Charset.forName("UTF-8"));
-    }
-
-    /**
-     * Creates a new Config File from the specified file.
-     *
-     * @param file The file to read/write
-     */
-    public ConfigFile(final File file) {
-        super(file, Charset.forName("UTF-8"));
-    }
-
-    /**
-     * Creates a new Config File from the specified file.
-     *
-     * @param filename The name of the file to read/write
-     */
-    public ConfigFile(final String filename) {
-        this(new File(filename));
     }
 
     /**
