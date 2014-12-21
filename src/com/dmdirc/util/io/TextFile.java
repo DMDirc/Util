@@ -29,9 +29,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Allows reading and writing to a plain text file via a list of lines.
@@ -54,46 +54,6 @@ public class TextFile {
      * The lines we've read from the file.
      */
     private List<String> lines;
-
-    /**
-     * Creates a new instance of TextFile for the specified file, and uses the
-     * default charset.
-     *
-     * @param filename The file to be read/written
-     */
-    public TextFile(final String filename) {
-        this(new File(filename));
-    }
-
-    /**
-     * Creates a new instance of TextFile for the specified File, and uses the
-     * default charset.
-     *
-     * @param file The file to read
-     */
-    public TextFile(final File file) {
-        this(file, Charset.defaultCharset());
-    }
-
-    /**
-     * Creates a new instance of TextFile for the specified Path, and uses the
-     * default charset.
-     *
-     * @param path The path to read
-     */
-    public TextFile(final Path path) {
-        this(path, Charset.defaultCharset());
-    }
-
-    /**
-     * Creates a new instance of TextFile for an input stream, and uses the
-     * default charset.
-     *
-     * @param is The input stream to read from
-     */
-    public TextFile(final InputStream is) {
-        this(is, Charset.defaultCharset());
-    }
 
     /**
      * Creates a new instance of TextFile for the specified File, which is to be
@@ -157,11 +117,7 @@ public class TextFile {
     public void readLines() throws IOException {
         if (path == null) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset))) {
-                lines = new ArrayList<>();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    lines.add(line);
-                }
+                lines = reader.lines().collect(Collectors.toList());
             }
         } else {
             lines = Files.readAllLines(path, charset);
@@ -191,7 +147,7 @@ public class TextFile {
      * @throws IOException if an I/O exception occurs
      */
     public void writeLines(final Iterable<String> lines) throws IOException {
-        if (path == null) {
+        if (!isWritable()) {
             throw new UnsupportedOperationException("Cannot write to TextFile "
                     + "opened with an InputStream");
         }
@@ -205,7 +161,7 @@ public class TextFile {
      * @throws IOException if the file is unable to be deleted
      */
     public void delete() throws IOException {
-        if (path == null) {
+        if (!isWritable()) {
             throw new UnsupportedOperationException("Cannot delete TextFile "
                     + "opened with an InputStream");
         }
