@@ -21,23 +21,63 @@
  */
 package com.dmdirc.util.io;
 
-import java.io.File;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.AccessMode;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TextFileTest {
 
+    @Mock private Path ro;
+    @Mock private FileSystem mockedFileSystem;
+    @Mock private FileSystemProvider fileSystemProvider;
+    private Path test1;
+    private Path temp;
+    private FileSystem fileSystem;
+
+    @Before
+    public void setup() throws IOException {
+        fileSystem = Jimfs.newFileSystem(Configuration.unix());
+        Files.copy(getClass().getResourceAsStream("test1.txt"), fileSystem.getPath("/test1.txt"));
+        test1 = fileSystem.getPath("/test1.txt");
+        temp = fileSystem.getPath("/temp.txt");
+        when(mockedFileSystem.provider()).thenReturn(fileSystemProvider);
+        when(ro.getFileSystem()).thenReturn(mockedFileSystem);
+        doThrow(new AccessDeniedException("Nup.")).when(fileSystemProvider).checkAccess(ro, AccessMode.WRITE);
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        fileSystem.close();
+    }
+
     @Test
-    public void testGetLines() throws IOException {
-        final TextFile file
-                = new TextFile(getClass().getResourceAsStream("test1.txt"));
+    public void testGetLines() throws IOException, URISyntaxException {
+        final TextFile file = new TextFile(test1, Charset.forName("UTF-8"));
         final List<String> lines = file.getLines();
 
         assertEquals(7, lines.size());
@@ -45,9 +85,8 @@ public class TextFileTest {
     }
 
     @Test
-    public void testGetLines2() throws IOException {
-        final TextFile file
-                = new TextFile(getClass().getResourceAsStream("test1.txt"));
+    public void testGetLines2() throws IOException, URISyntaxException {
+        final TextFile file = new TextFile(test1, Charset.forName("UTF-8"));
         final List<String> lines = file.getLines();
 
         assertEquals(7, lines.size());
@@ -56,47 +95,33 @@ public class TextFileTest {
 
     @Test
     public void testWrite() throws IOException {
-        final File tempFile = File.createTempFile("dmdirc_unit_test", null);
-        TextFile file = new TextFile(tempFile);
-
+        final TextFile file = new TextFile(temp, Charset.forName("UTF-8"));
         final List<String> lines = Arrays.asList("hello", "this is a test", "meep");
-
         file.writeLines(lines);
-
-        file = new TextFile(tempFile);
         final List<String> newLines = file.getLines();
-
         assertEquals(lines, newLines);
-        tempFile.deleteOnExit();
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testIllegalWrite() throws IOException {
-        final TextFile file
-                = new TextFile(getClass().getResourceAsStream("test1.txt"));
+    public void testIllegalWrite() throws IOException, URISyntaxException {
+        final TextFile file = new TextFile(ro, Charset.forName("UTF-8"));
         file.writeLines(Arrays.asList("hello", "this is a test", "meep"));
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testIllegalDelete() throws IOException {
-        final TextFile file
-                = new TextFile(getClass().getResourceAsStream("test1.txt"));
+    public void testIllegalDelete() throws IOException, URISyntaxException {
+        final TextFile file = new TextFile(ro, Charset.forName("UTF-8"));
         file.delete();
     }
 
     @Test
     public void testDelete() throws IOException {
-        final File tempFile = File.createTempFile("dmdirc_unit_test", "de;ete");
-        TextFile file = new TextFile(tempFile);
-
+        final TextFile file = new TextFile(temp, Charset.forName("UTF-8"));
         final List<String> lines = Arrays.asList("hello", "this is a test", "meep");
-
         file.writeLines(lines);
-
-        assertTrue(tempFile.exists());
-        file = new TextFile(tempFile);
+        assertTrue(Files.exists(temp));
         file.delete();
-        assertFalse(tempFile.exists());
+        assertFalse(Files.exists(temp));
     }
 
 }
