@@ -28,13 +28,13 @@ public class StringLengthValidatorTest {
 
     @Test
     public void testUnlimited() {
-        final Validator slv = new StringLengthValidator(-1, 10);
+        final Validator<String> slv = new StringLengthValidator(-1, 10);
         
         assertFalse(slv.validate("123").isFailure());
         assertFalse(slv.validate("").isFailure());
         assertFalse(slv.validate("123456789").isFailure());
         
-        final Validator slv2 = new StringLengthValidator(0, -1);
+        final Validator<String> slv2 = new StringLengthValidator(0, -1);
         
         assertFalse(slv2.validate("123456789").isFailure());
         assertFalse(slv2.validate("1").isFailure());
@@ -42,7 +42,7 @@ public class StringLengthValidatorTest {
     
     @Test
     public void testMinimum() {
-        final Validator slv = new StringLengthValidator(5, 100);
+        final Validator<String> slv = new StringLengthValidator(5, 100);
         
         assertTrue(slv.validate("").isFailure());
         assertTrue(slv.validate("123").isFailure());
@@ -54,7 +54,7 @@ public class StringLengthValidatorTest {
     
     @Test
     public void testMaximum() {
-        final Validator slv = new StringLengthValidator(0, 3);
+        final Validator<String> slv = new StringLengthValidator(0, 3);
         
         assertFalse(slv.validate("").isFailure());
         assertFalse(slv.validate("12").isFailure());

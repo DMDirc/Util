@@ -54,8 +54,8 @@ public class NumericalValidatorTest {
 
     @Test
     public void testMin() {
-        final Validator nv1 = new NumericalValidator(-1, -1);
-        final Validator nv2 = new NumericalValidator(-5, -1);
+        final Validator<String> nv1 = new NumericalValidator(-1, -1);
+        final Validator<String> nv2 = new NumericalValidator(-5, -1);
 
         assertFalse(nv1.validate("-5").isFailure());
         assertFalse(nv2.validate("-5").isFailure());
@@ -66,8 +66,8 @@ public class NumericalValidatorTest {
 
     @Test
     public void testMax() {
-        final Validator nv1 = new NumericalValidator(-1, -1);
-        final Validator nv2 = new NumericalValidator(-1, 10);
+        final Validator<String> nv1 = new NumericalValidator(-1, -1);
+        final Validator<String> nv2 = new NumericalValidator(-1, 10);
 
         assertFalse(nv1.validate("-5").isFailure());
         assertFalse(nv1.validate("50").isFailure());

@@ -28,7 +28,7 @@ public class NotEmptyValidatorTest {
 
     @Test
     public void testValidate() {
-        final Validator nev = new NotEmptyValidator();
+        final Validator<String> nev = new NotEmptyValidator();
         
         assertTrue(nev.validate("").isFailure());
         assertTrue(nev.validate("").getFailureReason().contains("empty"));

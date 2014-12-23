@@ -29,7 +29,7 @@ public class RegexValidatorTest {
 
     @Test
     public void testValidate() {
-        final Validator rv = new RegexValidator();
+        final Validator<String> rv = new RegexValidator();
         
         assertTrue(rv.validate("****").isFailure());
         assertFalse(rv.validate("[a-z]").isFailure());
