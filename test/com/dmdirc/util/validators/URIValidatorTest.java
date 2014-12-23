@@ -37,13 +37,13 @@ public class URIValidatorTest {
 
     @Test
     public void testValidateInvalidURI() {
-        final Validator instance = new URIValidator();
+        final Validator<String> instance = new URIValidator();
         assertTrue(instance.validate("http://^").isFailure());
     }
 
     @Test
     public void testValidateValid() {
-        final Validator instance = new URIValidator();
+        final Validator<String> instance = new URIValidator();
         assertFalse(instance.validate("http://google.com:80").isFailure());
     }
 }

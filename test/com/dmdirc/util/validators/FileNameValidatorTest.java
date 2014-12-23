@@ -29,7 +29,7 @@ public class FileNameValidatorTest {
 
     @Test
     public void testValidate() {
-        final Validator rv = new FileNameValidator();
+        final Validator<String> rv = new FileNameValidator();
         
         assertTrue(rv.validate("/foo").isFailure());
         assertFalse(rv.validate("filename").isFailure());

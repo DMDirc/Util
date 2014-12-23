@@ -29,7 +29,7 @@ public class RegexStringValidatorTest {
     @Test
     public void testValidate() {
         final String reason = "abc 123";
-        final Validator rv = new RegexStringValidator("[0-9]{5}", reason);
+        final Validator<String> rv = new RegexStringValidator("[0-9]{5}", reason);
         
         assertTrue(rv.validate("abc").isFailure());
         assertEquals(reason, rv.validate("abc").getFailureReason());

@@ -37,7 +37,7 @@ public class OptionalValidatorTest {
     @Test
     public void testNullValue() {
         final Validator<String> validator = new NotEmptyValidator();
-        final Validator instance = new OptionalValidator(validator);
+        final Validator<String> instance = new OptionalValidator(validator);
         assertTrue(instance.validate(null).isFailure());
     }
 
