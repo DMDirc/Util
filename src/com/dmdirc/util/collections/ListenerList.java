@@ -140,7 +140,7 @@ public class ListenerList {
     @SuppressWarnings("unchecked")
     public <T> T getCallable(final Class<T> listenerType) {
         return (T) Proxy.newProxyInstance(listenerType.getClassLoader(),
-                new Class[] { listenerType }, new CallHandler<>(listenerType));
+                new Class<?>[] { listenerType }, new CallHandler<>(listenerType));
     }
 
     /**
