@@ -80,7 +80,7 @@ public class WeakList<T> implements List<T> {
         final Collection<WeakReference<T>> res = new ArrayList<>();
 
         for (Object item : c) {
-            res.add(new EquatableWeakReference(item));
+            res.add(new EquatableWeakReference<>((T) item));
         }
 
         return res;
@@ -103,7 +103,7 @@ public class WeakList<T> implements List<T> {
     @Override
     @SuppressWarnings("unchecked")
     public boolean contains(final Object o) {
-        return list.contains(new EquatableWeakReference(o));
+        return list.contains(new EquatableWeakReference<>((T) o));
     }
 
     @Nonnull
@@ -132,7 +132,7 @@ public class WeakList<T> implements List<T> {
     @Override
     @SuppressWarnings("unchecked")
     public boolean remove(final Object o) {
-        return list.remove(new EquatableWeakReference(o));
+        return list.remove(new EquatableWeakReference<>((T) o));
     }
 
     @Override

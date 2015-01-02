@@ -102,17 +102,23 @@ public class SimpleInjectorTest {
 
     static class TestObject implements Serializable {
 
+        private static final long serialVersionUID = 1L;
+
         public TestObject(final String test) { // NOPMD
         }
     }
 
     static class PrivateObject implements Serializable {
 
+        private static final long serialVersionUID = 1L;
+
         private PrivateObject() {
         }
     }
 
     static class ExceptionObject implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         public ExceptionObject() {
             throw new IndexOutOfBoundsException();
