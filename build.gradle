@@ -33,6 +33,11 @@ dependencies {
     testCompile group: 'com.google.jimfs', name: 'jimfs', version: '1.0'
 }
 
+// DMDirc uses 18.0, JimFS has a transient dep on 16.0.1 - force the newer version
+configurations.all {
+    resolutionStrategy.force('com.google.guava:guava:18.0')
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
