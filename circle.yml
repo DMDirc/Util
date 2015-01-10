@@ -4,7 +4,7 @@ machine:
   java:
     version: oraclejdk8
   environment:
-    TERMINAL: dumb
+    TERM: dumb
 
 checkout:
   post:
