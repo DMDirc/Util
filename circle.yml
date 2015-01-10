@@ -6,6 +6,10 @@ machine:
   environment:
     TERMINAL: dumb
 
+checkout:
+  post:
+    - git fetch --tags
+
 test:
   post:
     - ./gradlew client:jacocoTestReport client:coveralls
