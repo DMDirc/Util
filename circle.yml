@@ -10,6 +10,12 @@ checkout:
   post:
     - git fetch --tags
 
+dependencies:
+  override:
+    - ./gradlew dependencies
+
 test:
+  override:
+    - ./gradlew test
   post:
     - ./gradlew client:jacocoTestReport client:coveralls
