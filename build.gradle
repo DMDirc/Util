@@ -1,13 +1,8 @@
-import org.mdonoughe.JGitDescribeTask
+group = 'com.dmdirc'
 
-def jgit = new org.mdonoughe.JGitDescribeTask()
-jgit.setDir(new File("$projectDir", '.git'))
-project.version = jgit.getDescription() + '-SNAPSHOT'
-
+apply plugin: 'com.dmdirc.git-version'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
-
-group = 'com.dmdirc'
 
 sourceSets {
     main {
@@ -62,13 +57,11 @@ task publishSnapshot(dependsOn: 'publishMavenJavaPublicationToSnapshotsRepositor
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url 'http://artifactory.dmdirc.com/artifactory/repo'
-        }
+        maven { url 'http://artifactory.dmdirc.com/artifactory/repo' }
+        maven { url 'https://dl.bintray.com/dmdirc/releases/' }
     }
 
     dependencies {
-        classpath group: 'com.github.shanemcc', name: 'jgit-describe', version: '0.5'
-        classpath group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '2.3.1.+'
+        classpath group: 'com.dmdirc', name: 'git-version', version: '1.0'
     }
 }
