@@ -3,3 +3,7 @@
 machine:
   java:
     version: oraclejdk8
+
+test:
+  post:
+    - ./gradlew client:jacocoTestReport client:coveralls
