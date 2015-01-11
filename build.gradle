@@ -1,13 +1,11 @@
-import org.mdonoughe.JGitDescribeTask
+group = 'com.dmdirc'
 
-def jgit = new org.mdonoughe.JGitDescribeTask()
-jgit.setDir(new File("$projectDir", '.git'))
-project.version = jgit.getDescription() + '-SNAPSHOT'
-
+apply plugin: 'com.dmdirc.git-version'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
 
-group = 'com.dmdirc'
 
 sourceSets {
     main {
@@ -56,34 +54,26 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
 }
 
-task getCredentials << {
-    def target = file('nexus-teamcity.gradle')
-    if (!target.exists()) {
-        new URL('http://www.dmdirc.com/private/nexus-teamcity.gradle').withInputStream{
-            i -> target.withOutputStream { it << i }
-        }
-    }
-
-    apply from: 'nexus-teamcity.gradle'
-    project.publishing.repositories[0].credentials {
-        username "$nexusUser"
-        password "$nexusPass"
-    }
-}
-
-task publishSnapshot(dependsOn: ['getCredentials', 'publishMavenJavaPublicationToSnapshotsRepository']) << {
+task publishSnapshot(dependsOn: 'publishMavenJavaPublicationToSnapshotsRepository') << {
 }
 
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url 'http://artifactory.dmdirc.com/artifactory/repo'
-        }
+        maven { url 'http://artifactory.dmdirc.com/artifactory/repo' }
+        maven { url 'https://dl.bintray.com/dmdirc/releases/' }
     }
 
     dependencies {
-        classpath group: 'com.github.shanemcc', name: 'jgit-describe', version: '0.5'
-        classpath group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '2.3.1.+'
+        classpath group: 'com.dmdirc', name: 'git-version', version: '1.0'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.1.0'
     }
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
+}
+
