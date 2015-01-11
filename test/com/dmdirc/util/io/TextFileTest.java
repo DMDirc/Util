@@ -124,4 +124,18 @@ public class TextFileTest {
         assertFalse(Files.exists(temp));
     }
 
+    @Test
+    public void testIsWriteable_Stream() throws IOException {
+        final TextFile file = new TextFile(Files.newInputStream(test1), Charset.forName("UTF-8"));
+        assertFalse(file.isWritable());
+    }
+
+    @Test
+    public void testReadLine_Stream() throws IOException {
+        final TextFile file = new TextFile(Files.newInputStream(test1), Charset.forName("UTF-8"));
+        final List<String> lines = file.getLines();
+        assertEquals(7, lines.size());
+        assertEquals("Line 1", lines.get(0));
+    }
+
 }
