@@ -3,3 +3,19 @@
 machine:
   java:
     version: oraclejdk8
+  environment:
+    TERM: dumb
+
+checkout:
+  post:
+    - git fetch --tags
+
+dependencies:
+  override:
+    - ./gradlew dependencies
+
+test:
+  override:
+    - ./gradlew test
+  post:
+    - ./gradlew jacocoTestReport coveralls

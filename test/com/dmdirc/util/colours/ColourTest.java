@@ -22,39 +22,38 @@
 
 package com.dmdirc.util.colours;
 
-/**
- * Some util methods for dealing with colours.
- */
-public final class ColourUtils {
+import org.junit.Test;
 
-    private ColourUtils() {
-        //Do not instantiate.
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
+
+public class ColourTest {
+
+    @Test
+    public void testGetters() {
+        final Colour colour = new Colour(12, 0, 255);
+        assertEquals(12, colour.getRed());
+        assertEquals(0, colour.getGreen());
+        assertEquals(255, colour.getBlue());
     }
 
-    /**
-     * Retrieves the hex representation of the specified colour.
-     *
-     * @param colour The colour to be parsed
-     *
-     * @return A 6-digit hex string representing the colour
-     */
-    public static String getHex(final Colour colour) {
-        final int r = colour.getRed();
-        final int g = colour.getGreen();
-        final int b = colour.getBlue();
-
-        return toHex(r) + toHex(g) + toHex(b);
+    @Test
+    public void testEquals() {
+        assertTrue(new Colour(1, 2, 3).equals(new Colour(1, 2, 3)));
+        assertTrue(Colour.RED.equals(new Colour(255, 0, 0)));
+        assertFalse(new Colour(3, 2, 1).equals(new Colour(1, 2, 3)));
+        assertFalse(Colour.RED.equals(new Colour(255, 1, 0)));
     }
 
-    /**
-     * Converts the specified integer (in the range 0-255) into a hex string.
-     *
-     * @param value The integer to convert
-     *
-     * @return A 2 char hex string representing the specified integer
-     */
-    private static String toHex(final int value) {
-        final String hex = Integer.toHexString(value);
-        return (hex.length() < 2 ? "0" : "") + hex;
+    @Test
+    public void testHashcodeSameForEqualColours() {
+        assumeTrue(new Colour(1, 2, 3).equals(new Colour(1, 2, 3)));
+        assertEquals(new Colour(1, 2, 3).hashCode(), new Colour(1, 2, 3).hashCode());
+
+        assumeTrue(Colour.RED.equals(new Colour(255, 0, 0)));
+        assertEquals(Colour.RED.hashCode(), new Colour(255, 0, 0).hashCode());
     }
+
 }
