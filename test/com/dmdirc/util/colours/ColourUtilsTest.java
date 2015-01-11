@@ -22,39 +22,25 @@
 
 package com.dmdirc.util.colours;
 
-/**
- * Some util methods for dealing with colours.
- */
-public final class ColourUtils {
+import org.junit.Test;
 
-    private ColourUtils() {
-        //Do not instantiate.
+import static org.junit.Assert.assertEquals;
+
+public class ColourUtilsTest {
+
+    @Test
+    public void testGetHexZero() {
+        assertEquals("000000", ColourUtils.getHex(new Colour(0, 0, 0)));
     }
 
-    /**
-     * Retrieves the hex representation of the specified colour.
-     *
-     * @param colour The colour to be parsed
-     *
-     * @return A 6-digit hex string representing the colour
-     */
-    public static String getHex(final Colour colour) {
-        final int r = colour.getRed();
-        final int g = colour.getGreen();
-        final int b = colour.getBlue();
-
-        return toHex(r) + toHex(g) + toHex(b);
+    @Test
+    public void testGetHexEffs() {
+        assertEquals("ffffff", ColourUtils.getHex(new Colour(255, 255, 255)));
     }
 
-    /**
-     * Converts the specified integer (in the range 0-255) into a hex string.
-     *
-     * @param value The integer to convert
-     *
-     * @return A 2 char hex string representing the specified integer
-     */
-    private static String toHex(final int value) {
-        final String hex = Integer.toHexString(value);
-        return (hex.length() < 2 ? "0" : "") + hex;
+    @Test
+    public void testGetHexRandom() {
+        assertEquals("44978f", ColourUtils.getHex(new Colour(68, 151, 143)));
     }
+
 }

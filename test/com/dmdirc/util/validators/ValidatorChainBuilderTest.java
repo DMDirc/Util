@@ -20,41 +20,33 @@
  * SOFTWARE.
  */
 
-package com.dmdirc.util.colours;
+package com.dmdirc.util.validators;
 
-/**
- * Some util methods for dealing with colours.
- */
-public final class ColourUtils {
+import org.junit.Test;
 
-    private ColourUtils() {
-        //Do not instantiate.
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class ValidatorChainBuilderTest {
+
+    @Test
+    public void testEmptyBuilder() {
+        final ValidatorChain<String> validatorChain = ValidatorChain.<String>builder().build();
+
+        assertFalse(validatorChain.validate("test").isFailure());
+        assertFalse(validatorChain.validate("").isFailure());
     }
 
-    /**
-     * Retrieves the hex representation of the specified colour.
-     *
-     * @param colour The colour to be parsed
-     *
-     * @return A 6-digit hex string representing the colour
-     */
-    public static String getHex(final Colour colour) {
-        final int r = colour.getRed();
-        final int g = colour.getGreen();
-        final int b = colour.getBlue();
+    @Test
+    public void testBuilderWithMultipleValidators() {
+        final ValidatorChain<String> validatorChain = ValidatorChain.<String>builder()
+                .addValidator(new StringLengthValidator(0, 5))
+                .addValidator(new NotEmptyValidator())
+                .build();
 
-        return toHex(r) + toHex(g) + toHex(b);
+        assertFalse(validatorChain.validate("test").isFailure());
+        assertTrue(validatorChain.validate("").isFailure());
+        assertTrue(validatorChain.validate("123456").isFailure());
     }
 
-    /**
-     * Converts the specified integer (in the range 0-255) into a hex string.
-     *
-     * @param value The integer to convert
-     *
-     * @return A 2 char hex string representing the specified integer
-     */
-    private static String toHex(final int value) {
-        final String hex = Integer.toHexString(value);
-        return (hex.length() < 2 ? "0" : "") + hex;
-    }
 }
