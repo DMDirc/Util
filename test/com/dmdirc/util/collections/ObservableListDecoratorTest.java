@@ -23,12 +23,20 @@
 package com.dmdirc.util.collections;
 
 import java.util.Arrays;
-import java.util.List;
-import org.junit.Test;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Before;
-import static org.mockito.Mockito.*;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 public class ObservableListDecoratorTest {
 
@@ -99,6 +107,40 @@ public class ObservableListDecoratorTest {
         list.addAll(Arrays.asList("one", "two", "three", "four"));
         obslist.remove("three");
         verify(observer).onItemsRemoved(obslist, 2, 2);
+    }
+
+    @Test
+    public void testRemovingListenerStopsFutureCalls() {
+        obslist.removeListListener(observer);
+        obslist.add("test");
+        verify(observer, never()).onItemsAdded(obslist, 0, 0);
+    }
+
+    @Test
+    public void testSize() {
+        assertEquals(0, obslist.size());
+        obslist.add("test");
+        assertEquals(1, obslist.size());
+        obslist.add("test");
+        assertEquals(2, obslist.size());
+    }
+
+    @Test
+    public void testIsEmpty() {
+        assertTrue(obslist.isEmpty());
+        obslist.add("test");
+        assertFalse(obslist.isEmpty());
+        obslist.remove("test");
+        assertTrue(obslist.isEmpty());
+    }
+
+    @Test
+    public void testContains() {
+        assertFalse(obslist.contains("test"));
+        obslist.add("test");
+        assertTrue(obslist.contains("test"));
+        obslist.remove("test");
+        assertFalse(obslist.contains("test"));
     }
 
 }
