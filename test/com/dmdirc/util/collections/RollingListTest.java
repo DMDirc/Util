@@ -136,4 +136,18 @@ public class RollingListTest {
         assertEquals("Bar", rl.getPrevious());
     }
 
+    @Test
+    public void testRemove() {
+        final RollingList<String> rl = new RollingList<>(2);
+
+        rl.add("Foo");
+        rl.add("Bar");
+        rl.remove("Bar");
+        rl.add("Baz");
+
+        assertEquals("Foo", rl.get(0));
+        assertEquals("Baz", rl.get(1));
+        assertFalse(rl.contains("Bar"));
+    }
+
 }
