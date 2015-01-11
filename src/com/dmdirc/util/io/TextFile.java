@@ -22,7 +22,6 @@
 package com.dmdirc.util.io;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -54,18 +53,6 @@ public class TextFile {
      * The lines we've read from the file.
      */
     private List<String> lines;
-
-    /**
-     * Creates a new instance of TextFile for the specified File, which is to be
-     * read using the specified charset.
-     *
-     * @param file The file to read
-     * @param charset The charset to read the file in
-     * @since 0.6.3m1
-     */
-    public TextFile(final File file, final Charset charset) {
-        this(file == null ? null : file.toPath(), charset);
-    }
 
     /**
      * Creates a new instance of TextFile for the specified Path, which is to be
