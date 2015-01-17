@@ -266,22 +266,6 @@ public class ConfigFile extends TextFile {
     }
 
     /**
-     * Adds a new flat domain to this config file.
-     *
-     * @param name The name of the domain to be added
-     * @param data The content of the domain
-     */
-    public void addDomain(final String name, final Collection<String> data) {
-        domains.add(name);
-
-        if (flatdomains.containsKey(name)) {
-            flatdomains.get(name).addAll(data);
-        } else {
-            flatdomains.put(name, new ArrayList<>(data));
-        }
-    }
-
-    /**
      * Adds a new key domain to this config file.
      *
      * @param name The name of the domain to be added
