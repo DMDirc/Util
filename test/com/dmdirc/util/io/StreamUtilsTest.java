@@ -24,13 +24,18 @@ package com.dmdirc.util.io;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("resource")
@@ -43,6 +48,13 @@ public class StreamUtilsTest {
     public void testCloseWithNullStream() {
         // Shouldn't throw an exception
         StreamUtils.close(null);
+    }
+
+    @Test
+    public void testReadStream() throws Exception {
+        final InputStream inputStream = spy(getClass().getResource("test5.txt").openStream());
+        StreamUtils.readStream(inputStream);
+        verify(inputStream, atLeastOnce()).read(any(byte[].class), anyInt(), anyInt());
     }
 
     @Test
