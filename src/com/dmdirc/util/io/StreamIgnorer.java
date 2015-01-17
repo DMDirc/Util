@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.annotation.WillClose;
+
 /**
  * Stream reader to read, but ignore a stream.
  */
@@ -38,9 +40,9 @@ class StreamIgnorer extends Thread {
     /**
      * Create a new Stream Ignorer that discards output.
      *
-     * @param stream The stream to ignore
+     * @param stream The stream to ignore, closed once {@link #run} is called.
      */
-    StreamIgnorer(final InputStream stream) {
+    StreamIgnorer(@WillClose final InputStream stream) {
         super("StreamIgnorer");
 
         this.stream = stream;
