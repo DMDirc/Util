@@ -22,8 +22,6 @@
 
 package com.dmdirc.util.io;
 
-import com.dmdirc.util.collections.MapList;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -46,7 +44,7 @@ public class ConfigFile extends TextFile {
     private final Collection<String> domains = new ArrayList<>();
 
     /** The values associated with each flat domain. */
-    private final MapList<String, String> flatdomains = new MapList<>();
+    private final Map<String, List<String>> flatdomains = new HashMap<>();
 
     /** The key/value sets associated with each key domain. */
     private final Map<String, Map<String, String>> keydomains = new HashMap<>();
@@ -117,12 +115,12 @@ public class ConfigFile extends TextFile {
                 domains.add(domain);
 
                 keydomain = keydomains.containsKey(domain)
-                        || flatdomains.containsValue("keysections", domain);
+                        || hasFlatDomainValue("keysections", domain);
 
                 if (keydomain && !keydomains.containsKey(domain)) {
                     keydomains.put(domain, new HashMap<>());
                 } else if (!keydomain && !flatdomains.containsKey(domain)) {
-                    flatdomains.add(domain);
+                    flatdomains.put(domain, new ArrayList<>());
                 }
             } else if (domain != null && keydomain
                     && (offset = findEquals(tline)) != -1) {
@@ -131,7 +129,7 @@ public class ConfigFile extends TextFile {
 
                 keydomains.get(domain).put(key, value);
             } else if (domain != null && !keydomain) {
-                flatdomains.add(domain, unescape(tline));
+                addFlatDomainValue(domain, unescape(tline));
             } else {
                 throw new InvalidConfigFileException("Unknown or unexpected"
                         + " line encountered: " + tline);
@@ -150,7 +148,7 @@ public class ConfigFile extends TextFile {
                     + "that isn't writable");
         }
 
-        final List<String> lines = new ArrayList<>();
+        final Collection<String> lines = new ArrayList<>();
 
         lines.add("# This is a DMDirc configuration file.");
         lines.add("# Written on: " + new GregorianCalendar().getTime());
@@ -275,7 +273,12 @@ public class ConfigFile extends TextFile {
      */
     public void addDomain(final String name, final Collection<String> data) {
         domains.add(name);
-        flatdomains.add(name, data);
+
+        if (flatdomains.containsKey(name)) {
+            flatdomains.get(name).addAll(data);
+        } else {
+            flatdomains.put(name, new ArrayList<>(data));
+        }
     }
 
     /**
@@ -287,6 +290,17 @@ public class ConfigFile extends TextFile {
     public void addDomain(final String name, final Map<String, String> data) {
         domains.add(name);
         keydomains.put(name, data);
+    }
+
+    private boolean hasFlatDomainValue(final String domain, final String value) {
+        return flatdomains.containsKey(domain) && flatdomains.get(domain).contains(value);
+    }
+
+    private void addFlatDomainValue(final String domain, final String value) {
+        if (!flatdomains.containsKey(domain)) {
+            flatdomains.put(domain, new ArrayList<>());
+        }
+        flatdomains.get(domain).add(value);
     }
 
     /**
