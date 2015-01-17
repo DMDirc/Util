@@ -53,6 +53,12 @@ public class QueuedLinkedHashSetTest {
         set.element();
     }
 
+    @Test
+    public void testElementWhenNotEmpty() {
+        set.offer("foo");
+        assertEquals("foo", set.element());
+    }
+
     @Test(expected = NoSuchElementException.class)
     public void testRemoveWhenNewlyCreated() {
         set.remove();
