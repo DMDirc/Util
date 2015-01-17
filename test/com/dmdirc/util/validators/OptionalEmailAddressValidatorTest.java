@@ -22,22 +22,34 @@
 
 package com.dmdirc.util.validators;
 
-import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Validator checking the list is not empty.
- *
- * @param <T> List type
- */
-public class ListNotEmptyValidator<T> implements Validator<List<T>> {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-    @Override
-    public ValidationResponse validate(final List<T> object) {
-        if (object == null || object.isEmpty()) {
-            return new ValidationResponse("List cannot be an empty.");
-        } else {
-            return new ValidationResponse();
-        }
+@RunWith(MockitoJUnitRunner.class)
+public class OptionalEmailAddressValidatorTest {
+
+    @Test
+    public void testValidate_Null() throws Exception {
+        assertFalse(new OptionalEmailAddressValidator().validate(null).isFailure());
     }
 
+    @Test
+    public void testValidate_Empty() throws Exception {
+        assertFalse(new OptionalEmailAddressValidator().validate("").isFailure());
+    }
+
+    @Test
+    public void testValidate_Valid() throws Exception {
+        assertFalse(new OptionalEmailAddressValidator().validate("test@test.com").isFailure());
+    }
+
+    @Test
+    public void testValidate_Invalid() throws Exception {
+        assertTrue(new OptionalEmailAddressValidator().validate("email@example@example.com")
+                .isFailure());
+    }
 }

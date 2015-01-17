@@ -22,22 +22,39 @@
 
 package com.dmdirc.util.validators;
 
-import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * Validator checking the list is not empty.
- *
- * @param <T> List type
- */
-public class ListNotEmptyValidator<T> implements Validator<List<T>> {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-    @Override
-    public ValidationResponse validate(final List<T> object) {
-        if (object == null || object.isEmpty()) {
-            return new ValidationResponse("List cannot be an empty.");
-        } else {
-            return new ValidationResponse();
-        }
+@RunWith(MockitoJUnitRunner.class)
+public class IntegerPortValidatorTest {
+
+    @Test
+    public void testValidate_TooLow() throws Exception {
+        assertTrue(new IntegerPortValidator().validate(0).isFailure());
+    }
+
+    @Test
+    public void testValidate_Min() throws Exception {
+        assertFalse(new IntegerPortValidator().validate(1).isFailure());
+    }
+
+    @Test
+    public void testValidate_Normal() throws Exception {
+        assertFalse(new IntegerPortValidator().validate(5).isFailure());
+    }
+
+    @Test
+    public void testValidate_Max() throws Exception {
+        assertFalse(new IntegerPortValidator().validate(65535).isFailure());
+    }
+
+    @Test
+    public void testValidate_TooHigh() throws Exception {
+        assertTrue(new IntegerPortValidator().validate(65536).isFailure());
     }
 
 }
