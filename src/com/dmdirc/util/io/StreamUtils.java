@@ -26,6 +26,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.WillClose;
+
 /**
  * Utilities for dealing with streams.
  *
@@ -37,7 +39,7 @@ public final class StreamUtils {
     private StreamUtils() {
     }
 
-    public static void readStream(final InputStream inputStream) {
+    public static void readStream(@WillClose final InputStream inputStream) {
         new StreamIgnorer(inputStream).run();
     }
 
