@@ -22,22 +22,33 @@
 
 package com.dmdirc.util.validators;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Validator checking the list is not empty.
- *
- * @param <T> List type
- */
-public class ListNotEmptyValidator<T> implements Validator<List<T>> {
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
-    @Override
-    public ValidationResponse validate(final List<T> object) {
-        if (object == null || object.isEmpty()) {
-            return new ValidationResponse("List cannot be an empty.");
-        } else {
-            return new ValidationResponse();
-        }
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(MockitoJUnitRunner.class)
+public class ListNotEmptyValidatorTest {
+
+    @Test
+    public void testValidate_Null() throws Exception {
+        assertTrue(new ListNotEmptyValidator<String>().validate(null).isFailure());
     }
 
+    @Test
+    public void testValidate_Empty() throws Exception {
+        assertTrue(new ListNotEmptyValidator<String>().validate(new ArrayList<>()).isFailure());
+    }
+
+    @Test
+     public void testValidate_NotEmpty() throws Exception {
+        final List<String> list = new ArrayList<>();
+        list.add("RAR");
+        assertFalse(new ListNotEmptyValidator<String>().validate(list).isFailure());
+    }
 }
