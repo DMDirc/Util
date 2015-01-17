@@ -24,12 +24,16 @@ package com.dmdirc.util.io;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
@@ -37,12 +41,24 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class StreamUtilsTest {
 
+    @Rule public ExpectedException thrown = ExpectedException.none();
     @Mock private Closeable closeable;
 
     @Test
     public void testCloseWithNullStream() {
         // Shouldn't throw an exception
         StreamUtils.close(null);
+    }
+
+    @Test
+    public void testReadStream() throws Exception {
+        final InputStream inputStream = getClass().getResource("test5.txt").openStream();
+        StreamUtils.readStream(inputStream);
+        inputStream.close();
+        thrown.expect(IOException.class);
+        thrown.expectMessage("Stream closed");
+        final int result = inputStream.read();
+        assertEquals(-1, result);
     }
 
     @Test
