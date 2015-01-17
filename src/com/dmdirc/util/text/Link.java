@@ -68,17 +68,13 @@ public class Link {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
+        if (o instanceof Link) {
+            final Link link = (Link) o;
+            return end == link.getEnd()
+                    && start == link.getStart()
+                    && Objects.equals(content, link.getContent());
         }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final Link link = (Link) o;
-        return end == link.getEnd() && start == link.getStart()
-                && Objects.equals(content, link.getContent());
+        return false;
     }
 
     @Override
