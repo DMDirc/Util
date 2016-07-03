@@ -8,16 +8,13 @@ group = 'com.dmdirc'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
+apply plugin: 'idea'
 
-
-sourceSets {
-    main {
-        java.srcDirs = ['src']
-        resources.srcDirs = ['res']
-    }
-    test {
-        java.srcDirs = ['test']
-        resources.srcDirs = ['test-res']
+idea {
+    module {
+         sourceDirs += file('src/main/generated')
+         testSourceDirs += file('src/test/generated_tests')
+         generatedSourceDirs = [file('src/main/generated'), file('src/test/generated_tests')]
     }
 }
 
