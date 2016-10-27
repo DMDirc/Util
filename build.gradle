@@ -60,7 +60,7 @@ publishing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.13'
+    gradleVersion = '3.1'
 }
 
 task publishSnapshot(dependsOn: 'publishMavenJavaPublicationToSnapshotsRepository') << {
