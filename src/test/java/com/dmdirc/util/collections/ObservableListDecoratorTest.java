@@ -25,15 +25,14 @@ package com.dmdirc.util.collections;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -92,7 +91,7 @@ public class ObservableListDecoratorTest {
     @Test
     public void testClearingEmptyListDoesntFireListener() {
         obslist.clear();
-        verify(observer, never()).onItemsRemoved(anyObject(), anyInt(), anyInt());
+        verify(observer, never()).onItemsRemoved(any(), anyInt(), anyInt());
     }
 
     @Test
