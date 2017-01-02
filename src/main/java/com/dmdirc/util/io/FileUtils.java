@@ -75,7 +75,8 @@ public final class FileUtils {
      * @throws IllegalStateException If the application path cannot be determined for any reason
      */
     public static boolean isRunningFromJar(final Class<?> clazz) throws IllegalStateException {
-        return getApplicationPath(clazz).getFileName().toString().endsWith(".jar");
+        // If we're running from any kind of regular file, assume it's a jar.
+        return Files.isRegularFile(getApplicationPath(clazz));
     }
 
     /**
@@ -163,13 +164,23 @@ public final class FileUtils {
      * @param resource The resource to get a path for
      * @return The path for the specified resource
      * @throws URISyntaxException If the resource could not be mapped to a path
+     * @deprecated This doesn't and can't work reliably in all cases, and should be avoided.
      */
+    @Deprecated
     public static Path getPathForResource(final URL resource) throws URISyntaxException {
         if (JAR_FILE_SYSTEM.isPresent()) {
             final String path = resource.toURI().toString();
             final int index = path.indexOf("!/");
             if (index > -1) {
                 return JAR_FILE_SYSTEM.get().getPath(path.substring(index + 1));
+            }
+
+            // If we're running inside an OSGI framework then the classloader returns bundleresource:// URIs.
+            // We don't have a filesystem handler for those, so instead map them on to the jar file system.
+            // [This is hacky and horrible. It assumes that we only have one bundle, and that this class
+            // is located in the same bundle as all of its callers.]
+            if (path.startsWith("bundleresource://")) {
+                return JAR_FILE_SYSTEM.get().getPath(path.substring(path.indexOf("/", 19)));
             }
         }
 
