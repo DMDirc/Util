@@ -1,0 +1,2 @@
+# Util
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8444740c995c403a9d559ffb0e3764f9)](https://www.codacy.com/app/DMDirc/Util?utm_source=github.com&utm_medium=referral&utm_content=DMDirc/Util&utm_campaign=badger)
