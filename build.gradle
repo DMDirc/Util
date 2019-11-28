@@ -49,11 +49,11 @@ publishing {
     }
     repositories {
         maven {
-            name 'snapshots'
-            url 'http://artifactory.dmdirc.com/artifactory/snapshots'
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/dmdirc/util")
             credentials {
-                username System.getenv('ARTIFACTORY_USER')
-                password System.getenv('ARTIFACTORY_PASSWORD')
+                username = ""
+                password = {{secrets.GITHUB_TOKEN}}
             }
         }
     }
